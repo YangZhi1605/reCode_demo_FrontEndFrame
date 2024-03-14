@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>Vue的入门测试</h1>
+    <div>
+        <ul>
+            <!--            v-for写在哪里，就对那个元素进行循环-->
+            <li v-for="item in arr">{{item}}</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+<script>
+    //实例化VUe
+    var app = new Vue({
+        el: '#app',
+        data: {
+            //定义一个数组
+            arr: ['张三', '李四', '王五', '赵六']
+        }
+    });
+</script>
+</html>

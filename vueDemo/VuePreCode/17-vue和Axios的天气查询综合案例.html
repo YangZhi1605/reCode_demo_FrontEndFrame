@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>17-vue和Axios的天气查询综合案例</title>
+
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+    <input type="text" v-model="name" @keyup.delete="Showfunc" @keyup.enter="searchCity"> <input type="button" value="搜索" @click="searchCity"><br>
+
+<!--    遍历hotCity-->
+<!--    用@keyup.prevent阻止原本超链接的默认跳转行为，改为我们的操作-->
+<!--    注意是@click中的prevent方法，而不是@keyup中的。确实不阻止原本的超链接行为，我们自己写的方法就不得有响应-->
+    <span v-for="city in hotCitys">
+        <a href="" @click.prevent="searchCityA(city)">{{city}}</a><br>
+    </span>
+
+    <hr>
+    <span v-show="isShow">{{name}},今天的天气是：{{message}}</span>
+
+</div>
+
+</body>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+<!--    引入Axios-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    //3、创建vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {
+            name:"",
+            hotCitys: ["北京","上海","广州","深圳"],
+            message:"",
+            isShow:false,
+        },
+        methods: {
+            searchCity:function () {
+                //1、获取用户输入的城市
+                let _this = this;
+                console.log(_this.name);
+                //注意Vue的this和axios的this不一样，所以需要将Vue的this赋值给一个变量
+                //2、Axios发送请求
+                axios.get('http://127.0.0.1:5000/admin/find?name='+_this.name).then(function (response) {
+                    console.log(response.data);
+                    //3、将返回的数据赋值给message
+                    //Object { "北京": "晴转多云，空气清新！" }我输入北京时候，就是字符串了
+                    _this.message = response.data[_this.name];
+                    //显示搜索结果
+                    _this.isShow = true;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+        },
+            //配合超链接中的searchCityA
+            searchCityA:function (name) {
+                //因为我们有city名字这个参数，则可以获取传递的参数,并把其修改到this.name。
+                //再调用我们上面的searchCity方法
+                this.name = name;
+                this.searchCity();
+            },
+            //按删除键之后，清空输入框
+            Showfunc(){
+                this.isShow = false;
+            }
+
+    }
+    });
+</script>
+</html>

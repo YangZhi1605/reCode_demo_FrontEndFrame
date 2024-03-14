@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-bind相关</title>
+<!--    1、先引入vue.js-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+    <h1>Vue的入门测试</h1>
+    <div>
+            <h1 v-if="v1">阿里无人区</h1>
+
+            <h1 v-if="v2">去西藏</h1>
+            <h1 v-else>去新疆</h1>
+
+            <div v-if="v3 === '北京'">
+                <h1>在天安门</h1>
+            </div>
+            <div v-else-if="v3 === '新疆'">
+                <h1>在乌鲁木齐</h1>
+            </div>
+
+            <div v-else-if="v3 === '西藏'">
+                <h1>在拉萨</h1>
+            </div>
+
+            <div v-else>
+                <h1>在大理</h1>
+            </div>
+
+    </div>
+
+</div>
+
+</body>
+<script>
+    //3、创建vue实例
+    var app = new Vue({
+        el: '#app',
+        data: {
+            v1: true,
+            v2: false,
+            v3:'广州'
+        },
+        methods:{
+
+        }
+    });
+</script>
+</html>

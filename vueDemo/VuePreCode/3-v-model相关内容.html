@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-model相关内容</title>
+<!--    1、引入vue.js文件-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+</head>
+<body>
+<!--交代清楚需要vue接管的内容-->
+<div id="app">
+<!--    模拟登录的页面-->
+    <div>
+        用户名：<input type="text" v-model="user">
+    </div>
+    <div>
+        密码：<input type="text" v-model="pwd">
+    </div>
+
+    <div>
+        <input type="button" value="登录" v-on:click="login">
+        <input type="button" value="重置" v-on:click="reSet">
+    </div>
+</div>
+
+</body>
+<script>
+    //创建vue实例
+    var app = new Vue({
+        el: '#app',
+        data: {
+            user:"",
+            pwd:"",
+        },
+        methods:{
+            login:function () {
+                console.log("用户名："+this.user+"密码："+this.pwd);
+                alert("用户名："+this.user+"密码："+this.pwd);
+            },
+            reSet:function () {
+                this.user = "";
+                this.pwd = "";
+            }
+        }
+    });
+</script>
+</html>

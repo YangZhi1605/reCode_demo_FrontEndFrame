@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <ul>
+        <li @click="clickMe">点击我</li>
+        <li v-on:dblclick="dosomething('双击了我')">双击我</li>
+        <li v-on:mouseover="dosomething('鼠标移入')" v-on:mouseout="dosomething('鼠标移开')">鼠标移入&鼠标移出</li>
+    </ul>
+</div>
+
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            //定义一个数组
+            arr: ['张三', '李四', '王五', '赵六']
+        },
+        methods:{
+            clickMe:function(){
+                alert('你点击了我');
+            },
+            dosomething:function (msg) {
+                console.log(msg)
+                // alert(msg)
+            }
+        }
+    });
+</script>
+</html>

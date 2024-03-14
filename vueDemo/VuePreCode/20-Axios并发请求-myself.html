@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>20-Axios并发请求-myself</title>
+
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+
+</div>
+
+</body>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+<!--    引入Axios-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    //并发请求是各自写各自的方法，然后最后把请求的方法放到all函数中执行
+    function GetfindInfomation() {
+        return axios.get('http://127.0.0.1:5000/admin/finduser?username=哇哇哇');
+    }
+
+    function PostSaveInfomation() {
+        return axios.post('http://127.0.0.1:5000/admin/saveuser',{
+            id:"1",
+            username: 'yangzhi',
+            age: 18,
+            email:"3324678945@qq.com",
+            phone:12356789012});
+    }
+
+    //统一调用
+    axios.all([GetfindInfomation(),PostSaveInfomation()])
+        .then(axios.spread(function (GetfindInfomation,PostSaveInfomation) {
+            console.log(GetfindInfomation);
+            console.log(PostSaveInfomation);
+        }))
+        .catch(function (error) {
+            console.log(error);
+        });
+    //3、创建vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        components: {},
+    });
+</script>
+</html>

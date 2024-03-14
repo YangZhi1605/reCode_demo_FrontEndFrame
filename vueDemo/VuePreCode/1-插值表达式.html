@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>插值表达式</title>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+
+</head>
+<body>
+<!--    2、指定需要vue.js托管的区域-->
+    <div id="app">
+        <div>我的名字是{{name}},我喜欢{{hobby}},我的邮箱是{{dataInfo.email}}</div>
+        <ul>
+<!--            直接暴力填充字符串进去-->
+            <li>{{'杨枝'}}</li>
+<!--            字符串的拼接-->
+            <li>{{'杨枝'+"甘露"}}</li>
+<!--            调用data中的信息参与运算-->
+            <li>{{base+1+1}}</li>
+<!--            运算符搞运算.注意判定等于是===-->
+            <li>{{base === 1?"杨枝":"甘露"}}</li>
+        </ul>
+<!--        ul换一个-->
+        <ul>
+            <li>{{condition?"李白":"林清"}}</li>
+        </ul>
+        <input type="button" value="点击我" v-on:click="clickMe">
+    </div>
+
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        //data中的数据，可以在插值表达式中直接使用
+        data: {
+            name: '杨枝',
+            hobby: '甘露',
+            dataInfo: {
+                email: 'yangzhi595753',
+                phone: '123456789'
+            },
+            base: 1,
+            condition: true
+        },
+        methods: {
+            clickMe: function () {
+                this.name = '汪汪汪';
+                this.hobby = '大骨头';
+                this.dataInfo.email = 'wangwangwang3327';
+                this.dataInfo.phone = '987654321';
+                this.base += 100;
+                this.condition = !this.condition;
+            }
+        }
+    }); //创建vue实例。也就是，这里整体而言是创建一个对象var app = new Vue();只是通过{}的方式再传入数据信息
+</script>
+</html>

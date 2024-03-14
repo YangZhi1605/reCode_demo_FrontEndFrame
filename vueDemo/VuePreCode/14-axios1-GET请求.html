@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>14-axios1</title>
+
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+
+</div>
+
+</body>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+<!--    引入Axios-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    //使用axios进行GET请求
+    // axios.get('https://api.apiopen.top/getJoke?page=1&count=2&type=video')
+    axios.get('http://127.0.0.1:5000/admin/dataget?name=xiaochen')
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    //3、创建vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        components: {},
+    });
+</script>
+</html>

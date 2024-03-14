@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue的尝鲜</title>
+<!--    step1:引入vue.js文件。直接使用本地引入的方式-->
+    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>
+
+</head>
+<body>
+<!--step2:指定区域，该区域的内容希望使用vue.js来接管-->
+
+    <div id="app">
+        <h1>Vue的入门测试</h1>
+        <div>我的名字是{{name}}，微信号是{{wechat}}</div>
+
+        <input type="button" value="请点击我" v-on:click="clickMe">
+    </div>
+
+</body>
+<script>
+    //step3:创建vue实例,并关联指定HTML区域
+    var app = new Vue({
+        el: '#app', //关联的区域
+        data: {     //数据
+            name: '张三',
+            wechat: 'zhangsan'
+        },
+        methods: {
+            clickMe: function () {
+                // alert('你点击了我');
+                this.name = '李四';
+                this.wechat = 'lisi555'
+            }
+        }
+    });
+</script>
+</html>

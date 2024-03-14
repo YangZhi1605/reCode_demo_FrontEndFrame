@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-bind相关</title>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+    <div id="app">
+        <img src="../staitc/2-饮品.jpg" class="c1"/>
+
+        <img alt="" v-bind:src="imageUrl" v-bind:class="cls">
+
+<!--        这里就是绑定多个-->
+        <h1 v-bind:class="{info: v1,danger: v2}">哇呜哇呜</h1>
+        <h1 v-bind:class="clsDict">嗷呜嗷呜</h1>
+
+<!--        注意一个是相当于传入字典，那么中间就用逗号分隔开-->
+<!--        另个相当于传入独立的信息，也就是需要使用分号将不同的信息分隔开-->
+        <h3 v-bind:style="{color:clr,fontSize:fs}">三号标题</h3>
+        <h3 style="color: red;font-size: 19px">三号标题</h3>
+
+        <input type="button" value="请点击我" v-on:click="clickMe">
+    </div>
+
+</body>
+<script>
+    //3、创建vue实例
+    var app = new Vue({
+        el: '#app',
+        data: {
+            imageUrl:'https://pic.imgdb.cn/item/65e9601a9f345e8d0396bbe0.jpg',
+            cls:'igg',
+            v1:true,
+            v2:false,
+            clsDict:{
+                info_1:true,
+                danger_1:false
+            },
+            clr:"red",
+            fs:"19px"
+        },
+        methods:{
+            clickMe:function () {
+                this.imageUrl = 'https://pic.imgdb.cn/item/65e9601a9f345e8d0396bbe0.jpg';
+                this.cls = 'igg';
+                this.v1 = !this.v1;
+                this.v2 = !this.v2;
+                this.clsDict.info_1 = !this.clsDict.info_1;
+                this.clsDict.danger_1 = !this.clsDict.danger_1;
+                this.clr = "blue";
+                this.fs = "25px";
+            }
+        }
+    });
+</script>
+</html>
+

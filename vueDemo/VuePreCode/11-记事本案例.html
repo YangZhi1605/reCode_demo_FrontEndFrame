@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>11-记事本案例</title>
+
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+    <input type="text" v-model="msg"> <input type="button" value="添加到记事本" v-on:click="addInfo">
+    <br>
+    <ul>
+        <li v-for="(item,index) in lists">
+<!--            先使用href="javascript:;"阻止超链接默认的行为-->
+            {{index+1}}{{item}} <a href="javascript:;" @click="delInfo(index)">删除</a>
+        </li>
+
+    </ul>
+    <br>
+    <span>当前总数据量：{{lists.length}}条</span> <input type="button" v-show="lists.length != 0" value="删除所有" @click="delAll">
+</div>
+
+</body>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+<script>
+    //3、创建vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {
+            lists:["吃饭","睡觉","混日子"],
+            msg:"",
+        },
+        methods: {
+            addInfo:function () {
+                this.lists.push(this.msg);
+                this.msg="";
+            },
+            //根据传递的索引值删除对应的数据
+            delInfo:function (index) {
+                this.lists.splice(index,1);
+            },
+            //删除所有数据，即将lists数组清空
+            delAll:function () {
+                this.lists=[];
+            }
+        },
+        components: {},
+    });
+</script>
+</html>

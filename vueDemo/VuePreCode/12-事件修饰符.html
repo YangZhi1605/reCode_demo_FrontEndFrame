@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>12-事件修饰符</title>
+    <style>
+        .aa{
+            background: aquamarine;
+            height: 300px;
+            width: 600px;
+        }
+    </style>
+
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+    <div class="aa" @click="divClick">
+<!--        用.stop阻止向外的冒泡-->
+        <input type="button" value="这是一个十分可爱的按钮" @click.stop="btnClick">
+    </div>
+</div>
+
+</body>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+<script>
+    //3、创建vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {},
+        methods: {
+            btnClick(){
+               alert('按钮被点击了');
+            },
+            divClick(){
+                alert('div被点击了');
+            }
+        },
+        components: {},
+    });
+</script>
+</html>

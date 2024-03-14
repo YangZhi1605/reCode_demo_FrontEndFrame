@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>21-Vue和Axios综合性案例</title>
+
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+<!--    开始双向绑定了-->
+    <input type="text" v-model="cityname" @keyup.enter="searchCity" @keyup.delete="delInfo"> <input type="button" value="搜索" @click="searchCity">
+
+    <hr>
+
+    <span v-for="city in cityList">
+<!--        点击链接之后，需要得到一个跳转效果。此时需要阻止默认的超链接行为-->
+        <a href="" @click.prevent="toCityByURL(city)">{{city}}</a><br>
+    </span>
+
+    <hr>
+
+    <span v-show="isShow">{{cityname}},今天的天气是：{{message}}</span>
+</div>
+
+</body>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+<!--    引入Axios-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    //3、创建vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {
+            cityname:"",
+            isShow:false,
+            cityList: ["北京","上海","广州","深圳"],
+            message:""
+        },
+        methods: {
+            searchCity:function () {
+                //1、获取用户输入的城市
+                let _this = this;
+                console.log(_this.cityname); //输出没问题
+                //注意Vue的this和axios的this不一样，所以需要将Vue的this赋值给一个变量
+                //2、Axios发送请求
+                axios.get('http://127.0.0.1:5000/admin/findweather?name='+_this.cityname).then(function (response) {
+                    console.log(response.data);
+                    //最后要修改的是Vue的data中的message
+                    _this.message = response.data[_this.cityname];
+                    _this.isShow=true;
+
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            //点击删除按钮，清空信息,隐藏下方状态结果
+            delInfo(){
+               this.isShow = false;
+            },
+            toCityByURL(city){
+                this.cityname = city;
+                //调用写好的searchCity方法。上面已经修改了cityname
+                this.searchCity();
+            }
+        },
+        components: {},
+    });
+</script>
+</html>

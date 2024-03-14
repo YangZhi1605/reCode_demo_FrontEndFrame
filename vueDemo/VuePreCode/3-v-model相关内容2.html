@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-model相关内容</title>
+<!--    1、引入vue.js文件-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+</head>
+<body>
+<!--交代清楚需要vue接管的内容-->
+<div id="app">
+<!--    模拟登录的页面-->
+    <div>
+        用户名：<input type="text" v-model="user">
+    </div>
+    <div>
+        密码：<input type="text" v-model="pwd">
+    </div>
+    <div>
+        性别：
+        <input type="radio" v-model="sex" value="1">男
+        <input type="radio" v-model="sex" value="2">女
+
+    </div>
+
+    <div>
+        爱好：
+        <input type="checkbox" v-model="hobby" value="11">篮球
+        <input type="checkbox" v-model="hobby" value="22">足球
+        <input type="checkbox" v-model="hobby" value="33">排球
+    </div>
+
+    <div>
+        城市：
+        <select v-model="city">
+            <option value="sz">深圳</option>
+            <option value="gz">广州</option>
+            <option value="bj">北京</option>
+        </select>
+    </div>
+
+    <div>
+        公司：
+        <select v-model="company" multiple>
+            <!--        技术，销售，运营可以多选-->
+            <option value="js">技术</option>
+            <option value="xs">销售</option>
+            <option value="yy">运营</option>
+        </select>
+    </div>
+
+    <div>
+        其他：<textarea v-model="more"></textarea>
+    </div>
+
+    <div>
+        <input type="button" value="注 册" v-on:click="clickMe">
+    </div>
+</div>
+
+</body>
+<script>
+    //创建vue实例
+    var app = new Vue({
+        el: '#app',
+        data: {
+            //注意这里的数据都需要使用""引起来
+            user:"",
+            pwd:"",
+            sex:"1",
+            hobby:["22"],
+            city:"sz",
+            company:"xs",
+            more:"..."
+        },
+        methods:{
+            clickMe:function () {
+                console.log("用户名："+this.user+"密码："+this.pwd+"性别："+this.sex+"爱好："+this.hobby+"城市："+this.city+"公司："+this.company+"其他："+this.more);
+                alert("用户名："+this.user+"密码："+this.pwd+"性别："+this.sex+"爱好："+this.hobby+"城市："+this.city+"公司："+this.company+"其他："+this.more);
+            },
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>Vue的入门测试</h1>
+    <div>
+        <ul>
+<!--          其实不用管item和idx的顺序区别，交给Python考虑。读出来就行-->
+            <li v-for="(item,idx) in arr">{{idx}} --> {{item}}</li>
+            <li v-for="(idx,item) in arr">{{idx}} --> {{item}}</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+<script>
+    //实例化VUe
+    var app = new Vue({
+        el: '#app',
+        data: {
+            //定义一个数组
+            arr: ['张三', '李四', '王五', '赵六']
+        }
+    });
+</script>
+</html>

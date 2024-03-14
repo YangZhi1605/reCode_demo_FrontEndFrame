@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>15-axios2-POST请求</title>
+
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+
+</div>
+
+</body>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+<!--    引入Axios-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    //发送POST方式请求
+    axios.post('http://127.0.0.1:5000/admin/save', {
+        id:"1",
+        username: 'yangzhi',
+        age: 18,
+        email:"3324595753@qq.com",
+        phone:"133678890078"
+    })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    //3、创建vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        components: {},
+    });
+</script>
+</html>

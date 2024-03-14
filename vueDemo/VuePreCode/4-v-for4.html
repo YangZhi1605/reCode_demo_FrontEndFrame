@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>Vue的入门测试</h1>
+    <div>
+        <ul>
+            <!--            v-for写在哪里，就对那个元素进行循环-->
+<!--            首先读出列表中的信息，再通过插值表达式读取字典中东西-->
+            <li v-for="item in arr">id是：{{item.id}}；name是： {{item.name}}；age是： {{item.age}}</li>
+<!--            也可以写成二重循环-->
+            <li v-for="(item,idx) in arr">
+<!--                读取内层信息-->
+                <span v-for="(v,k) in item">{{k}}是：{{v}}；</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+<script>
+    //实例化VUe
+    var app = new Vue({
+        el: '#app',
+        data: {
+            //列表中嵌套字典
+            arr: [
+                {id: 1, name: '张三', age: 18},
+                {id: 2, name: '李四', age: 19},
+                {id: 3, name: '王五', age: 20},
+                {id: 4, name: '赵六', age: 21},
+            ]
+        }
+    });
+</script>
+</html>

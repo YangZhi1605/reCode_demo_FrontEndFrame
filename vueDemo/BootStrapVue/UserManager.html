@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UserManager</title>
+<!--    引入bootstrap的css-->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+<!--    导航-->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">用户信息管理</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">欢迎：xxx</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<!--中心布局-->
+    <div class="container-fluid">
+
+<!--        栅格系统中，先写行，再写其中的列-->
+<!--        搜索框-->
+        <div class="row">
+            <div class="col-md-8">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="searchName">姓名：</label>
+                        <input type="text" class="form-control" id="searchName" placeholder="请输入姓名">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="searchPhone">电话：</label>
+                        <input type="text" class="form-control" id="searchPhone" placeholder="请输入电话">
+                    </div>
+                    <button type="submit" class="btn btn-info">搜索</button>
+                </form>
+            </div>
+        </div>
+
+<!--        表格-->
+        <div class="row" style="margin-top: 20px">
+<!--            至于格子，让它们占据左边占据八个单元格，右边占据4个吧-->
+            <div class="col-md-8">
+<!--                用户信息展示-->
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <td>ID</td>
+                        <td>姓名</td>
+                        <td>年龄</td>
+                        <td>薪资</td>
+                        <td>电话</td>
+                        <td>操作</td>
+                    </tr>
+                    <tbody>
+                        <tr v-for="user in userList">
+                            <td>{{user.id}}</td>
+                            <td>{{user.name}}</td>
+                            <td>{{user.age}}</td>
+                            <td>{{user.salary}}</td>
+                            <td>{{user.phone}}</td>
+                            <td><button class="btn btn-danger">删除</button> &nbsp;&nbsp;<button class="btn btn-primary">修改</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="col-md-4">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="username" class="col-sm-2 control-label">姓名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="username" placeholder="请输入姓名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="age" class="col-sm-2 control-label">年龄</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="age" placeholder="请输入年龄">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="salary" class="col-sm-2 control-label">薪资</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="salary" placeholder="请输入薪资">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneCode" class="col-sm-2 control-label">电话</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="phoneCode" placeholder="请输入电话">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-danger">提交</button>
+                            <button type="submit" class="btn btn-default">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<!--    1、先引入vue.js-->
+<script src="js/vue.min.js"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>-->
+<!--    引入Axios-->
+<!--<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>-->
+<script src="js/axios.min.js"></script>
+<script>
+    //3、创建vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {
+            userList: [
+                {id: 1, name: '张三', age: 34, salary: 5400, phone: 13456782354},
+                {id: 2, name: '王五', age: 34, salary: 5400, phone: 13456782354},
+            ], //严格而言，数据应该来源于后台，并且要在页面加载的时候，就要获取数据，故而在created中获取数据
+        },
+        methods: {},
+        //生命周期相关的函数
+        created() {
+            //在这里获取数据
+            axios.get().then(function (response) {
+                console.log(response.data);
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        components: {},
+    });
+</script>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-bind相关</title>
+<!--    1、先引入vue.js-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+<!--    引入axioscnd-->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+    <div>
+        <input type="button" value="短信验证码登录" @click="isMsg=true">
+        <input type="button" value="账 号密码登录" @click="isMsg=false">
+<!--        默认展示账号密码登录-->
+<!--        短信验证码-->
+        <div v-show="isMsg">
+            <p>
+                <label>手机号</label>
+<!--                当用户开始在输入框中输入内容时，placeholder的值会消失。如果输入框的内容被清空，placeholder的值会再次显示。-->
+<!--                使用v-model完成双向绑定-->
+                <input type="text" placeholder="手机号" v-model="msg.phone">
+
+            </p>
+            <p>
+                <label>验证码</label>
+                <input type="text" placeholder="请输入验证码" v-model="msg.code">
+            </p>
+        </div>
+
+<!--        密码登录-->
+        <div v-show="!isMsg">
+            <p>
+                <label>账号</label>
+                <input type="text" placeholder="账号" v-model="info.username">
+
+            </p>
+            <p>
+                <label>密码</label>
+                <input type="password" placeholder="请输入密码" v-model="info.password">
+            </p>
+        </div>
+
+        <input type="button" value="登录" @click="loginForm">
+
+    </div>
+</div>
+
+</body>
+<script>
+    //3、创建vue实例
+    var app = new Vue({
+        el: '#app',
+        data: {
+            isMsg:false,
+            //将账号密码以及手机号验证码等等信息双向绑定，存储的时候放在一包，后面方便取
+            info:{
+                username:"",
+                password:""
+            },
+            msg:{
+                mobile:"",
+                code:""
+            }
+        },
+        methods:{
+            loginForm:function () {
+                //1、获取用户在其选择的模式下，输入的值
+                //isMsg为真，则短信验证码登录，否则为账号密码
+                let dataDict = this.isMsg?this.msg:this.info;
+                //输出这个信息
+                console.log(dataDict);
+
+                //基于axios向某个地址发送请求
+                //我理解为，直接将axios对象写在这里
+                //使用账号密码的url:https://api.luffycity.com/api/v1/auth/password/login/?loginWay=password
+                //遵循其Request payload的格式：{username: "13981562354", password: "1234321434"}
+                //使用短信验证码的url:https://api.luffycity.com/api/v1/auth/mobile/login/?loginWay=mobile
+                //遵循其Request payload的格式：{mobile: "13408975643", code: "321432"}
+                //键值对格式要对应,名称也要对应
+                let url;
+                if(this.isMsg){
+                    //走短信验证码登录
+                    url="https://api.luffycity.com/api/v1/auth/mobile/login/?loginWay=mobile";
+                }else{
+                    //走账号密码的url
+                    url="https://api.luffycity.com/api/v1/auth/password/login/?loginWay=password";
+                }
+
+                axios({
+                    method:"post",
+                    url:url,
+                    data:dataDict,
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+                }).then(function (res) {
+                    //res.data是返回的值
+                    //console.log(res);
+                    if(res.data.code === -1){
+                        alert(res.data.msg);
+                        return;
+                    }else {
+                        //正常登录成功就可以跳转了
+                        window.location.href = "https://www.luffycity.com/"
+                    }
+
+                }).catch(function (error) {
+                    console.log(error);
+                })
+
+            }
+        }
+    });
+</script>
+</html>

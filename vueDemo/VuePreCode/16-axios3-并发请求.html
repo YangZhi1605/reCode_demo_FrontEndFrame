@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>15-axios3-并发请求</title>
+
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+
+</div>
+
+</body>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+<!--    引入Axios-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    //既然是并发请求，那么就是同时发送多个请求
+
+    //1、创建一个查询后台信息的方法。并传递参数
+    function findAll(){
+        return axios.get('http://127.0.0.1:5000/admin/findAll?name=xiaochen');
+    }
+
+    //2、创建一个保存信息的方法。
+    function saveInfo(){
+        return axios.post('http://127.0.0.1:5000/admin/save',{
+            id:"1",
+            username: 'yangzhi',
+            age: 18,
+            email:"3324595753@qq.com",
+            phone:"133678890078"
+        });
+    }
+    //3、调用axios中处理并发执行的函数
+    axios.all([findAll(),saveInfo()])
+        .then(axios.spread(function (findAll,saveInfo) {
+            console.log(findAll);
+            console.log(saveInfo);
+        }))
+        .catch(function (error) {
+            console.log(error);
+        });
+    //3、创建vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        components: {},
+    });
+</script>
+</html>
