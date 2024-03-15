@@ -83,33 +83,34 @@
                     <div class="form-group">
                         <label for="username" class="col-sm-2 control-label">姓名</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="username" placeholder="请输入姓名">
+                            <input type="text"  class="form-control" id="username" v-model="user.name" placeholder="请输入姓名">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="age" class="col-sm-2 control-label">年龄</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="age" placeholder="请输入年龄">
+<!--                            这里有个知识，我虽然并没有在userInfo对象中声明name属性，但是我这种绑定，就定为对象中有这个属性了-->
+                            <input type="text"  class="form-control" id="age" v-model="user.age" placeholder="请输入年龄">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="salary" class="col-sm-2 control-label">薪资</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="salary" placeholder="请输入薪资">
+                            <input type="text" class="form-control" id="salary" v-model="user.salary" placeholder="请输入薪资">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="phoneCode" class="col-sm-2 control-label">电话</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="phoneCode" placeholder="请输入电话">
+                            <input type="text"  class="form-control" id="phoneCode" v-model="user.phoneCode" placeholder="请输入电话">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-danger">提交</button>
-                            <button type="submit" class="btn btn-default">重置</button>
+                            <button type="button" class="btn btn-danger" v-on:click="saveUserInfo">提交</button>
+                            <button type="button" class="btn btn-default" @click="resetUserInfo">重置</button>
                         </div>
                     </div>
                 </form>
@@ -130,21 +131,69 @@
     const app = new Vue({
         el: '#app',
         data: {
-            userList: [
-                {id: 1, name: '张三', age: 34, salary: 5400, phone: 13456782354},
-                {id: 2, name: '王五', age: 34, salary: 5400, phone: 13456782354},
-            ], //严格而言，数据应该来源于后台，并且要在页面加载的时候，就要获取数据，故而在created中获取数据
+            userList: [], //严格而言，数据应该来源于后台，并且要在页面加载的时候，就要获取数据，故而在created中获取数据
+            user:{
+                name:"",
+                age:"",
+                salary:"",
+                phoneCode:"",
+            },//这里放一个空的对象，用于存储用户信息
         },
-        methods: {},
+        methods: {
+            //按钮点击事件，保存用户信息
+            saveUserInfo:function () {
+                //同样保留vue的this
+                /*
+                * 关于this保留问题：
+                * 你使用了 let _this = this; 来保存 this 的引用。这
+                * 是因为在 JavaScript 中，this 关键字的值在不同的上下文中可能会有所不同。
+                * 在某些情况下，例如在回调函数或者 Promise 中，this 可能不会指向你期望的对象。
+                * 然而，在你的代码中，你使用了箭头函数 then(function (response) {...}) 和 catch(function (error) {...})。
+                * 箭头函数不会创建自己的 this 上下文，所以 this 在箭头函数内部的值与箭头函数外部的值相同。
+                * 因此，你可以直接在箭头函数内部使用 this，而不需要保存 this 的引用。
+                * */
+                let _this = this;
+                console.log(this.user);
+                //使用axios发送post请求
+                axios.post('http://127.0.0.1:5200/admin/save',_this.user).then(function (response) {
+                    console.log(response.data);
+                    //判断是否保存成功
+                    if(response.data.success){
+                        //成功则刷新页面，即重新查询所有用户信息，那么我们可以将查询用户信息作为一个单独的方法写出来
+                        _this.findAll();
+                        //清空输入的信息
+                        _this.user = {};
+                    }else {
+                        //弹出提示框
+                        alert(response.data.message);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            //查询所有用户信息的方法
+            findAll:function () {
+                //同样，得现将this赋值给一个变量，因为这会this还没有创建出来
+                let _this = this;
+                //在这里获取数据
+                axios.get("http://127.0.0.1:5200/admin/findAll").then(function (response) {
+                    // console.log(response.data);
+                    //response.data是一个数组，我们自己确定的格式也是列表，也就是，根据一定的经验，最初设计的时候就配合好数据的通讯
+                    _this.userList = response.data;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            //重置用户信息
+            resetUserInfo(){
+                this.user = {};
+            }
+        },
         //同样的，这是对webstorm中github托管的一次测试
         //生命周期相关的函数
         created() {
-            //在这里获取数据
-            axios.get().then(function (response) {
-                console.log(response.data);
-            }).catch(function (error) {
-                console.log(error);
-            });
+            //在create，vue已经有data和methods了，所以可以直接使用this
+            this.findAll();
         },
         components: {},
     });
