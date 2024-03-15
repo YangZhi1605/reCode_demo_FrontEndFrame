@@ -38,14 +38,14 @@
             <div class="col-md-8">
                 <form class="form-inline">
                     <div class="form-group">
-                        <label class="sr-only" for="searchName">姓名：</label>
-                        <input type="text" class="form-control" id="searchName" placeholder="请输入姓名">
+                        <label class="sr-only" for="searchName" >姓名：</label>
+                        <input type="text" class="form-control" id="searchName" placeholder="请输入姓名" v-model="searchName">
                     </div>
                     <div class="form-group">
-                        <label class="sr-only" for="searchPhone">电话：</label>
-                        <input type="text" class="form-control" id="searchPhone" placeholder="请输入电话">
+                        <label class="sr-only" for="searchPhone" >电话：</label>
+                        <input type="text" class="form-control" id="searchPhone" placeholder="请输入电话" v-model="searchPhone">
                     </div>
-                    <button type="submit" class="btn btn-info">搜索</button>
+                    <button type="submit" class="btn btn-info" @click.prevent="searchLike">搜索</button>
                 </form>
             </div>
         </div>
@@ -70,8 +70,8 @@
                             <td>{{user.name}}</td>
                             <td>{{user.age}}</td>
                             <td>{{user.salary}}</td>
-                            <td>{{user.phone}}</td>
-                            <td><button class="btn btn-danger">删除</button> &nbsp;&nbsp;<button class="btn btn-primary">修改</button></td>
+                            <td>{{user.phoneCode}}</td>
+                            <td><button class="btn btn-danger" @click="DeleteUserInfo(user.id)">删除</button> &nbsp;&nbsp;<button class="btn btn-primary" @click="findOneUserInfo(user.id)">修改</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -109,7 +109,9 @@
 
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="button" class="btn btn-danger" v-on:click="saveUserInfo">提交</button>
+<!--                            对提交按钮加入判断，如果是点击过修改按钮的，则click的函数是findOneUserInfo，否则为saveUserInfo-->
+                            <button type="button" class="btn btn-danger" v-if="!updateTag" v-on:click="saveUserInfo">提交</button>
+                            <button type="button" class="btn btn-danger"  v-if="updateTag" v-on:click="updateUserInfo">更新</button>
                             <button type="button" class="btn btn-default" @click="resetUserInfo">重置</button>
                         </div>
                     </div>
@@ -138,8 +140,95 @@
                 salary:"",
                 phoneCode:"",
             },//这里放一个空的对象，用于存储用户信息
+            updateTag:false,//用于判断是否是修改操作
+            searchName:"",//搜索框中用到的姓名
+            searchPhone:"",//搜索框中用到的电话号码
         },
         methods: {
+            //根据用户名或者电话号码进行模糊查询
+            searchLike:function () {
+                let _this = this;
+                console.log(this.searchName);
+                console.log(this.searchPhone);
+                if(this.searchName=="" || this.searchPhone==""){
+                    alert("请输入完整的查询条件");
+                    return;
+                }
+                //通过axios发送get请求
+                axios.get('http://127.0.0.1:5200/admin/findByNameOrPhone?name='+this.searchName+'&phoneCode='+this.searchPhone).then(function (response) {
+                    console.log(response.data);
+                    //得到查询结果并将查询结果再展示到页面
+                    _this.userList = response.data;
+
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            //获取当前表单的信息，提交到后端进行更新
+            updateUserInfo:function () {
+                let _this = this;
+                //输出表单中数据进行测试
+                console.log(_this.user);
+                //将这个新的数据提交到后端，让后端存储到数据，前台再查询所有
+                axios.post('http://127.0.0.1:5200/admin/updateInfo',_this.user).then(function (response) {
+                    console.log(response.data);
+                    //判断是否更新成功
+                    if(response.data.success){
+                        //成功则刷新页面，即重新查询所有用户信息，那么我们可以将查询用户信息作为一个单独的方法写出来
+                        _this.findAll();
+                        //清空输入的信息
+                        _this.user = {};
+                        //将按钮变成提交按钮
+                        _this.updateTag = false;
+                    }else {
+                        //弹出提示框
+                        alert(response.data.message);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            //点击修改之后，通过id查询用户信息
+            findOneUserInfo:function (id) {
+              let _this = this;
+              //通过axios发送get请求
+                axios.get('http://127.0.0.1:5200/admin/findOne?id='+id).then(function (response) {
+                    console.log(response.data);
+                    //将查询到的用户信息赋值给user对象,vue的数据绑定会自动更新页面
+                    _this.user = response.data;
+                    //让按钮变成更新按钮
+                    _this.updateTag = true;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            //通过id实现删除
+            DeleteUserInfo:function (id) {
+               //打印id进行测试
+                console.log(id);
+                //前端添加是否确认删除的提示
+                if(confirm("是否确认删除？")){
+
+                    //同样保留vue的this
+                    let _this = this;
+                    //使用axios发送get请求
+                    axios.get('http://127.0.0.1:5200/admin/deleteInfo?id='+id).then(function (response) {
+                        console.log(response.data);
+                        //判断是否删除成功
+                        if(response.data.success){
+                            //成功则刷新页面，即重新查询所有用户信息，那么我们可以将查询用户信息作为一个单独的方法写出来
+                            _this.findAll();
+                        }else {
+                            //弹出提示框
+                            alert(response.data.message);
+                        }
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                }
+                return;
+
+            },
             //按钮点击事件，保存用户信息
             saveUserInfo:function () {
                 //同样保留vue的this
