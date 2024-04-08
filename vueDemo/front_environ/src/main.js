@@ -6,7 +6,7 @@ import router from './router'
 // 引入ElementUI
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-//引入axios
+//引入axios,因为已经全局导入了，在其他的文件中，就不需要逐一导入。并且我得使用$axios来调用axios
 import axios from './assets/dist/axios.min'
 //添加axios到Vue的原型中，这样在其他组件中就可以直接使用this.$axios
 Vue.prototype.$axios = axios
