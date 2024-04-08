@@ -75,13 +75,8 @@ export default {
       imgs:[img1,img2,img3,img4,img5,img6,img7],
     }
   },
-  methods: {
-
-  },
-  // 生命周期 - 创建完成（可以访问当前this 实例）
-  created() {
-  },
   //在mounted()函数中，初始化Echarts实例
+  //mounted函数是在页面加载完毕后执行的函数
   mounted() {
     // this.chart1 = echarts.init(document.getElementById('graph1'));
     this.chart2 = echarts.init(document.getElementById('graph2'));
@@ -93,135 +88,16 @@ export default {
     _this.chart1 = echarts.init(chartDom); // 初始化echarts实例，将它赋值给Vue实例的chart1属性。
     var option; // 声明一个变量option，后面会用来存储echarts的配置项。
 
-    // 使用jQuery的ajax方法，向后端请求数据。
-    // 使用jQuery的get方法
-    $.get(
-      // 请求的网址
-      'http://127.0.0.1:5000/lineRace',
-      // 回调函数
-      function (_rawData) {
-        // 请求成功后将调用的函数，传入返回的数据作为参数
-        //根据浏览器反馈，调用这个run函数时候出现了`chart is undefined`,原因是自己没有指定好vue对象
-        run(_this.chart1, _rawData);
-      }
-    );
-    // 定义一个函数run，用来处理请求成功后的数据
-    function run(chart,_rawData){
-      //这里吧啦吧啦的写自己需要定义的数据
-      //写自己需要跑的数据
-      const countries = [
-        'Finland',
-        'France',
-        'Germany',
-        'Iceland',
-        'Norway',
-        'Poland',
-        'Russia',
-        'United Kingdom'
-      ];
+    // 初始请求数据并且创建图表
+    _this.fetchDataAndUpdateChart();
 
-      const datasetWithFilters = [];
+    // 设置定时器每隔一段时间更新图表数据
+    _this.interval = setInterval(() => {
+      _this.fetchDataAndUpdateChart();
+    }, 10000);  // 这里的8000是更新数据的时间间隔，单位毫秒
 
-      const seriesList = [];
-
-      echarts.util.each(countries,function (country) {
-        var datasetId = 'dataset_' + country;
-        datasetWithFilters.push({
-          id: datasetId,
-          fromDatasetId: 'dataset_raw',
-          transform: {
-            type: 'filter',
-            config: {
-              and: [
-                { dimension: 'Year', gte: 1950 },
-                { dimension: 'Country', '=': country }
-              ]
-            }
-          }
-        });
-        seriesList.push({
-          type: 'line',
-          datasetId: datasetId,
-          showSymbol: false,
-          name: country,
-          endLabel: {
-            show: true,
-            formatter: function (params) {
-              return params.value[3] + ': ' + params.value[0];
-            }
-          },
-          labelLayout: {
-            moveOverlap: 'shiftY'
-          },
-          emphasis: {
-            focus: 'series'
-          },
-          encode: {
-            x: 'Year',
-            y: 'Income',
-            label: ['Country', 'Income'],
-            itemName: 'Year',
-            tooltip: ['Income']
-          }
-        });
-      });
-
-      //option配置
-      option = {
-        animationDuration: 10000,
-        dataset: [
-          {
-            id: 'dataset_raw',
-            source: _rawData
-          },
-          ...datasetWithFilters
-        ],
-        title: {
-          text: 'Income of Germany and France since 1950'
-        },
-        tooltip: {
-          order: 'valueDesc',
-          trigger: 'axis'
-        },
-        xAxis: {
-          type: 'category',
-          nameLocation: 'middle'
-        },
-        yAxis: {
-          name: 'Income'
-        },
-        grid: {
-          right: 140
-        },
-        series: seriesList
-      };
-
-      chart.setOption(option);
-    };
-
-
-
-/****************************************************************************************/
+    /****************************************************************************************/
     // 下面可以调用相应的函数，为这图表设置数据和参数
-    //使用Echarts提供的setOption()函数设置图表的各项参数，包括类型、数据等
-    // this.chart1.setOption({
-    //   title: {
-    //     text: '示例图表1'
-    //   },
-    //   tooltip: {},
-    //   legend: {
-    //     data:['销量']
-    //   },
-    //   xAxis: {
-    //     data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-    //   },
-    //   yAxis: {},
-    //   series: [{
-    //     name: '销量',
-    //     type: 'bar',
-    //     data: [5, 20, 36, 10, 10, 20]
-    //   }]
-    // });
     //另一个图表的设置
     this.chart2.setOption({
       title: {
@@ -307,7 +183,121 @@ export default {
         }
       ]
     });
-  }
+  },
+
+  // 生命周期 - 创建完成（可以访问当前this 实例）
+  created() {
+  },
+
+  methods: {
+    //编写获取数据和图表更新的方法
+    fetchDataAndUpdateChart() {
+      $.get('http://127.0.0.1:5000//api/lineRace', (rawData) => {
+        this.run(this.chart1, rawData);
+      });
+    },
+    //编写其调用的run方法
+    run(chart, rawData) {
+      //这里吧啦吧啦的写自己需要定义的数据
+      //写自己需要跑的数据
+      const countries = [
+        'Finland',
+        'France',
+        'Germany',
+        'Iceland',
+        'Norway',
+        'Poland',
+        'Russia',
+        'United Kingdom'
+      ];
+
+      const datasetWithFilters = [];
+
+      const seriesList = [];
+
+      echarts.util.each(countries,function (country) {
+        var datasetId = 'dataset_' + country;
+        datasetWithFilters.push({
+          id: datasetId,
+          fromDatasetId: 'dataset_raw',
+          transform: {
+            type: 'filter',
+            config: {
+              and: [
+                { dimension: 'Year', gte: 1950 },
+                { dimension: 'Country', '=': country }
+              ]
+            }
+          }
+        });
+        seriesList.push({
+          type: 'line',
+          datasetId: datasetId,
+          showSymbol: false,
+          name: country,
+          endLabel: {
+            show: true,
+            formatter: function (params) {
+              return params.value[3] + ': ' + params.value[0];
+            }
+          },
+          labelLayout: {
+            moveOverlap: 'shiftY'
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          encode: {
+            x: 'Year',
+            y: 'Income',
+            label: ['Country', 'Income'],
+            itemName: 'Year',
+            tooltip: ['Income']
+          }
+        });
+      });
+
+      //option配置
+      const option = {
+        animationDuration: 10000,
+        dataset: [
+          {
+            id: 'dataset_raw',
+            source: rawData
+          },
+          ...datasetWithFilters
+        ],
+        title: {
+          text: 'Income of Germany and France since 1950'
+        },
+        tooltip: {
+          order: 'valueDesc',
+          trigger: 'axis'
+        },
+        xAxis: {
+          type: 'category',
+          nameLocation: 'middle'
+        },
+        yAxis: {
+          name: 'Income'
+        },
+        grid: {
+          right: 140
+        },
+        series: seriesList
+      };
+
+      chart.setOption(option);
+    },
+  },
+
+  //生命周期 - 销毁
+  beforeDestroy() {
+    //清楚定时器
+    clearInterval(this.interval);
+  },
+
+
 }
 </script>
 

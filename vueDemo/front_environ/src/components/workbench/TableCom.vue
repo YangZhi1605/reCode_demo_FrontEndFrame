@@ -143,19 +143,21 @@
 <!--这里写一个提供用户下载的excel模板文件。使用布局容器，左边12用于下载模板，右边12用于上传-->
 <!--    当然，这个模板文件应该是由后台提供。-->
     <el-row>
+<!--      申请下载-->
       <el-col :span="12">
-        <el-button type="primary" icon="el-icon-download" size="medium">下载模板</el-button>
+        <el-button type="primary" icon="el-icon-download" size="medium" @click="downloadTemplate">下载模板</el-button>
       </el-col>
-      <el-col :span="12">
-        <el-upload
-          class="upload-demo"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-success="handleSuccess"
-          :on-error="handleError"
-          :before-upload="beforeUpload">
-          <el-button size="medium" type="primary" icon="el-icon-upload">上传文件</el-button>
-        </el-upload>
-      </el-col>
+<!--      上传到后台-->
+      <el-upload
+        name="file"
+        class="upload-demo"
+        action="http://127.0.0.1:5000/api/uploadExcel"
+      :on-success="handleSuccess"
+      :on-error="handleError"
+      :before-upload="beforeUpload"
+      >
+      <el-button size="medium" type="primary" icon="el-icon-upload">上传文件</el-button>
+      </el-upload>
     </el-row>
 
   </div>
@@ -164,7 +166,7 @@
 <script>
 // 这里可以导入其他文件（比如：组件，工具 js，第三方插件 js，json 文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》 ';
-
+import axios from "../../assets/dist/axios.min";
 export default {
   name: 'TableCom',
   // import 引入的组件需要注入到对象中才能使用
@@ -173,7 +175,13 @@ export default {
   methods: {
     handleClick(row) {
       console.log(row);
-    }
+    },
+
+    downloadTemplate() {
+      // 此处使用window.location.href方式触发文件下载, 假设Flask后端下载路由是'/api/downloadExcel'
+      window.location.href = 'http://127.0.0.1:5000//api/downloadExcel';
+    },
+
   },
 
   data() {
