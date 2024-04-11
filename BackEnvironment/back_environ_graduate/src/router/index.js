@@ -10,6 +10,8 @@ import index from '@/views/index';
  */
 // 商品管理
 import Goods from '@/views/goods/Goods';
+//机器学习管理
+import MachineLearnSys from "../views/machineLearn/MachineLearnSys.vue";
 // 机器信息管理
 import Machine from '@/views/machine/Machine';
 // 货道信息管理
@@ -51,7 +53,7 @@ import druidLogin from '@/views/druid/login';
 // 启用路由
 Vue.use(Router);
 
-// 导出路由 
+// 导出路由
 export default new Router({
     routes: [{
         path: '/',
@@ -82,6 +84,13 @@ export default new Router({
                 requireAuth: true
             }
         }, {
+            path: '/goods/MachineLearnSys',
+            name: '机器学习管理',
+            component: MachineLearnSys,
+            meta: {
+              requireAuth: true
+            }
+          }, {
             path: '/machine/Machine',
             name: '机器信息管理',
             component: Machine,

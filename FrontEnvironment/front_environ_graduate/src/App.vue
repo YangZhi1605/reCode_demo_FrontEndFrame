@@ -12,7 +12,8 @@
             <el-menu-item index="/wrben/wrben3">选项3</el-menu-item>
             <el-menu-item index="/wrben/wrben4">选项4</el-menu-item>
           </el-submenu>
-          <el-menu-item index="/msg">消息中心</el-menu-item>
+          <el-menu-item index="/msg">日志维护</el-menu-item>
+          <el-menu-item index="/store">零件仓库</el-menu-item>
           <el-menu-item index="/order">订单管理</el-menu-item>
         </el-menu>
       </el-header>

@@ -14,11 +14,24 @@
     </el-row>
 <!--    下栅格系统-->
     <el-row style="margin-top: 70px">
-      <el-col :span="24"><div id="graph_stack" style="width:100%; height:500px;"></div></el-col>
+      <el-col :span="24">
+        <div id="graph_stack" style="width:100%; height:500px;"></div>
+        <div><span>机器学习建议：{{ graphStackAdvice }}</span></div>
+      </el-col>
+
     </el-row>
+
     <el-row style="margin-top: 55px">
-      <el-col :span="16"><div id="graph_bar" style="width:100%; height:500px;"></div></el-col>
-      <el-col :span="8"><div id="graph_gauge" style="width:100%; height:500px;"></div></el-col>
+      <el-col :span="16">
+        <div id="graph_bar" style="width:100%; height:500px;"></div>
+        <div><span>机器学习建议：{{ graphBarAdvice }}</span></div>
+      </el-col>
+
+      <el-col :span="8">
+        <div id="graph_gauge" style="width:100%; height:500px;"></div>
+        <div><span>机器学习建议：{{ graphGaugeAdvice }}</span></div>
+      </el-col>
+
     </el-row>
   </div>
 </template>
@@ -38,11 +51,15 @@ export default {
   data() {
     // 这里存放数据
     return {
-      graphLineAdvice: '后面机器学习的分析结果扔回来——折线图',
-      graphBarAdvice: '后面机器学习的分析结果扔回来——饼图',
+      graphLineAdvice: '整体数据处于基本健康状态，少量数据出现严重危险',
+      graphBarAdvice: '5号电路支路出现的警报频率较高，建议检修',
+      graphPieAdvice: '接线柱1和接线柱2磨损严重，建议检修',
+      graphStackAdvice: '均值和方差整体较为稳定',
+      graphGaugeAdvice: '整体数据处于基本健康状态评分',
     }
   },
   methods: {
+    //折线图的
     fetchDataAndCreateChartGraphLine: function() {
       var _this = this; // 保证在回调中this指向Vue实例
       // axios请求后台API
@@ -257,7 +274,7 @@ export default {
         }
       },
       legend: {
-        data: ['Line 1', 'Line 2', 'Line 3', 'Line 4', 'Line 5']
+        data: ['电压均值', '电压众数', '电压峰度', '偏度电压', '方差']
       },
       toolbox: {
         feature: {
@@ -274,7 +291,7 @@ export default {
         {
           type: 'category',
           boundaryGap: false,
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          data: ['Ter-1', 'Ter-2', 'Ter-3', 'Ter-4', 'Ter-5', 'Ter-6', 'Ter-7']
         }
       ],
       yAxis: [
@@ -284,7 +301,7 @@ export default {
       ],
       series: [
         {
-          name: 'Line 1',
+          name: '电压均值',
           type: 'line',
           stack: 'Total',
           smooth: true,
@@ -311,7 +328,7 @@ export default {
           data: [140, 232, 101, 264, 90, 340, 250]
         },
         {
-          name: 'Line 2',
+          name: '电压众数',
           type: 'line',
           stack: 'Total',
           smooth: true,
@@ -338,7 +355,7 @@ export default {
           data: [120, 282, 111, 234, 220, 340, 310]
         },
         {
-          name: 'Line 3',
+          name: '电压峰度',
           type: 'line',
           stack: 'Total',
           smooth: true,
@@ -365,7 +382,7 @@ export default {
           data: [320, 132, 201, 334, 190, 130, 220]
         },
         {
-          name: 'Line 4',
+          name: '偏度电压',
           type: 'line',
           stack: 'Total',
           smooth: true,
@@ -392,7 +409,7 @@ export default {
           data: [220, 402, 231, 134, 190, 230, 120]
         },
         {
-          name: 'Line 5',
+          name: '方差',
           type: 'line',
           stack: 'Total',
           smooth: true,
@@ -438,7 +455,7 @@ export default {
       },
       yAxis: {
         type: 'category',
-        data: ['A', 'B', 'C', 'D', 'E'],
+        data: ['Ter-1', 'Ter-2', 'Ter-3', 'Ter-4', 'Ter-5'],
         inverse: true,
         animationDuration: 300,
         animationDurationUpdate: 300,
@@ -447,7 +464,7 @@ export default {
       series: [
         {
           realtimeSort: true,
-          name: 'X',
+          name: '警报',
           type: 'bar',
           data: data,
           label: {

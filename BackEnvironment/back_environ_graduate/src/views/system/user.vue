@@ -26,7 +26,7 @@
       <el-form-item>
         <el-button size="small" type="primary" icon="el-icon-search" @click="search">搜索</el-button>
         <el-button size="small" type="primary" icon="el-icon-plus" @click="handleEdit()">添加</el-button>
-        <el-button size="small" type="primary" @click="handleunit()">部门设置</el-button>
+<!--        <el-button size="small" type="primary" @click="handleunit()">部门设置</el-button>-->
       </el-form-item>
     </el-form>
     <!--列表-->
@@ -272,13 +272,13 @@ export default {
             addUser: '1',
             editUser: '1',
             addTime: null,
-            editTime: 1527411068000,
+            editTime: '2023-12-12',
             userId: 1,
             systemNo: 'pmd',
             userName: 'root',
             userPassword: 'e10adc3949ba59abbe56e057f20f883e',
             userRealName: '超级管理员',
-            userSex: '女',
+            userSex: '男',
             userMobile: '138123456789',
             userEmail: '111@qq.com',
             isLock: 'N',
@@ -290,7 +290,7 @@ export default {
             addUser: '1',
             editUser: '1',
             addTime: null,
-            editTime: 1527410579000,
+            editTime: '2023-12-18',
             userId: 3,
             systemNo: 'mc',
             userName: 'zengzhuo',
@@ -308,7 +308,7 @@ export default {
             addUser: '1',
             editUser: '4',
             addTime: null,
-            editTime: 1527411586000,
+            editTime: '2024-02-12',
             userId: 4,
             systemNo: 'ec',
             userName: 'admin',
@@ -326,7 +326,7 @@ export default {
             addUser: null,
             editUser: null,
             addTime: 1526275128000,
-            editTime: 1526284402000,
+            editTime: '2024-03-11',
             userId: 28,
             systemNo: null,
             userName: 'eee111',
@@ -344,7 +344,7 @@ export default {
             addUser: null,
             editUser: null,
             addTime: 1526284533000,
-            editTime: 1526284533000,
+            editTime: '2024-03-13',
             userId: 37,
             systemNo: null,
             userName: 'ces',
@@ -362,7 +362,7 @@ export default {
             addUser: null,
             editUser: null,
             addTime: 1526285228000,
-            editTime: 1526285228000,
+            editTime: '2024-03-17',
             userId: 43,
             systemNo: null,
             userName: '22',
@@ -904,4 +904,3 @@ export default {
 }
 </style>
 
- 

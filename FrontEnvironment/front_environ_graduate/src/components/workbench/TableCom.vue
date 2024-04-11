@@ -271,7 +271,23 @@ export default {
 
     //跳转到工作台2，准备实现可视化分析
     analysisFile() {
+      const logInfo = {
+        username: '杨枝', // 假设这是获取用户名的方法
+        analysisTime: new Date().toISOString(),
+        analysisResult: '整体数据处于基本健康状态，少量数据出现严重危险;5号电路支路出现的警报频率较高，建议检修', // 假设这是获取分析结果的方法
+        userHandlingText: '已检修' // 假设这是获取用户处理文本的方法
+      };
+      //发送日志信息到后端API
+      this.$axios
+        .post('http://127.0.0.1:5000/api/log', logInfo).then(response => {
+        this.$message.success('日志信息已发送！');
+        console.log(logInfo);
+      }).catch((error)=>{
+        console.log(error);
+      });
       this.$router.push('/wrben/wrben2');
+
+
     }
 
   },
@@ -303,7 +319,8 @@ export default {
         Voltage8_out: 200333,
       },
       ],
-      fileList: [] // 用于维护上传文件列表的数组
+      fileList: [], // 用于维护上传文件列表的数组
+      logInfo:{}, //用于维护日志信息
     }
   },
   // 生命周期 - 创建完成（可以访问当前this 实例）

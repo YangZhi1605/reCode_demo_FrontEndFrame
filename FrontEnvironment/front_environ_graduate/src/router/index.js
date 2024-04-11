@@ -8,6 +8,7 @@ import Workbench3 from "../components/workbench/Workbench3.vue";
 import Workbench4 from "../components/workbench/Workbench4.vue";
 import Message from "../components/msgs/Message.vue";
 import Order from "../components/order/Order.vue";
+import IndexStore from "../components/storehouse/IndexStore.vue";
 
 Vue.use(Router)
 
@@ -28,6 +29,7 @@ export default new Router({
     },
     {path: '/msg', component:Message},
     {path: '/order', component:Order},
+    {path: '/store', component:IndexStore},
 
   ]
 })

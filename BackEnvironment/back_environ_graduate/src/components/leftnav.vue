@@ -1,6 +1,6 @@
 /**
 * 左边菜单
-*/ 
+*/
 <template>
   <el-menu default-active="2" :collapse="collapsed" collapse-transition router :default-active="$route.path" unique-opened class="el-menu-vertical-demo" background-color="#334157" text-color="#fff" active-text-color="#ffd04b">
     <div class="logobox">
@@ -49,6 +49,14 @@ export default {
               menuname: '商品管理',
               hasThird: 'N',
               url: 'goods/Goods',
+              menus: null
+            },
+            {
+              menuid: 177, // 确保menuid唯一
+              icon: 'icon-machine-learn-manage', // 根据实际情况替换为相应的图标类名
+              menuname: '机器学习管理',
+              hasThird: 'N',
+              url: 'goods/MachineLearnSys', // 确保URL与路由配置中的路径匹配
               menus: null
             }
           ]
@@ -156,7 +164,7 @@ export default {
       msg: 'success'
     }
           this.allmenu = res.data
-    
+
     // menu(localStorage.getItem('logintoken'))
     //   .then(res => {
     //     console.log(JSON.stringify(res))
