@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>06-组件中事件的定义</title>
+
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+<!--    3、调用自己写的组件-->
+    <login></login>
+</div>
+
+</body>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+<!--    引入Axios-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    //1、声明组件和组件中的数据以及事件
+    const login={
+        template:'<input type="button" value="点我撒" @click="clickMe">',
+        data(){
+            return {
+                name:'我是一个姓名',
+            };
+        },
+        methods:{
+            clickMe(){
+                alert(this.name);
+                alert('点击了我');
+            }
+        },
+    };
+    //3、创建vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        //生命周期相关的函数
+        components: {
+            //2、用来注册局部组件
+            login
+        },
+    });
+</script>
+</html>

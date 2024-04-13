@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>05-组件中定义属于组件自己的data数据</title>
+
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+    <login></login>
+</div>
+
+</body>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+<!--    引入Axios-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const login = {
+        template: '<div><h1>它是{{cityName}},它已经{{age}}岁了</h1><ul><li v-for="item,index in lists">{{index}}+{{item}}</li></ul></div>',
+        data(){
+            return {
+                cityName: '小城',
+                age: 118,
+                lists:['北京','广州','深圳']
+            }
+        }
+    };
+    //3、创建vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        //生命周期相关的函数
+        components: {
+            login,
+        },
+    });
+</script>
+</html>

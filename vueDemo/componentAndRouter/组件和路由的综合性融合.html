@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件和路由的综合性融合</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+<!--将导航做在一个栅格中-->
+    <div class="container">
+        <div class="row">
+<!--            col-md-offset-1对表格进行偏移-->
+            <div class="col-md-10 col-md-offset-1" style="margin-top: 70px">
+                <ul class="nav nav-pills nav-justified">
+                    <li role="presentation" v-bind:class="showActive == 'home'?'active':' '" @click="change('home')"><a href="#/home">主页</a></li>
+                    <li role="presentation" v-bind:class="showActive == 'user'?'active':' '" @click="change('user')"><a href="#/user">用户管理</a></li>
+                    <li role="presentation" v-bind:class="showActive == 'student'?'active':' '" @click="change('student')"><a href="#/student">学生管理</a></li>
+                </ul>
+            </div>
+        </div>
+<!--        路由写好了，一定要展示-->
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1" style="margin-top: 10px">
+                <router-view></router-view>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<template id="home">
+    <diV>
+        <div class="jumbotron" style="margin-top: 10px">
+            <h1>Hello, world!</h1>
+            <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+        </div>
+    </diV>
+</template>
+
+<template id="user">
+    <div>
+<!--        做一个表格-->
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>生日</th>
+                <th>操作</th>
+            </thead>
+            <tbody>
+                <tr v-for="user in users">
+                    <td>{{user.id}}</td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.age}}</td>
+                    <td>{{user.birthday}}</td>
+                    <td><a class="btn btn-default">修改</a>
+                        <a class="btn btn-danger">删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</template>
+<template id="student">
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>姓名</th>
+                <th>学历</th>
+                <th>邮箱</th>
+                <th>操作</th>
+            </thead>
+            <tbody>
+            <td>1</td>
+            <td>旺仔</td>
+            <td>高中</td>
+            <td>5858585@163.com</td>
+            <td><a class="btn btn-default">修改</a>
+                <a class="btn btn-danger">删除</a>
+            </td>
+            </tbody>
+        </table>
+    </div>
+</template>
+
+
+</body>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-router@3/dist/vue-router.js "></script>
+<!--    引入Axios-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    //主页组件配置对象
+    const home = {
+        template: '#home',
+
+    };
+    //用户管理组件配置对象
+    const user = {
+        template: '#user',
+        data(){
+            return{
+                users:[],//返回后端拿到的用户列表
+            }
+        },
+        //在组件创建时候，就拿后台数据。注意，在user模板中使用users数组，你需要在user组件的data函数中返回这个数组
+        // 每个组件的data函数都应该返回一个新的对象，所以你不能直接返回home组件的users数组。
+        //也就是组件之前的东西是不能共享的，每个组件都是独立的
+        created(){
+            const _this = this;
+            axios.get('http://127.0.0.1:5200/admin/findInfoRouter').then(response=>{
+                console.log(response.data);
+                _this.users = response.data;
+            }).catch(error=>{
+                console.log(error);
+            });
+        }
+    };
+    //学生管理组件配置对象
+    const student = {
+        template: '#student',
+    };
+
+    //通过路由挂载组件
+    const router = new VueRouter({
+        routes: [
+            {path: '/',redirect: '/home'}, //对默认访问的路由进行重定向
+            {path: '/home', component: home},
+            {path: '/user', component: user},
+            {path: '/student', component: student},
+        ]
+    });
+
+    //3、创建vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {
+            showActive:'home',
+        },
+        methods: {
+            //点击导航栏的时候，改变showActive的值
+            change(name){
+                this.showActive = name
+            }
+        },
+        //生命周期相关的函数
+        components: {},
+        router
+    });
+</script>
+</html>

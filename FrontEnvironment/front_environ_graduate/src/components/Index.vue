@@ -1,48 +1,42 @@
 <template>
   <div>
-<!--    放一个栅格。用于展示轮播图-->
-    <el-row>
-      <el-col :span="24">
-        <el-carousel :interval="4000" type="card" height="200px">
-          <el-carousel-item v-for="item in imgs" :key="item">
-            <el-image
-
-              :src="item"
-              fit="contain"></el-image>
-          </el-carousel-item>
-        </el-carousel>
-      </el-col>
-    </el-row>
-<!--    展示图表-->
-    <el-row>
-      <el-col :span="4">
-        <div id="graph2" style="width:100%; height:400px;"></div>
-      </el-col>
-      <el-col :span="16">
-        <div id="graph1" style="width:100%; height:400px;"></div>
-      </el-col>
-      <el-col :span="4">
-        <div id="graph3" style="width:100%; height:400px;"></div>
-      </el-col>
-    </el-row>
-
-    <el-row>
-      <el-col :span="20">
-        <div id="graph4" style="width:100%; height:400px;"></div>
-      </el-col>
-    </el-row>
-
-<!--    这里的布局用于展示一个综合性的分析结果。反馈机器学习的评价标准，目前写死为一句话，后续从后端拿反馈-->
-    <el-row>
-      <el-col :span="24">
-        <div class="typing-container">
-          <h2 class="typing-title">{{ headMsg }}</h2>
-          <p class="typing-content">
-            {{machineMsg}}
-          </p>
+<!--    放Container容器-->
+    <el-container>
+<!--      顶部容器-->
+      <el-header>
+        <h1 class="my_head_style">电动汽车健康管理专家</h1>
+        <div class="my_head_text_style">电动汽车状态监测与可视化系统，一个为广大电动汽车用户而设计的、简易明了的汽车电路健康状态管理平台</div>
+        <el-row class="button-row">
+          <el-button @click="gotoWorkbench" type="danger" plain icon="el-icon-s-promotion">开始使用</el-button>
+          <el-button @click="scrollToShowComponent" type="success" plain icon="el-icon-document-copy">查看说明</el-button>
+        </el-row>
+      </el-header>
+<!--      主体-->
+      <el-main>
+        <!--    放一个栅格。用于展示轮播图-->
+        <el-row style="margin-top: 70px">
+          <el-col :span="24">
+            <el-carousel :interval="4000" type="card" height="260px">
+              <el-carousel-item v-for="item in imgs" :key="item">
+                <el-image
+                  :src="item"
+                  fit="contain"></el-image>
+              </el-carousel-item>
+            </el-carousel>
+          </el-col>
+        </el-row>
+        <div class="image-container">
+          <el-image :src="IndexPic" ></el-image>
         </div>
-      </el-col>
-    </el-row>
+      </el-main>
+<!--      底部容器-->
+      <el-footer>
+        <h3 class="my-use-advice-title">使用指南</h3>
+        <div class="my-use-advice-text">{{ typewriterText }}</div>
+
+        <ChartShow ref="footShow"></ChartShow>
+      </el-footer>
+    </el-container>
   </div>
 </template>
 
@@ -60,279 +54,114 @@ import img4 from '../assets/ImgResp/img4.jpg';
 import img5 from '../assets/ImgResp/img5.jpg';
 import img6 from '../assets/ImgResp/img6.jpg';
 import img7 from '../assets/ImgResp/img7.jpg';
+import ELementUIIndexPic from '../assets/ImgResp/ELementUIIndexPic.jpg'
+//导入ChartShow组件
+import ChartShow from '../components/component_repository/ChartShow.vue';
 
 
 export default {
   name: 'Index',
-  // import 引入的组件需要注入到对象中才能使用
-  components: {},
+  // import 引入的组件需要注入到对象中才能使用,别忘记了
+  components: {
+    ChartShow,
+  },
   props: {},
   data() {
     return {
       chart: null,
-      machineMsg:'这里是一个综合性的分析结果，反馈机器学习的评价标准，目前写死为一句话，后续从后端拿反馈吖吖',
-      headMsg:'综合性分析',
       imgs:[img1,img2,img3,img4,img5,img6,img7],
+      text: '这是一个帮助用户判断电动汽车健康状态的系统。在本系统，用户通过上传自己电动汽车的电池电压数据，就能够得到诸多像动态折线图、雷达评分图、绚丽饼状图等等清晰明了的可视化结果，以及随机森林、线性回归等等机器学习和集成学习的分析建议吖~~',
+      typewriterText: '',
+      delay: 120, // 控制每个字符的输出速度
+      typewriterStarted: false, // 添加一个控制打字机效果是否已开始的标记,点击一次就标记吧，多次标记影响观感。
+      IndexPic:ELementUIIndexPic
     }
   },
-  //在mounted()函数中，初始化Echarts实例
   //mounted函数是在页面加载完毕后执行的函数
-  mounted() {
-    // this.chart1 = echarts.init(document.getElementById('graph1'));
-    this.chart2 = echarts.init(document.getElementById('graph2'));
-    this.chart3 = echarts.init(document.getElementById('graph3'));
-    this.chart4 = echarts.init(document.getElementById('graph4'));
+  mounted(){
 
-    var _this = this; // 将Vue实例的this赋值给_this变量，以便在函数回调中使用。
-    var chartDom = document.getElementById('graph1'); // 根据ID获取DOM元素，该元素是要初始化图表的容器。
-    _this.chart1 = echarts.init(chartDom); // 初始化echarts实例，将它赋值给Vue实例的chart1属性。
-    var option; // 声明一个变量option，后面会用来存储echarts的配置项。
-
-    // 初始请求数据并且创建图表
-    _this.fetchDataAndUpdateChart();
-
-    // 设置定时器每隔一段时间更新图表数据
-    _this.interval = setInterval(() => {
-      _this.fetchDataAndUpdateChart();
-    }, 10000);  // 这里的8000是更新数据的时间间隔，单位毫秒
-
-    /****************************************************************************************/
-    // 下面可以调用相应的函数，为这图表设置数据和参数
-    //另一个图表的设置
-    this.chart2.setOption({
-      title: {
-        text: '使用占比'
-      },
-      tooltip: {},
-      legend: {
-        data:['']
-      },
-      xAxis: {
-        data: ["特斯拉","宝马","比亚迪","上汽","福特","蔚蓝"]
-      },
-      yAxis: {},
-      series: [{
-        name: '电动汽车厂家',
-        type: 'bar',
-        data: [5, 20, 36, 10, 10, 20]
-      }]
-    });
-    //放置一个折线图
-    this.chart3.setOption({
-      title: {
-        text: ''
-      },
-      tooltip: {},
-      legend: {
-        data:['电压起伏']
-      },
-      xAxis: {
-        data: ["A","B","C","D","E"]
-      },
-      yAxis: {},
-      series: [
-        {
-          name: '电压起伏',
-          data: [10, 22, 28, 23, 19],
-          type: 'line',
-          lineStyle: {
-            normal: {
-              color: 'green',
-              width: 4,
-              type: 'dashed'
-            }
-          }
-        }
-      ]
-    });
-    //放置一个饼图
-    this.chart4.setOption({
-      title: {
-        text: '',
-        subtext: ''
-      },
-      tooltip: {
-        trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-      },
-      legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
-      },
-      series: [
-        {
-          name: '访问来源',
-          type: 'pie',
-          radius: '55%',
-          center: ['50%', '60%'],
-          data:[
-            {value:335, name:'直接访问'},
-            {value:310, name:'邮件营销'},
-            {value:234, name:'联盟广告'},
-            {value:135, name:'视频广告'},
-            {value:1548, name:'搜索引擎'}
-          ],
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
-    });
   },
-
   // 生命周期 - 创建完成（可以访问当前this 实例）
   created() {
   },
 
-  methods: {
-    //编写获取数据和图表更新的方法
-    fetchDataAndUpdateChart() {
-      $.get('http://127.0.0.1:5000//api/lineRace', (rawData) => {
-        this.run(this.chart1, rawData);
+  methods:{
+    clickMe(){
+      console.log('按钮被点击了');
+    },
+    //跳转到工作台，路由是/wrben/wrben1
+    gotoWorkbench(){
+      this.$router.push('/wrben/wrben1');
+    },
+    scrollToShowComponent() {
+      this.$nextTick(() => {
+        const component = this.$refs.footShow.$el;
+        console.log(component); // 打印调试信息，查看DOM元素是否正确获取
+        if (component) {
+          const top = component.offsetTop;
+          console.log(top); // 打印调试信息，查看计算的top值是否正确
+          window.scrollTo({ top: top, behavior: 'smooth' });
+          // 开始打字机效果
+          if (!this.typewriterStarted) {
+            this.runTypewriter();
+            this.typewriterStarted = true; // 标记为已开始，以防止再次触发
+          }
+        } else {
+          console.log('组件没有找到'); // 如果没有获取到组件，打印提示
+        }
       });
     },
-    //编写其调用的run方法
-    run(chart, rawData) {
-      //这里吧啦吧啦的写自己需要定义的数据
-      //写自己需要跑的数据
-      const countries = [
-        'Finland',
-        'France',
-        'Germany',
-        'Iceland',
-        'Norway',
-        'Poland',
-        'Russia',
-        'United Kingdom'
-      ];
-
-      const datasetWithFilters = [];
-
-      const seriesList = [];
-
-      echarts.util.each(countries,function (country) {
-        var datasetId = 'dataset_' + country;
-        datasetWithFilters.push({
-          id: datasetId,
-          fromDatasetId: 'dataset_raw',
-          transform: {
-            type: 'filter',
-            config: {
-              and: [
-                { dimension: 'Year', gte: 1950 },
-                { dimension: 'Country', '=': country }
-              ]
-            }
-          }
-        });
-        seriesList.push({
-          type: 'line',
-          datasetId: datasetId,
-          showSymbol: false,
-          name: country,
-          endLabel: {
-            show: true,
-            formatter: function (params) {
-              return params.value[3] + ': ' + params.value[0];
-            }
-          },
-          labelLayout: {
-            moveOverlap: 'shiftY'
-          },
-          emphasis: {
-            focus: 'series'
-          },
-          encode: {
-            x: 'Year',
-            y: 'Income',
-            label: ['Country', 'Income'],
-            itemName: 'Year',
-            tooltip: ['Income']
-          }
-        });
-      });
-
-      //option配置
-      const option = {
-        animationDuration: 10000,
-        dataset: [
-          {
-            id: 'dataset_raw',
-            source: rawData
-          },
-          ...datasetWithFilters
-        ],
-        title: {
-          text: '电路信息实时播报'
-        },
-        tooltip: {
-          order: 'valueDesc',
-          trigger: 'axis'
-        },
-        xAxis: {
-          type: 'category',
-          nameLocation: 'middle'
-        },
-        yAxis: {
-          name: '电压'
-        },
-        grid: {
-          right: 140
-        },
-        series: seriesList
+    //实现打字机效果
+    runTypewriter() {
+      let i = 0;
+      const typing = () => {
+        if (i < this.text.length) {
+          this.typewriterText += this.text.charAt(i);
+          i++;
+          setTimeout(typing, this.delay);
+        }
       };
-
-      chart.setOption(option);
+      typing();
     },
   },
 
   //生命周期 - 销毁
   beforeDestroy() {
-    //清楚定时器
-    clearInterval(this.interval);
   },
-
-
 }
 </script>
 
 
 <style scoped>
-/* 打字机效果的基本样式 */
-.typing-container {
-  max-width:720px;
-  margin: auto;
-  overflow: hidden; /* 防止在打字前内容显示 */
-  white-space: nowrap; /* 保持文本在同一行 */
+/*使用介绍的文字*/
+.my-use-advice-text{
+  font-size: 18px;
+  color: #99a9bf;
+  padding: 0 25px;
+  line-height: 20px;
+}
+/*图片居中*/
+.image-container {
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  /* 如果需要使 el-image 元素完全居中在页面或某个特定元素内 */
+  height: 100%; /* 父元素需要有确定的高度或相对于页面的百分比高度 */
+}
+/*使用介绍标题*/
+.my-use-advice-title{
+  font-size: 24px;
+  margin: 0;
+  line-height: 48px;
+  color: #555;
+  text-align: center;
+  margin-top: 20px;
 }
 
-/* 打字机动画 */
-.typing-title,
-.typing-content {
-  border-right: 3px solid; /* 光标效果 */
-  animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite; /* 两个动画效果，打字和闪烁 */
-}
-
-/* 打字机动态效果 */
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
-}
-
-/* 光标闪烁效果 */
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: black }
-}
-
-/* 标题和内容的特定动画时长 */
-.typing-title {
-  animation-duration: 2s; /* 动画总时间 */
+/*按钮居中*/
+.button-row {
+  display: flex;
+  justify-content: center; /* 水平居中 */
 }
 
 .typing-content {
@@ -352,5 +181,19 @@ export default {
 
 .el-carousel__item:nth-child(2n+1) {
   background-color: #d3dce6;
+}
+.my_head_style{
+  font-size: 34px;
+  margin: 0;
+  line-height: 48px;
+  color: #555;
+  text-align: center;
+}
+.my_head_text_style{
+  font-size: 18px;
+  line-height: 28px;
+  color: #888;
+  margin: 10px 0 5px;
+  text-align: center;
 }
 </style>

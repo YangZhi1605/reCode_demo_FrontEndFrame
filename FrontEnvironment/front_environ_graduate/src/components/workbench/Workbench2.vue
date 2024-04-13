@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 align="left">尊敬的用户，这是您的电动汽车分析结果：</h2>
+    <h2 class="my-head-show">尊敬的用户，这是您的电动汽车分析结果：</h2>
 <!--    上栅格系统-->
     <el-row style="margin-top: 35px">
       <el-col :span="12">
@@ -592,5 +592,13 @@ export default {
 </script>
 
 <style scoped>
+.my-head-show{
+  font-size: 24px;
+  margin: 0;
+  line-height: 48px;
+  color: #555;
+  text-align: left;
+  margin-top: 20px;
+}
 
 </style>

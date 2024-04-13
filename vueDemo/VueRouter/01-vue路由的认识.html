@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>01-vue路由的认识</title>
+
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+    <h1>你好，路由</h1>
+    <a href="#/login">进入登录</a>
+    <a href="#/register">进入注册</a>
+    <!-- 路由出口 -->
+    <!-- 路由匹配到的组件将渲染在这里 -->
+    <router-view></router-view>
+</div>
+
+</body>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+<!--①引入路由-->
+<script src="https://unpkg.com/vue-router@3/dist/vue-router.js "></script>
+<!--    引入Axios-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    //②
+    const login = {
+      template:'<div><h1>登录</h1></div>',
+    };
+
+    const register = {
+        template:'<div><h1>注册</h1></div>',
+    };
+
+    //③
+    const router = new VueRouter({
+        routes:[
+            {path:'/login',component:login},
+            {path:'/register',component:register},
+        ]
+    });
+    //3、创建vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        //生命周期相关的函数
+        components: {},
+        //注册路由 (同样也可以简写为router,因为ES6的语法)
+        router:router,
+    });
+</script>
+</html>

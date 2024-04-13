@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>02-局部组件的使用2</title>
+
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+<!--    此时，这里常规调用-->
+    <login></login>
+</div>
+
+<!--通过模板标签去注册局部组件模板，记住在vue实例作用范围外声明-->
+<template id="loginTemplate">
+    <div><h1>登录管理呜哇</h1></div>
+</template>
+
+</body>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+<!--    引入Axios-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    let login = {
+        template: '#loginTemplate'
+    };
+    //3、创建vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        //生命周期相关的函数
+        components: {//用来注册局部组件
+            login,//注册需要用的局部组件
+        },
+    });
+</script>
+</html>

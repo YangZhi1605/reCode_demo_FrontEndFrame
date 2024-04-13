@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>03-路由中的参数传递</title>
+
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+
+    <router-link to="/login?id=12&name=羊羊羊" tag="button">我要登录</router-link>
+    <router-link to="/register/56/林清">我要注册</router-link>
+
+    <router-view></router-view>
+</div>
+
+</body>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-router@3/dist/vue-router.js "></script>
+<!--    引入Axios-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const login = {
+        template:'<div><h1>登录{{this.$route.query.name}}</h1></div>',
+        //麻雀虽小，五脏俱全
+    //     回到url中对应的组件来获取参数
+        data(){return {}},
+        methods:{},
+        created(){
+            // console.log('=========>'+this.$route.query.id);
+            // 我去,nnd，真是重启解决80%的问题。
+            //这里在浏览器中怎么找到id，我并没有学会，但是确实是这么编写逻辑的
+            console.log(this.$route.query.id+this.$route.query.name);
+            console.log('这是create函数');
+        },
+    };
+
+    const register = {
+        template: '<div><h1>注册{{this.$route.params.username}}</h1></div>',
+        created() {
+            console.log(this);
+            //通过restful的形式获取到参数
+            // 这种拿到输出结果了，为什么上面的拿到的是一个undefined的结果了?
+            console.log(this.$route.params.id+this.$route.params.username);
+        }
+    };
+
+    var router = new VueRouter({
+        routes: [
+            {path: '/', redirect: '/login'},
+            {path: '/login', component: login},
+            // restful传递参数的格式是：+ 参数名称
+            {path: '/register/:id/:username', component: register},
+
+        ]
+    });
+    //3、创建vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        //生命周期相关的函数
+        components: {},
+        router
+    });
+</script>
+</html>

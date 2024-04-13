@@ -7,9 +7,9 @@
           <el-menu-item index="/index">首页</el-menu-item>
           <el-submenu index="/wrben">
             <template slot="title">我的工作台</template>
-            <el-menu-item index="/wrben/wrben1">选项1</el-menu-item>
-            <el-menu-item index="/wrben/wrben2">选项2</el-menu-item>
-            <el-menu-item index="/wrben/wrben3">选项3</el-menu-item>
+            <el-menu-item index="/wrben/wrben1">信息loading</el-menu-item>
+            <el-menu-item index="/wrben/wrben2">数据showing</el-menu-item>
+            <el-menu-item index="/wrben/wrben3">修改editing</el-menu-item>
             <el-menu-item index="/wrben/wrben4">选项4</el-menu-item>
           </el-submenu>
           <el-menu-item index="/msg">日志维护</el-menu-item>
@@ -23,9 +23,11 @@
       </el-main>
       <el-footer>
 <!--        使用组件-->
-        <PageFooter/>
+<!--        <PageFooter/>-->
+
       </el-footer>
     </el-container>
+    <el-backtop target=".el-container"></el-backtop>
   </div>
 </template>
 

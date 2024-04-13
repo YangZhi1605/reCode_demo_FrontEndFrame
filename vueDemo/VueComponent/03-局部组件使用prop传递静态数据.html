@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>03-局部组件使用Prop</title>
+
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+    <!--    此时，这里常规调用-->
+    <login user-name="小城" age="118"></login>
+</div>
+
+<!--使用模板标签的方式声明-->
+<template id="loginTemplate">
+    <div>
+        <h1>欢迎：{{userName}}，它的年龄是{{age}}</h1>
+    </div>
+</template>
+
+</body>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+<!--    引入Axios-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    //1、声明配置模板对象
+    let login = {
+        template: '#loginTemplate',
+        //2、使用prop属性
+        props: ['userName','age'] //用来接受使用组件时标签中传递的参数
+    };
+    //3、创建vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        //生命周期相关的函数
+        components: {
+            //用来注册局部组件
+            login,//注册需要用的局部组件
+        },
+    });
+</script>
+</html>

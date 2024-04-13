@@ -23,7 +23,7 @@ export default new Router({
         {path: '/', redirect: '/wrben/wrben1'},
         {path: 'wrben1', component:Workbench1},
         {path: 'wrben2', component:Workbench2},
-        {path: 'wrben3', component:Workbench3},
+        {path: 'wrben3', name:'EditPage', component:Workbench3},
         {path: 'wrben4', component:Workbench4},
       ],
     },

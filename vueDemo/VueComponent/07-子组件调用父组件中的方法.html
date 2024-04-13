@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>07-子组件调用父组件中的方法</title>
+
+</head>
+<body>
+<!--2、挂载需要vue托管的部分-->
+<div id="app">
+    <login :proname="username" @faFunc="fatherFunction"></login>
+</div>
+
+</body>
+<!--    1、先引入vue.js-->
+<!--    <script src="vue.js" type="text/javascript" charset="UTF-8"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+<!--    引入Axios-->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const login={
+        template:'<div><h2>这是子组件,我用的proname,它绑定的父组件中的数据：{{proname}}</h2> <h2>这是子组件,我用的dataname,在data函数中，通过this指定到父组件传来的数据:{{dataname}}</h2><input type="button" value="请点击我" @click="clickMe"></div>',
+        data(){
+            return {
+                dataname:this.proname,
+            };
+        },
+        props:['proname'],
+        methods: {
+            clickMe:function () {
+                // alert('我是子组件中的事件');
+                // 上面绑定的时候写的大写，但是因为自动转换为小写，所以这里写的时候要小写
+                this.$emit('fafunc');
+            }
+        },
+    }
+    //3、创建vue实例
+    const app = new Vue({
+        el: '#app',
+        data: {
+            username:"我是父组件中的数据",
+        },
+        methods: {
+            fatherFunction () {
+                alert('我是父组件中的事件');
+            }
+        },
+        //生命周期相关的函数
+        components: {
+            login,
+        },
+    });
+</script>
+</html>
