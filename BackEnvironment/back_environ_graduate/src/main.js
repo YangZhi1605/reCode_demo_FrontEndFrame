@@ -11,8 +11,8 @@ import router from './router';
 import store from './vuex/store';
 // 引入icon
 import './assets/icon/iconfont.css'
-// 
-import axios from 'axios';
+//wc.它这里又是默认的npm 的axios。我那个前台反而又不可以
+import axios from 'axios'
 Vue.prototype.$axios = axios;
 
 Vue.config.productionTip = false;
@@ -44,7 +44,7 @@ router.beforeEach((to, from, next) => {
                     next();
                 } else {
                     /**
-                     * 防刷新，如果登录，修改路由跳转到登录页面，修改路由为登录后的首页 
+                     * 防刷新，如果登录，修改路由跳转到登录页面，修改路由为登录后的首页
                      */
                     next({
                         path: '/goods/Goods'

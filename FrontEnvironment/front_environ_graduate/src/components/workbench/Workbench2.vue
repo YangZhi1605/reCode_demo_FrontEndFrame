@@ -59,7 +59,7 @@ export default {
     }
   },
   methods: {
-    //折线图的
+    //折线图数据获取事件函数
     fetchDataAndCreateChartGraphLine: function() {
       var _this = this; // 保证在回调中this指向Vue实例
       // axios请求后台API
@@ -80,6 +80,7 @@ export default {
               right: '15%',
               bottom: '10%'
             },
+            // 涉及到后端返回的data了
             xAxis: {
               data: data.map(function (item) {
                 return item[0];
@@ -96,6 +97,7 @@ export default {
                 saveAsImage: {}
               }
             },
+            //设置滑块从哪里开始
             dataZoom: [
               {
                 startValue: '2014-06-01'
@@ -142,12 +144,14 @@ export default {
                 color: '#999'
               }
             },
+            //涉及到后端返回的data了
             series: {
               name: '信息',
               type: 'line',
               data: data.map(function (item) {
                 return item[1];
               }),
+
               markLine: {
                 silent: true,
                 data: [
@@ -192,8 +196,6 @@ export default {
     var chartDom = document.getElementById('graph_line');
     //实例化
     _this.graph_line = echarts.init(chartDom);
-    //配置
-    var graph_line_option;
     //初始化请求数据，并创建图表
     _this.fetchDataAndCreateChartGraphLine();
 
@@ -241,7 +243,7 @@ export default {
             { value: 735, name: 'Terminal-2' },
             { value: 580, name: 'Terminal-5' },
             { value: 484, name: 'Terminal-6' },
-            { value: 300, name: 'Terminal-8' }
+            { value: 900, name: 'Terminal-8' }
           ],
           itemStyle: {
             opacity: 0.7,
