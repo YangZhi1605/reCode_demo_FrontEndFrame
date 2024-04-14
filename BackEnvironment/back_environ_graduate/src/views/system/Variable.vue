@@ -46,7 +46,7 @@
       </el-table-column>
       <el-table-column sortable prop="Circuit7" label="电路7权重" width="100">
       </el-table-column>
-      <el-table-column sortable prop="Circuit1" label="电路8权重" width="100">
+      <el-table-column sortable prop="Circuit8" label="电路8权重" width="100">
       </el-table-column>
 
       <el-table-column sortable prop="EditTime" label="修改时间" width="200">

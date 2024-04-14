@@ -49,7 +49,7 @@ export default {
       rules: {
         username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-        code: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
+        // code: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
       }
     }
   },
@@ -60,10 +60,10 @@ export default {
       type: 'success'
     })
     // 获取图形验证码
-    this.getcode()
+    // this.getcode()
     // 获取存在本地的用户名密码
     this.getuserpwd()
-    
+
   },
   // 里面的函数只有调用才会执行
   methods: {

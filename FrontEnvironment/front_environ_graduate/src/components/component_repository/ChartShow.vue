@@ -160,11 +160,11 @@ export default {
   methods: {
     //编写获取动态折线图数据和图表更新的方法
     fetchDataAndUpdateChart() {
-      $.get('http://127.0.0.1:5000//api/lineData', (rawData) => {
+      $.get('http://127.0.0.1:5000/api/lineData', (rawData) => {
         this.myRun(this.chart1, rawData);
       });
     },
-    //编写其调用的run方法
+    //编写其调用的run方法——报废了
     run(chart, rawData) {
       //这里吧啦吧啦的写自己需要定义的数据
       //写自己需要跑的数据
