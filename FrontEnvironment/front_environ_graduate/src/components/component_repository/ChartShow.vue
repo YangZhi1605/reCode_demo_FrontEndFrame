@@ -160,6 +160,11 @@ export default {
   methods: {
     //编写获取动态折线图数据和图表更新的方法
     fetchDataAndUpdateChart() {
+      // 一个回调函数，如果请求成功时执行。该函数传递了从服务器返回的数据。
+      // 在这个例子中，如果请求成功，
+      // 箭头函数 (rawData) => { this.myRun(this.chart1, rawData); } 将被执行，
+      // 其中 rawData 是服务器返回的数据，然后这个箭头函数调用 this.myRun 方法，
+      // 传递 this.chart1 和 rawData 作为参数。
       $.get('http://127.0.0.1:5000/api/lineData', (rawData) => {
         this.myRun(this.chart1, rawData);
       });

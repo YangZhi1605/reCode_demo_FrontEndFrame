@@ -1,7 +1,9 @@
 <template>
   <div>
+<!--    标题-->
+    <h2 class="my-head-style-edit">信息loading~</h2>
 <!--    这里写一个表格组件，先展示假数据，当用户下载自己数据模板，将数据填进去，上传之后，再进行更新展示部分-->
-    <el-row>
+    <el-row style="margin-top: 35px">
       <el-col :span="24">
         <el-table
           :data="getPagedTableData"
@@ -230,6 +232,7 @@ export default {
       isShow:true,
       currentPage: 1, // 当前页码
       pageSize: 10, // 每页显示条数
+      log_info_create:{},//存储日志信息
     }
   },
   /*
@@ -323,6 +326,7 @@ export default {
           // 成功删除后
           this.$message.success('文件删除成功！');
           // 移除文件逻辑
+          console.log('待删除文件：',file.name);
           const index = this.fileList.indexOf(file);
           if (index !== -1) {
             this.fileList.splice(index, 1);
@@ -344,16 +348,17 @@ export default {
         .then(response => {
           // 这里处理后端返回的结果
           this.$message.success('文件整理完成！');
-          // 发起第二个请求
+          // 发起第二个请求,获得全部数据并展示
           return this.$axios.get('http://127.0.0.1:5000/api/getDB_data');
         })
         .then(response => {
           // 第二个请求也成功了
-          this.$message.success('第二个请求成功，文件整理完成！');
+          this.$message.success('第二个请求成功！');
         //   控制台输出第二个请求响应体中的数据
           console.log('整理文件按钮中请求后端数据',response.data);
           //绑定为vue
           this.tableData = response.data;
+
         })
         .catch(error => {
           // 捕获第一个或第二个请求中的任何错误
@@ -362,25 +367,44 @@ export default {
         });
     },
 
-    //跳转到工作台2，准备实现可视化分析
-    analysisFile() {
-      const logInfo = {
-        username: '杨枝', // 假设这是获取用户名的方法
-        analysisTime: new Date().toISOString(),
-        analysisResult: '整体数据处于基本健康状态，少量数据出现严重危险;5号电路支路出现的警报频率较高，建议检修', // 假设这是获取分析结果的方法
-        userHandlingText: '已检修' // 假设这是获取用户处理文本的方法
-      };
-      //发送日志信息到后端API
-      this.$axios
-        .post('http://127.0.0.1:5000/api/log', logInfo).then(response => {
-        this.$message.success('日志信息已发送！');
-        console.log(logInfo);
-      }).catch((error)=>{
-        console.log(error);
+    //跳转到工作台2之前，想把日志信息拿到的函数，同样发送axios请求，拿到日志信息，存储到log_info_create对象中
+    // get_log_info函数应该返回一个Promise
+    get_log_info(){
+      return new Promise((resolve, reject) => {
+        this.$axios.get('http://127.0.0.1:5000/api/create_logInfo')
+          .then(response => {
+            this.log_info_create = response.data;
+            console.log('日志信息：', this.log_info_create);
+            resolve();  // 当方得到你需要的数据后，调用resolve告诉函数它已经完成了
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            reject(error);  // 如果有错误，调用reject将错误传递出去
+          });
       });
+    },
+
+    //跳转到工作台2，准备实现可视化分析
+    async analysisFile() {
+      //调用get_log_info函数，获得本次日志信息
+      // this.get_log_info();
+      await this.get_log_info();
+      //检查this.log_info_create确保其不是空对象
+      console.log('准备发送给后端的日志信息：', this.log_info_create);
+      if (Object.keys(this.log_info_create).length > 0) {
+        this.$axios.post('http://127.0.0.1:5000/api/add_info', this.log_info_create)
+          .then(response => {
+            this.$message.success('日志信息已发送！');
+            console.log('存储给后端的日志信息：', this.log_info_create);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        console.log('日志信息为空，无法发送！');
+      }
+
       this.$router.push('/wrben/wrben2');
-
-
     },
 
     //传入ID，删除对应行
@@ -515,5 +539,11 @@ export default {
 
 .el-table .success-row {
   background: #f0f9eb;
+}
+.my-head-style-edit{
+  font-size: 28px;
+  margin: 0;
+  line-height: 48px;
+  color: #555;
 }
 </style>
