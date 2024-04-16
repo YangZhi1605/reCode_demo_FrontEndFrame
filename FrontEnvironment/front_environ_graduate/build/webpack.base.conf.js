@@ -68,7 +68,20 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      }
+      },
+      // 添加.sass、.scss的处理
+      {
+        test: /\.s[ac]ss$/i, // 用于匹配 .sass 或 .scss 文件
+        use: [
+          // 将 JS 字符串生成为 style 节点
+          'style-loader',
+          // 将 CSS 转化成 CommonJS 模块
+          'css-loader',
+          // 将 Sass 编译成 CSS
+          'sass-loader'
+        ],
+      },
+
     ]
   },
   node: {

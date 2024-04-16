@@ -111,7 +111,7 @@
             inactive-value="0">
           </el-switch>
         </el-form-item>
-        <el-form-item label="修改者" prop="EditTime">
+        <el-form-item label="修改者" prop="EditUser">
           <el-input size="small" v-model="EditForm.EditUser" auto-complete="off" placeholder="修改者"></el-input>
         </el-form-item>
 
@@ -414,7 +414,6 @@ export default {
       //     this.$message.error('菜单加载失败，请稍后再试！')
       //   })
     },
-
     // 分页插件事件
     callFather(parm) {
       this.formInline.page = parm.currentPage
