@@ -3,9 +3,6 @@
     <div class="container">
       <ul>
         <li>
-          <span class="icon-setting"></span>预约维修服务
-        </li>
-        <li>
           <span class="icon-7day"></span>7天无理由退货
         </li>
         <li>

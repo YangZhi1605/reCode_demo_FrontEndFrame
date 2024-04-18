@@ -14,11 +14,12 @@ import axios from './assets/dist/axios.min'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 // 导入swiper的样式文件
 import 'swiper/css/swiper.css'
-import VueAxios from 'vue-axios'
+// import VueAxios from 'vue-axios' //我用了类似的代替了
 import VueLazyload from 'vue-lazyload'
 import VueCookie from 'vue-cookie'
 import { Message } from 'element-ui'
 import store from './store'
+import VueRouter from 'vue-router'
 
 /*注册相关*/
 Vue.use(VueLazyload, {
@@ -30,6 +31,8 @@ Vue.use(VueLazyload, {
   loading:'./assets/imgs/loading-svg/loading-bars.svg'
 
 })
+
+Vue.use(VueRouter)
 Vue.prototype.$message = Message;
 Vue.use(VueCookie);
 Vue.use(VueAwesomeSwiper)
@@ -46,3 +49,8 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+// new Vue({
+//   store,
+//   router,  // 注入路由配置
+//   render: h => h(App)
+// }).$mount('#app')

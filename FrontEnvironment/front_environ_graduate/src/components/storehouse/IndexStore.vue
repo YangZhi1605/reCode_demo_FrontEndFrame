@@ -5,7 +5,7 @@
         <div class="nav-menu">
           <ul class="menu-wrap">
             <li class="menu-item">
-              <a href="#">手机 电话卡</a>
+              <a href="#">发动机 气缸体</a>
               <div class="children">
                 <ul v-for="(item, id) in menuList" :key="id">
                   <li v-for="(sub, i) in item" v-bind:key="i">
@@ -17,29 +17,33 @@
                 </ul>
               </div>
             </li>
+
             <li class="menu-item">
-              <a href="#">电视 盒子</a>
+              <a href="#">离合器 磁性材料</a>
             </li>
             <li class="menu-item">
-              <a href="#">笔记本 平板</a>
+              <a href="#">压缩机 刹车盘</a>
             </li>
             <li class="menu-item">
-              <a href="#">出行 穿戴</a>
+              <a href="#">转向机 球头销</a>
             </li>
             <li class="menu-item">
-              <a href="#">智能 路由器</a>
+              <a href="#">平衡块 钢板</a>
             </li>
             <li class="menu-item">
-              <a href="#">电源 配件</a>
+              <a href="#">火花塞 蓄电池</a>
             </li>
             <li class="menu-item">
-              <a href="#">生活 箱包</a>
+              <a href="#">灯具 前照灯</a>
             </li>
           </ul>
         </div>
+<!--        swiper是自动旋转的-->
+<!--        我先把图片调整好-->
         <swiper v-bind:options="swiperOption">
           <swiper-slide v-for="(item, index) in slideList" v-bind:key="index">
-            <a :href="'/#/product/' + item.id">
+<!--            这里对每个图片有请求的控制。它都没有写完，我暂时也不写-->
+            <a :href="'/#/store/' + item.id">
               <img v-bind:src="item.img" />
             </a>
           </swiper-slide>
@@ -48,19 +52,28 @@
           <div class="swiper-button-next" slot="button-next"></div>
         </swiper>
       </div>
+
+<!--      下面是其他的东西了-->
+<!--      零件信息列表-->
       <div class="ads-box">
-        <a :href="'/#/product/' + item.id" v-for="(item, id) in adsList" :key="id">
+        <router-link v-for="(item, id) in adsList" :key="id" :to="{ name: 'ToTest', params: { id: item.id }}" @click.native="logRoute(item.id)">
           <img v-lazy="item.img" alt />
-        </a>
+        </router-link>
       </div>
+
+
+
+<!--      分隔图banner，未处理-->
       <div class="banner">
         <a href="/#/product/30">
-          <img v-lazy="'/imgs/banner-1.png'" alt />
+<!--          <img v-lazy="'../../assets/imgs/banner-1.png'" alt />-->
+          <el-image :src="banner"></el-image>
         </a>
       </div>
+<!--未处理-->
       <div class="product-box">
         <div class="container">
-          <h2>手机</h2>
+          <h2>待定</h2>
           <div class="wrapper">
             <div class="banner-left">
               <a href="/#/product/35">
@@ -101,6 +114,7 @@
       </template>
     </modal>
   </div>
+
 </template>
 
 <script>
@@ -108,18 +122,41 @@
 // 例如：import 《组件名称》 from '《组件路径》 ';
 import ServiceBar from "../component_repository/ServiceBar.vue";
 import Modal from "../component_repository/Modal.vue";
+//导入swiper需要的图片
+import swiper_slide1 from '../../assets/imgs/slider/slide-1.jpg'
+import swiper_slide2 from '../../assets/imgs/slider/slide-2.jpg'
+import swiper_slide3 from '../../assets/imgs/slider/slide-3.jpg'
+import swiper_slide4 from '../../assets/imgs/slider/slide-4.jpg'
+import swiper_slide5 from '../../assets/imgs/slider/slide-5.jpg'
+import swiper_slide_new1 from '../../assets/imgs/slider/1-try_out.jpg'
+import swiper_slide_new2 from '../../assets/imgs/slider/3-try_out.jpg'
+import swiper_slide_new3 from '../../assets/imgs/slider/4-try_out.jpg'
+import swiper_slide_new4 from '../../assets/imgs/slider/5-try_out.jpg'
+import swiper_slide_new5 from '../../assets/imgs/slider/6-try_out.jpg'
+
+
+
+// 导入下面广告页面的图片
+import ads1 from '../../assets/imgs/ads/Carpart1_out.jpg'
+import ads2 from '../../assets/imgs/ads/Carpart2_out.jpg'
+import ads3 from '../../assets/imgs/ads/Carpart3_out.jpg'
+import ads4 from '../../assets/imgs/ads/Carpart4_out.jpg'
+import banner from '../../assets/imgs/banner-1.png'
+import ToTest from "./ToTest.vue";
+
 export default {
   name: 'IndexStore',
   // import 引入的组件需要注入到对象中才能使用
   components: {
     ServiceBar,
-    Modal
+    Modal,
+    ToTest
   },
   props: {},
   data() {
     return {
       swiperOption: {
-        autoplay: true,
+        autoplay: true, //这个属性控制是否自动旋转
         loop: true,
         effect: "cube",
         cubeEffect: {
@@ -137,28 +174,30 @@ export default {
           prevEl: ".swiper-button-prev"
         }
       },
+      //swiper旋转中的展示的内容
       slideList: [
         {
           id: "42",
-          img: "/imgs/slider/slide-1.jpg"
+          img: swiper_slide_new1
         },
         {
           id: "45",
-          img: "/imgs/slider/slide-2.jpg"
+          img: swiper_slide_new2
         },
         {
           id: "46",
-          img: "/imgs/slider/slide-3.jpg"
+          img: swiper_slide_new3
         },
         {
           id: "",
-          img: "/imgs/slider/slide-4.jpg"
+          img:swiper_slide_new4
         },
         {
           id: "",
-          img: " /imgs/slider/slide-5.jpg"
+          img: swiper_slide_new5
         }
       ],
+      // 暂时不知道是啥
       menuList: [
         [
           {
@@ -188,29 +227,31 @@ export default {
         [0, 0, 0, 0],
         [0, 0, 0, 0]
       ],
+      // 广告
       adsList: [
         {
           id: 33,
-          img: "/imgs/ads/ads-1.png"
+          img: ads1
         },
         {
           id: 48,
-          img: "/imgs/ads/ads-2.jpg"
+          img: ads2
         },
         {
           id: 45,
-          img: "/imgs/ads/ads-3.png"
+          img: ads3
         },
         {
           id: 47,
-          img: "/imgs/ads/ads-4.jpg"
-        }
+          img: ads4
+        },
       ],
       phoneList: [
         // [1, 1, 1, 1],
         // [1, 1, 1, 1]
       ],
       showModal:false,
+      banner:banner,//
     };
   },
   mounted() {
@@ -219,33 +260,37 @@ export default {
   methods: {
     //发送了get请求
     init() {
-      this.$axios
-        .get("/products", {
-          params: {
-            categoryId: 100012,
-            pageSize: 14
-          }
-        })
-        .then(res => {
-          res.list = res.list.slice(6, 14);
-          this.phoneList = [res.list.slice(0, 4), res.list.slice(4, 8)];
-        });
+      // this.$axios
+      //   .get("/products", {
+      //     params: {
+      //       categoryId: 100012,
+      //       pageSize: 14
+      //     }
+      //   })
+      //   .then(res => {
+      //     res.list = res.list.slice(6, 14);
+      //     this.phoneList = [res.list.slice(0, 4), res.list.slice(4, 8)];
+      //   });
     },
 
     //发送了post请求
     addCart(){
-      this.$axios.post('/carts',{
-        productId:id,
-        selected: true
-      }).then((res)=>{
-        this.showModal = true;
-        this.$store.dispatch('saveCartCount',res.cartTotalQuantity);
-      });
+      // this.$axios.post('/carts',{
+      //   productId:id,
+      //   selected: true
+      // }).then((res)=>{
+      //   this.showModal = true;
+      //   this.$store.dispatch('saveCartCount',res.cartTotalQuantity);
+      // });
     },
     //跳转到购物车
     goToCart(){
       this.$router.push('/cart');
-    }
+    },
+    logRoute(id) {
+      console.log('Routing to product with id:', id);
+    },
+
   },
   // 生命周期 - 创建完成（可以访问当前this 实例）
   created() {
