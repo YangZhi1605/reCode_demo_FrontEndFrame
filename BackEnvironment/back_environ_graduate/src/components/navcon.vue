@@ -1,6 +1,6 @@
 /**
 * 头部菜单
-*/ 
+*/
 <template>
   <el-menu class="el-menu-demo" mode="horizontal" background-color="#334157" text-color="#fff" active-text-color="#fff">
     <el-button class="buttonimg">
@@ -42,6 +42,8 @@ export default {
         .then(() => {
           setTimeout(() => {
             this.$store.commit('logout', 'false')
+            // 调用utils.js中的delCookie方法删除cookie
+            // this.$utils.delCookie('token')
             this.$router.push({ path: '/login' })
             this.$message({
               type: 'success',

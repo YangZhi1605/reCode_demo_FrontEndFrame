@@ -3,6 +3,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 // 登录
 import login from '@/views/login';
+//注册
+import register from "../views/register.vue";
+import login_new from "../views/login_new.vue";
 // 首页
 import index from '@/views/index';
 /**
@@ -55,28 +58,43 @@ Vue.use(Router);
 
 // 导出路由
 export default new Router({
-    routes: [{
+    routes: [
+      {
         path: '/',
         name: '',
-        component: login,
+        component: login_new,
         hidden: true,
         meta: {
             requireAuth: false
         }
-    }, {
+    },
+      {
         path: '/login',
         name: '登录',
-        component: login,
+        component: login_new,
         hidden: true,
         meta: {
             requireAuth: false
         }
-    }, {
+    },
+      // 添加注册页面的路由记录
+      {
+        path: '/register',
+        name: '注册',
+        component: register, // 假设你有一个注册组件叫做register
+        hidden: true,
+        meta: {
+          requireAuth: false // 假设注册不需要登录权限
+        }
+      },
+
+      {
         path: '/index',
         name: '首页',
         component: index,
         iconCls: 'el-icon-tickets',
-        children: [{
+        children: [
+          {
             path: '/goods/Goods',
             name: '商品管理',
             component: Goods,

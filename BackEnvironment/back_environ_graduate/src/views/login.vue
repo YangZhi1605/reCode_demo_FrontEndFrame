@@ -22,9 +22,17 @@
       <el-form-item style="width:100%;">
         <el-button type="primary" style="width:100%;" @click="submitForm('ruleForm')" :loading="logining">登录</el-button>
       </el-form-item>
+      <el-form-item>
+        <!--    切换到注册组件-->
+        <!-- 添加注册链接 -->
+        <router-link to="/register">@没有账号？来注册账号吧~</router-link>
+<!--        <el-button type="text" @click="this.$router.push({ path: '/register' })">没有账号？来注册吧</el-button>-->
+      </el-form-item>
     </el-form>
+
   </div>
 </template>
+
 <script type="text/ecmascript-6">
 import { login } from '../api/userMG'
 import { setCookie, getCookie, delCookie } from '../utils/util'
@@ -55,10 +63,11 @@ export default {
   },
   // 创建完毕状态(里面是操作)
   created() {
-    this.$message({
-      message: '账号密码及验证码不为空即可',
-      type: 'success'
-    })
+
+    // this.$message({
+    //   message: '账号密码及验证码不为空即可',
+    //   type: 'success'
+    // })
     // 获取图形验证码
     // this.getcode()
     // 获取存在本地的用户名密码
@@ -81,48 +90,62 @@ export default {
         if (valid) {
           this.logining = true
           // 测试通道，不为空直接登录
-          setTimeout(() => {
-            this.logining = false
-            this.$store.commit('login', 'true')
-            this.$router.push({ path: '/goods/Goods' })
-          }, 1000)
+          // setTimeout(() => {
+          //   this.logining = false
+          //   this.$store.commit('login', 'true')
+          //   this.$router.push({ path: '/goods/Goods' })
+          // }, 1000)
           // 注释
-          // login(this.ruleForm).then(res => {
-          //   if (res.success) {
-          //     if (this.rememberpwd) {
-          //       //保存帐号到cookie，有效期7天
-          //       setCookie('user', this.ruleForm.username, 7)
-          //       //保存密码到cookie，有效期7天
-          //       setCookie('pwd', this.ruleForm.password, 7)
-          //     } else {
-          //       delCookie('user')
-          //       delCookie('pwd')
-          //     }
-          //     //如果请求成功就让他2秒跳转路由
-          //     setTimeout(() => {
-          //       this.logining = false
-          //       // 缓存token
-          //       localStorage.setItem('logintoken', res.data.token)
-          //       // 缓存用户个人信息
-          //       localStorage.setItem('userdata', JSON.stringify(res.data))
-          //       this.$store.commit('login', 'true')
-          //       this.$router.push({ path: '/goods/Goods' })
-          //     }, 1000)
-          //   } else {
-          //     this.$message.error(res.msg)
-          //     this.logining = false
-          //     return false
-          //   }
-          // })
+          login(this.ruleForm).then(res => {
+            if (res.success) {
+              if (this.rememberpwd) {
+                //保存帐号到cookie，有效期7天
+                setCookie('user', this.ruleForm.username, 7)
+                //保存密码到cookie，有效期7天
+                setCookie('pwd', this.ruleForm.password, 7)
+              } else {
+                delCookie('user')
+                delCookie('pwd')
+              }
+              //如果请求成功就让他2秒跳转路由
+              setTimeout(() => {
+                this.logining = false
+                // 缓存token
+                localStorage.setItem('logintoken', res.data.token)
+                // 缓存用户个人信息
+                localStorage.setItem('userdata', JSON.stringify(res.data))
+                this.$store.commit('login', 'true')
+                this.$router.push({ path: '/goods/Goods' })
+              }, 1000)
+            } else {
+              this.$message.error(res.msg)
+              this.logining = false
+              return false
+            }
+          })
         } else {
           // 获取图形验证码
-          this.getcode()
+          // this.getcode()
           this.$message.error('请输入用户名密码！')
           this.logining = false
           return false
         }
       })
     },
+
+    //获取图形验证码的方法 —— 暂时不管验证码
+    // async getcode() {
+    //   try {
+    //     const response = await this.$axios.get('/api/your-captcha-endpoint');
+    //     if (response && response.data) {
+    //       this.ruleForm.codeimg = response.data.captchaImageUrl; // 假设返回的数据中有验证码的URL
+    //     }
+    //   } catch (error) {
+    //     console.error('获取验证码失败:', error);
+    //     this.$message.error('获取验证码失败');
+    //   }
+    // }
+
   }
 }
 </script>

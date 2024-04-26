@@ -46,14 +46,14 @@ export default {
             {
               menuid: 2,
               icon: 'icon-cat-skuQuery',
-              menuname: '商品管理',
+              menuname: '零件库存管理',
               hasThird: 'N',
               url: 'goods/Goods',
               menus: null
             },
             {
               menuid: 177, // 确保menuid唯一
-              icon: 'icon-machine-learn-manage', // 根据实际情况替换为相应的图标类名
+              icon: 'icon-cms-manage', // 根据实际情况替换为相应的图标类名
               menuname: '机器学习管理',
               hasThird: 'N',
               url: 'goods/MachineLearnSys', // 确保URL与路由配置中的路径匹配
@@ -120,7 +120,7 @@ export default {
             {
               menuid: 75,
               icon: 'icon-promotion-manage',
-              menuname: '系统环境变量',
+              menuname: '电路权重管理',
               hasThird: 'N',
               url: 'system/Variable',
               menus: null
