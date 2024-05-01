@@ -7,11 +7,11 @@
       <div :class="active === 1?'form':'form hidden'" >
         <div class="title">欢迎 <b>回来</b></div>
         <div class="subtitle">登录你的账户</div>
-        <div class="inputf">
+        <div class="inputf" v-if="!validUsername">
           <input type="text"  v-model="loginFormData.username" placeholder="用户名"/>
           <span class="label">用户名</span>
         </div>
-        <div class="inputf">
+        <div class="inputf" v-if="!validPassword">
           <input type="password" v-model="loginFormData.password" placeholder="密码"/>
           <span class="label">密码</span>
         </div>
@@ -73,7 +73,10 @@ export default {
   data() {
     // 这里存放数据
     return {
+      loading: false,
       active:1,
+      validUsername: false,
+      validPassword: false,
       loginFormData: {
         username: '',
         password: '',
@@ -89,12 +92,47 @@ export default {
 
   methods: {
     async login() {
-      // 这里是你登录的逻辑，例如使用 axios 发送请求到后端
       console.log('登录表单数据：', this.loginFormData);
+      this.logining = true; // 开始登录，显示登录状态指示器
+
+      try {
+        const response = await this.$axios.post('http://127.0.0.1:5000/api/is_exist', this.loginFormData);
+        if (response.data.success) {
+          console.log('登录成功！');
+          this.$message.success('登录成功！'); // 使用消息提示组件显示成功信息
+          localStorage.setItem('token', response.data.token); // 保存Token到本地存储
+          //存储用户信息
+          // localStorage.setItem('user', JSON.stringify(response.data.user));
+
+          setTimeout(() => { // 延迟跳转
+            this.$router.push('/goods/Goods');
+          }, 1000); // 假设延迟1秒后跳转
+        } else {
+          console.log('登录失败：', response.data.message);
+          this.$message.error(response.data.message); // 使用消息提示组件显示错误信息
+        }
+        this.logining = false; // 登录结束，隐藏登录状态指示器
+      } catch (error) {
+        console.error('登录请求发送失败', error);
+        this.$message.error('登录请求发送失败'); // 显示请求失败消息
+        this.logining = false;
+      }
     },
     async register() {
       // 这里是你注册的逻辑，例如使用 axios 发送请求到后端
       console.log('注册表单数据：', this.registerFormData);
+
+      //向后端发送注册的post请求
+      const response = await this.$axios.post('http://127.0.0.1:5000/api/add_user_info', this.registerFormData);
+      console.log('注册请求返回：', response.data);
+      //注册成功
+      if (response.data.success) {
+        this.$message.success('注册成功！'); // 使用消息提示组件显示成功信息
+        //注册成功后跳转到登录页面
+        this.active = 1;
+      } else {
+        this.$message.error(response.data.message); // 使用消息提示组件显示错误信息
+      }
       //置空注册表单
       this.registerFormData = {
         username: '',

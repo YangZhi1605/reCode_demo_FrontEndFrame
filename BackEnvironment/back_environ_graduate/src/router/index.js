@@ -59,6 +59,7 @@ Vue.use(Router);
 // 导出路由
 export default new Router({
     routes: [
+      // '/'是默认路由，重定向到'/login'
       {
         path: '/',
         name: '',
@@ -68,6 +69,7 @@ export default new Router({
             requireAuth: false
         }
     },
+      // 添加登录页面的路由记录
       {
         path: '/login',
         name: '登录',

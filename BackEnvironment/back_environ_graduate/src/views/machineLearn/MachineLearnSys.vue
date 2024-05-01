@@ -1,11 +1,15 @@
 <template>
   <div>
-
+    <!-- 面包屑导航 -->
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>模型管理</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-row>
       <el-col :span="24">
-        <!--    表格用户维护模型信息-->
+        <!--    表格用户维护模型信息,表头根据模型名称来搜索过滤-->
         <el-table
-          :data="tableData.filter(data => !search || data.ModelName.toLowerCase().includes(search.toLowerCase()))"
+          :data="getPagedTableData.filter(data => !search || data.ModelName.toLowerCase().includes(search.toLowerCase()))"
           style="width: 100%">
           <el-table-column
             label="模型创建时间"
@@ -23,6 +27,10 @@
             prop="CreateUser">
           </el-table-column>
           <el-table-column
+            label="模型精准度"
+            prop="ModelScore">
+          </el-table-column>
+          <el-table-column
             label="是否启用"
             prop="IsUse">
             <template slot-scope="scope">
@@ -36,19 +44,30 @@
               <el-input
                 v-model="search"
                 size="mini"
-                placeholder="输入关键字搜索"/>
+                placeholder="输入模型名称搜索"/>
             </template>
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
               <el-button
                 size="mini"
                 type="danger"
-                @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
+
+        <!-- 分页组件 -->
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10,20,30,40]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="listData.length">
+        </el-pagination>
       </el-col>
     </el-row>
 
@@ -70,13 +89,18 @@
 
 <!--      模型训练按钮-->
       <el-col :span="6">
-        <el-button size="medium " type="success" >模型训练</el-button>
+        <el-button size="medium " type="success" @click="train_model">模型训练</el-button>
         <div class="el-upload__tip">将会占据大量服务器资源~</div>
       </el-col>
 
+      <!--      模型预测测试按钮-->
+<!--      <el-col :span="6">-->
+<!--        <el-button size="medium " type="success" @click="train_test">模型测试</el-button>-->
+<!--        <div class="el-upload__tip">将会占据大量服务器资源~</div>-->
+<!--      </el-col>-->
+
       <!--    上传.pkl的模型文件-->
       <el-col :span="6">
-
         <el-upload
           class="upload-demo"
           action="https://jsonplaceholder.typicode.com/posts/"
@@ -128,9 +152,6 @@
         <el-button size="small" type="primary" :loading="loading" class="title" @click="submitForm_edit">保存</el-button>
       </div>
     </el-dialog>
-
-
-
   </div>
 </template>
 
@@ -138,15 +159,17 @@
 // 这里可以导入其他文件（比如：组件，工具 js，第三方插件 js，json 文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》 ';
 
+import Pagination from "../../components/Pagination.vue";
+
 export default {
   name: 'MachineLearnSys',
   // import 引入的组件需要注入到对象中才能使用
-  components: {},
+  components: {Pagination},
   props: {},
   data() {
     // 这里存放数据
     return {
-      tableData: [],
+      listData: [],
       search: '',
       name_val:'',
       editFormVisible: false,//编辑界面是否显示
@@ -160,9 +183,61 @@ export default {
       },//编辑界面的数据
       rules_edit:{},
       loading:false,//是显示加载
+      currentPage: 1, // 当前页码
+      pageSize: 10, // 每页显示条数
+
     }
   },
+  computed: {
+    // 计算当前页显示的数据
+    /*
+    * 这里的 getPagedTableData 是一个计算属性，
+    * 它会根据当前页 currentPage 和每页大小 pageSize 来
+    * 动态计算当前页所要显示的表格数据切片。
+    * 当页码或每页条数发生变化时，el-pagination 组件将会
+    * 触发 handleSizeChange 或 handleCurrentChange 方法，
+    * 并且你可以在这些方法中处理页码变化*/
+    getPagedTableData() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return this.listData.slice(start, end);
+    },
+
+  },
   methods: {
+    //测试模型的预测代码能否正常运行
+    train_test(){
+      console.log('开始测试模型');
+      this.$axios.get('http://127.0.0.1:5000/api/load_model_KNN').then(res => {
+        console.log(res.data);
+        //重新获取数据
+        this.fetchAllMachineInfo();
+        // 提示训练成功
+        this.$message({
+          message: '测试成功',
+          type: 'success'
+        });
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    //点击训练模型按钮后的操作,
+    train_model(){
+      console.log('开始训练模型');
+      this.$axios.get('http://127.0.0.1:5000/api/train_model_SVM').then(res => {
+        console.log(res.data);
+        //重新获取数据
+        this.fetchAllMachineInfo();
+        // 提示训练成功
+        this.$message({
+          message: '训练成功',
+          type: 'success'
+        });
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     //点击编辑后的操作
     handleEdit(index, row) {
       console.log(index, row);
@@ -194,9 +269,16 @@ export default {
 
     //向后端发送axios的get请求获得所有数据的方法
     fetchAllMachineInfo(){
+      this.loading = true;
       this.$axios.get('http://127.0.0.1:5000/api/get_all_machine').then(res => {
-        console.log(res.data)
-        this.tableData = res.data;
+        console.log(res.data);
+        //获取数据成功的消息提示
+        this.$message({
+          message: '获取数据成功',
+          type: 'success'
+        });
+        this.listData = res.data;
+        this.loading = false;
       }).catch(err => {
         console.log(err)
       })
@@ -250,11 +332,18 @@ export default {
       });
     },
 
-    //键盘enter键之后的搜索操作
-    searchInfo(){
-      // this.fetchAllMachineInfo();
-      console.log(this.search);
+    //分页功能
+    //挂载在size-change事件上，当pageSize改变时候，改变每一页显示条目个数
+    handleSizeChange(newSize) {
+      this.pageSize = newSize;
+      this.currentPage = 1; // 更改每页大小时重置当前页码到第一页
     },
+    //挂载在current-change事件上，当currentPage改变时候，改变当前页码
+    handleCurrentChange(newPage) {
+      this.currentPage = newPage;
+      // 当当前页码变化时，可能需要重新加载数据
+    },
+
 
     // 上传前的操作
     beforeUpload(file) {

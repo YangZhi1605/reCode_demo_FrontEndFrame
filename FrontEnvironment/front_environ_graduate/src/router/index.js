@@ -12,12 +12,16 @@ import IndexStore from "../components/storehouse/IndexStore.vue";
 import Product from "../components/storehouse/product.vue";
 import ToTest from "../components/storehouse/ToTest.vue";
 import HomeStore from "../components/storehouse/HomeStore.vue";
+import Login from "../components/login_register/Login.vue";
+import Register from "../components/login_register/Register.vue";
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {path: '/', redirect: '/index'},
+    {path:'/login',component:Login},
+    {path:'/register',component:Register},
     {path: '/index', component:Index},
     // 这里用于下拉列表中的路由，应该是一个嵌套路由
     {
@@ -46,23 +50,7 @@ export default new Router({
         {path:  'index_store', name: 'IndexStore',component:IndexStore},
       ]
     },
-    // {
-    //   path:'/store_home',
-    //   name:'store_home',
-    //   component:HomeStore,
-    //   children:[
-    //     {
-    //       path: '/store_index',
-    //       name: store_index,
-    //       component: IndexStore
-    //     },
-    //     {
-    //       path: '/test',
-    //       name: 'test',
-    //       component: ToTest,
-    //     }
-    //   ]
-    // }
+
 
   ]
 })

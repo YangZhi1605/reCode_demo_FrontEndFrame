@@ -17,6 +17,7 @@
 </template>
 <script>
 import { loginout } from '../api/userMG'
+import { setCookie, getCookie, delCookie } from '../utils/util'
 export default {
   name: 'navcon',
   data() {
@@ -41,14 +42,22 @@ export default {
       })
         .then(() => {
           setTimeout(() => {
-            this.$store.commit('logout', 'false')
-            // 调用utils.js中的delCookie方法删除cookie
-            // this.$utils.delCookie('token')
-            this.$router.push({ path: '/login' })
+            // this.$store.commit('logout', 'false')
+            // // 调用utils.js中的delCookie方法删除cookie
+            // // this.$utils.delCookie('token')
+            // this.$router.push({ path: '/login' })
+            // this.$message({
+            //   type: 'success',
+            //   message: '已退出登录!'
+            // })
+            localStorage.removeItem("token"); // 清除token
+            localStorage.removeItem("userdata"); // 如果需要也清除userdata
+            this.$store.commit('logout', 'false'); // 更新store状态
             this.$message({
               type: 'success',
               message: '已退出登录!'
-            })
+            });
+            this.$router.push({ path: '/login' }); // 跳转到登录页
           }, 1000)
           // loginout()
           //   .then(res => {
@@ -86,7 +95,14 @@ export default {
     toggle(showtype) {
       this.collapsed = !showtype
       this.$root.Bus.$emit('toggle', this.collapsed)
-    }
+    },
+
+    // 个人中心
+    content() {
+      // this.$router.push({ path: '/content' })
+      console.log('个人中心');
+    },
+
   }
 }
 </script>
