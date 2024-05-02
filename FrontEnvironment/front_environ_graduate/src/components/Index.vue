@@ -1,5 +1,6 @@
 <template>
   <div>
+<!--    同样，模仿小米商场，那么我的index组件里，就是展示主体内容，不管菜单栏，菜单栏写在另一个组件里-->
 <!--    放Container容器-->
     <el-container>
 <!--      顶部容器-->
@@ -33,9 +34,9 @@
       <el-footer>
         <h3 class="my-use-advice-title">使用指南</h3>
         <div class="my-use-advice-text">{{ typewriterText }}</div>
-
         <ChartShow ref="footShow"></ChartShow>
       </el-footer>
+
     </el-container>
   </div>
 </template>

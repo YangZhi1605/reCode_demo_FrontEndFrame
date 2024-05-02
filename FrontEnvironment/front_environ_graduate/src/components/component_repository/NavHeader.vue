@@ -1,10 +1,10 @@
 <template>
   <div class="header">
+<!--    顶部内容:登录、推出、我的订单、购物车-->
     <div class="nav-topbar">
       <div class="container">
         <div class="topbar-menu">
-          <a href="javascript:;">小米商城</a>
-          <a href="javascript:;">MUI</a>
+          <a href="javascript:;">健康管家</a>
           <a href="javascript:;">云服务</a>
           <a href="javascript:;">协议规则</a>
         </div>
@@ -20,117 +20,136 @@
         </div>
       </div>
     </div>
+
+<!--    导航栏-->
     <div class="nav-header">
       <div class="container">
+<!--        logo-->
         <div class="header-logo">
           <a href="/#/index"></a>
         </div>
+<!--        具体的菜单栏-->
         <div class="header-menu">
-          <div class="item-menu">
-            <span>小米手机</span>
-            <div class="children">
-              <ul>
-                <li class="product" v-for="(item, index) in phoneList" :key="index">
-                  <a :href="'/#/product/'+item.id" target="_blank">
-                    <div class="pro-img">
-                      <img :src="item.mainImage" :alt="item.subtitle" />
-                    </div>
-                    <div class="pro-name">{{item.name}}</div>
-                    <div class="pro-price">{{item.price | currency}}</div>
-                  </a>
-                </li>
-              </ul>
-            </div>
+          <div class="header-menu-container">
+            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+              <el-menu-item index="/index">首页</el-menu-item>
+              <el-submenu index="/workbench">
+                <template slot="title">我的工作台</template>
+                <el-menu-item index="/workbench/workbench1">信息loading</el-menu-item>
+                <el-menu-item index="/workbench/workbench2">数据showing</el-menu-item>
+                <el-menu-item index="/workbench/workbench3">修改editing</el-menu-item>
+                <el-menu-item index="/workbench/workbench4">选项4</el-menu-item>
+              </el-submenu>
+              <el-menu-item index="/msg">日志维护</el-menu-item>
+              <el-menu-item index="/store">零件仓库</el-menu-item>
+              <el-menu-item index="/order">订单管理</el-menu-item>
+            </el-menu>
           </div>
-          <div class="item-menu">
-            <span>RedMi红米</span>
-          </div>
-          <div class="item-menu">
-            <span>电视</span>
-            <div class="children">
-              <ul>
-                <li class="product">
-                  <a href target="_blank">
-                    <div class="pro-img">
-                      <img v-lazy="'/imgs/nav-img/nav-3-1.jpg'" alt />
-                    </div>
-                    <div class="pro-name">小米壁画电视 65英寸</div>
-                    <div class="pro-price">6999元</div>
-                  </a>
-                </li>
-                <li class="product">
-                  <a href target="_blank">
-                    <div class="pro-img">
-                      <img v-lazy="'/imgs/nav-img/nav-3-2.jpg'" alt />
-                    </div>
-                    <div class="pro-name">小米全面屏电视E55A</div>
-                    <div class="pro-price">1999元</div>
-                  </a>
-                </li>
-                <li class="product">
-                  <a href target="_blank">
-                    <div class="pro-img">
-                      <img v-lazy="'/imgs/nav-img/nav-3-3.png'" alt />
-                    </div>
-                    <div class="pro-name">小米电视4A 32英寸</div>
-                    <div class="pro-price">699元</div>
-                  </a>
-                </li>
-                <li class="product">
-                  <a href target="_blank">
-                    <div class="pro-img">
-                      <img v-lazy="'/imgs/nav-img/nav-3-4.jpg'" alt />
-                    </div>
-                    <div class="pro-name">小米电视4A 55英寸</div>
-                    <div class="pro-price">1799元</div>
-                  </a>
-                </li>
-                <li class="product">
-                  <a href target="_blank">
-                    <div class="pro-img">
-                      <img v-lazy="'/imgs/nav-img/nav-3-5.jpg'" alt />
-                    </div>
-                    <div class="pro-name">小米电视4A 65英寸</div>
-                    <div class="pro-price">2699元</div>
-                  </a>
-                </li>
-                <li class="product">
-                  <a href target="_blank">
-                    <div class="pro-img">
-                      <img v-lazy="'/imgs/nav-img/nav-3-6.png'" alt />
-                    </div>
-                    <div class="pro-name">查看全部</div>
-                    <div class="pro-price">查看全部</div>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
+
+<!--          <div class="item-menu">-->
+<!--            <span>首页</span>-->
+<!--            <div class="children">-->
+<!--              <ul>-->
+<!--                <li class="product" v-for="(item, index) in phoneList" :key="index">-->
+<!--                  <a :href="'/#/product/'+item.id" target="_blank">-->
+<!--                    <div class="pro-img">-->
+<!--                      <img :src="item.mainImage" :alt="item.subtitle" />-->
+<!--                    </div>-->
+<!--                    <div class="pro-name">{{item.name}}</div>-->
+<!--                    <div class="pro-price">{{item.price | currency}}</div>-->
+<!--                  </a>-->
+<!--                </li>-->
+<!--              </ul>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="item-menu">-->
+<!--            <span>RedMi红米</span>-->
+<!--          </div>-->
+<!--          <div class="item-menu">-->
+<!--            <span>电视</span>-->
+<!--            <div class="children">-->
+<!--              <ul>-->
+<!--                <li class="product">-->
+<!--                  <a href target="_blank">-->
+<!--                    <div class="pro-img">-->
+<!--                      <img v-lazy="'/imgs/nav-img/nav-3-1.jpg'" alt />-->
+<!--                    </div>-->
+<!--                    <div class="pro-name">小米壁画电视 65英寸</div>-->
+<!--                    <div class="pro-price">6999元</div>-->
+<!--                  </a>-->
+<!--                </li>-->
+<!--                <li class="product">-->
+<!--                  <a href target="_blank">-->
+<!--                    <div class="pro-img">-->
+<!--                      <img v-lazy="'/imgs/nav-img/nav-3-2.jpg'" alt />-->
+<!--                    </div>-->
+<!--                    <div class="pro-name">小米全面屏电视E55A</div>-->
+<!--                    <div class="pro-price">1999元</div>-->
+<!--                  </a>-->
+<!--                </li>-->
+<!--                <li class="product">-->
+<!--                  <a href target="_blank">-->
+<!--                    <div class="pro-img">-->
+<!--                      <img v-lazy="'/imgs/nav-img/nav-3-3.png'" alt />-->
+<!--                    </div>-->
+<!--                    <div class="pro-name">小米电视4A 32英寸</div>-->
+<!--                    <div class="pro-price">699元</div>-->
+<!--                  </a>-->
+<!--                </li>-->
+<!--                <li class="product">-->
+<!--                  <a href target="_blank">-->
+<!--                    <div class="pro-img">-->
+<!--                      <img v-lazy="'/imgs/nav-img/nav-3-4.jpg'" alt />-->
+<!--                    </div>-->
+<!--                    <div class="pro-name">小米电视4A 55英寸</div>-->
+<!--                    <div class="pro-price">1799元</div>-->
+<!--                  </a>-->
+<!--                </li>-->
+<!--                <li class="product">-->
+<!--                  <a href target="_blank">-->
+<!--                    <div class="pro-img">-->
+<!--                      <img v-lazy="'/imgs/nav-img/nav-3-5.jpg'" alt />-->
+<!--                    </div>-->
+<!--                    <div class="pro-name">小米电视4A 65英寸</div>-->
+<!--                    <div class="pro-price">2699元</div>-->
+<!--                  </a>-->
+<!--                </li>-->
+<!--                <li class="product">-->
+<!--                  <a href target="_blank">-->
+<!--                    <div class="pro-img">-->
+<!--                      <img v-lazy="'/imgs/nav-img/nav-3-6.png'" alt />-->
+<!--                    </div>-->
+<!--                    <div class="pro-name">查看全部</div>-->
+<!--                    <div class="pro-price">查看全部</div>-->
+<!--                  </a>-->
+<!--                </li>-->
+<!--              </ul>-->
+<!--            </div>-->
+<!--          </div>-->
         </div>
+<!--        搜索框-->
         <div class="header-search">
           <div class="wrapper">
             <input type="text" name="keyword" />
             <a href="javascript:;"></a>
           </div>
         </div>
+
+
       </div>
     </div>
   </div>
 </template>
-
 <script>
-// 这里可以导入其他文件（比如：组件，工具 js，第三方插件 js，json 文件，图片文件等等）
-// 例如：import 《组件名称》 from '《组件路径》 ';
 import { mapState } from "vuex";
 export default {
-  name: 'NavHeader',
-  // import 引入的组件需要注入到对象中才能使用
-  components: {},
-  props: {},
+  name: "nav-header",
   data() {
     return {
-      // username: '',
-      phoneList: []
+      activeIndex: '/index',
+      userStatus: '未登录', // 默认显示文本
+      userLoggedIn: false,  // 用户是否登录的标志
+      showLoginModal: false // 控制登录框显示的标志
     };
   },
   computed: {
@@ -156,6 +175,11 @@ export default {
     }
   },
   methods: {
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+      //切换路由的事
+      this.$router.push(key);
+    },
     login() {
       this.$router.push("/login");
     },
@@ -191,18 +215,18 @@ export default {
       this.$router.push("/cart");
     }
   }
-}
+};
 </script>
 
 <style lang="scss">
-@import "../../../src/assets/scss/base.scss";
-@import "../../../src/assets/scss/mixin.scss";
-@import "../../../src/assets/scss/config.scss";
+@import "../../assets/scss/base.scss";
+@import "../../assets/scss/mixin.scss";
+@import "../../assets/scss/config.scss";
 .header {
   .nav-topbar {
     height: 39px;
     line-height: 39px;
-    background-color: #333333;
+    background-color:#f6f5ec;
     color: #b0b0b0;
     .container {
       @include flex();
@@ -213,7 +237,7 @@ export default {
       }
       .my-cart {
         width: 110px;
-        background-color: #ff6600;
+        background-color: #90d7ec;
         text-align: center;
         color: #ffffff;
         margin-right: 0;
