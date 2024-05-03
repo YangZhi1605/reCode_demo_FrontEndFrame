@@ -45,87 +45,6 @@
               <el-menu-item index="/order">订单管理</el-menu-item>
             </el-menu>
           </div>
-
-<!--          <div class="item-menu">-->
-<!--            <span>首页</span>-->
-<!--            <div class="children">-->
-<!--              <ul>-->
-<!--                <li class="product" v-for="(item, index) in phoneList" :key="index">-->
-<!--                  <a :href="'/#/product/'+item.id" target="_blank">-->
-<!--                    <div class="pro-img">-->
-<!--                      <img :src="item.mainImage" :alt="item.subtitle" />-->
-<!--                    </div>-->
-<!--                    <div class="pro-name">{{item.name}}</div>-->
-<!--                    <div class="pro-price">{{item.price | currency}}</div>-->
-<!--                  </a>-->
-<!--                </li>-->
-<!--              </ul>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="item-menu">-->
-<!--            <span>RedMi红米</span>-->
-<!--          </div>-->
-<!--          <div class="item-menu">-->
-<!--            <span>电视</span>-->
-<!--            <div class="children">-->
-<!--              <ul>-->
-<!--                <li class="product">-->
-<!--                  <a href target="_blank">-->
-<!--                    <div class="pro-img">-->
-<!--                      <img v-lazy="'/imgs/nav-img/nav-3-1.jpg'" alt />-->
-<!--                    </div>-->
-<!--                    <div class="pro-name">小米壁画电视 65英寸</div>-->
-<!--                    <div class="pro-price">6999元</div>-->
-<!--                  </a>-->
-<!--                </li>-->
-<!--                <li class="product">-->
-<!--                  <a href target="_blank">-->
-<!--                    <div class="pro-img">-->
-<!--                      <img v-lazy="'/imgs/nav-img/nav-3-2.jpg'" alt />-->
-<!--                    </div>-->
-<!--                    <div class="pro-name">小米全面屏电视E55A</div>-->
-<!--                    <div class="pro-price">1999元</div>-->
-<!--                  </a>-->
-<!--                </li>-->
-<!--                <li class="product">-->
-<!--                  <a href target="_blank">-->
-<!--                    <div class="pro-img">-->
-<!--                      <img v-lazy="'/imgs/nav-img/nav-3-3.png'" alt />-->
-<!--                    </div>-->
-<!--                    <div class="pro-name">小米电视4A 32英寸</div>-->
-<!--                    <div class="pro-price">699元</div>-->
-<!--                  </a>-->
-<!--                </li>-->
-<!--                <li class="product">-->
-<!--                  <a href target="_blank">-->
-<!--                    <div class="pro-img">-->
-<!--                      <img v-lazy="'/imgs/nav-img/nav-3-4.jpg'" alt />-->
-<!--                    </div>-->
-<!--                    <div class="pro-name">小米电视4A 55英寸</div>-->
-<!--                    <div class="pro-price">1799元</div>-->
-<!--                  </a>-->
-<!--                </li>-->
-<!--                <li class="product">-->
-<!--                  <a href target="_blank">-->
-<!--                    <div class="pro-img">-->
-<!--                      <img v-lazy="'/imgs/nav-img/nav-3-5.jpg'" alt />-->
-<!--                    </div>-->
-<!--                    <div class="pro-name">小米电视4A 65英寸</div>-->
-<!--                    <div class="pro-price">2699元</div>-->
-<!--                  </a>-->
-<!--                </li>-->
-<!--                <li class="product">-->
-<!--                  <a href target="_blank">-->
-<!--                    <div class="pro-img">-->
-<!--                      <img v-lazy="'/imgs/nav-img/nav-3-6.png'" alt />-->
-<!--                    </div>-->
-<!--                    <div class="pro-name">查看全部</div>-->
-<!--                    <div class="pro-price">查看全部</div>-->
-<!--                  </a>-->
-<!--                </li>-->
-<!--              </ul>-->
-<!--            </div>-->
-<!--          </div>-->
         </div>
 <!--        搜索框-->
         <div class="header-search">
@@ -134,8 +53,6 @@
             <a href="javascript:;"></a>
           </div>
         </div>
-
-
       </div>
     </div>
   </div>
@@ -147,19 +64,24 @@ export default {
   data() {
     return {
       activeIndex: '/index',
-      userStatus: '未登录', // 默认显示文本
-      userLoggedIn: false,  // 用户是否登录的标志
-      showLoginModal: false // 控制登录框显示的标志
     };
   },
+  // 你可以在nav-header组件中添加computed属性来从localStorage中获取已经登录的用户名和购物车数量
+  // 至于购物车的数量我还没有写好
   computed: {
+    username() {
+      // 从localStorage中读取用户信息
+      const user = JSON.parse(localStorage.getItem('user'));
+      // 如果用户已登录，返回用户名，否则返回null
+      return user ? user.username : null;
+    },
     // username() {
     //   return this.$store.state.username;
     // },
     // cartCount() {
     //   return this.$store.state.cartCount;
     // }
-    ...mapState(["username", "cartCount"])
+    // ...mapState(["username", "cartCount"])
   },
   filters: {
     currency(val) {
@@ -184,7 +106,7 @@ export default {
       this.$router.push("/login");
     },
     getProductList() {
-      this.axios
+      this.$axios
         .get("/products", {
           params: {
             categoryId: "100012",
@@ -199,17 +121,17 @@ export default {
         });
     },
     getCartCount() {
-      this.axios.get("/carts/products/sum").then((res = 0) => {
+      this.$axios.get("/carts/products/sum").then((res = 0) => {
         this.$store.dispatch("saveCartCount", res);
       });
     },
     logout() {
-      this.axios.post("/user/logout").then(res => {
-        this.$message.success("退出成功");
-        this.$cookie.set("userId", "", { expires: "-1" });
-        this.$store.dispatch("saveUserName", "");
-        this.$store.dispatch("saveCarCount", "");
-      });
+      // 清除localStorage中的用户信息
+      localStorage.removeItem('user');
+      // 提示用户已退出
+      this.$message.success('您已退出登录');
+      //跳转到登录页面
+      this.$router.push('/login');
     },
     goToCart() {
       this.$router.push("/cart");

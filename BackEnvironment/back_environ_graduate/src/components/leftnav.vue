@@ -3,20 +3,24 @@
 */
 <template>
   <el-menu default-active="2" :collapse="collapsed" collapse-transition router :default-active="$route.path" unique-opened class="el-menu-vertical-demo" background-color="#334157" text-color="#fff" active-text-color="#ffd04b">
+
     <div class="logobox">
       <img class="logoimg" src="../assets/img/logo.png" alt="">
     </div>
+
     <el-submenu v-for="menu in allmenu" :key="menu.menuid" :index="menu.menuname">
       <template slot="title">
         <i class="iconfont" :class="menu.icon"></i>
         <span>{{menu.menuname}}</span>
       </template>
+
       <el-menu-item-group>
         <el-menu-item v-for="chmenu in menu.menus" :index="'/'+chmenu.url" :key="chmenu.menuid">
           <i class="iconfont" :class="chmenu.icon"></i>
           <span>{{chmenu.menuname}}</span>
         </el-menu-item>
       </el-menu-item-group>
+
     </el-submenu>
   </el-menu>
 </template>

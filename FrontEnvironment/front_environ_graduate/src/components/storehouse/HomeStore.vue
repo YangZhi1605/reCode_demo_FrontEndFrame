@@ -1,7 +1,7 @@
 <template>
   <div>
 <!--    展示仓库首页的组件-->
-    <h2 class="my-head-style-edit">这是仓库首页</h2>
+<!--    <h2 class="my-head-style-edit">这是仓库首页</h2>-->
 
 <!--    处理其下的路由请求的展示。好的。处理成功。-->
     <router-view/>

@@ -21,6 +21,31 @@ import { Message } from 'element-ui'
 import store from './store'
 import VueRouter from 'vue-router'
 
+
+/*
+* 这段代码的作用是：在每次路由改变前，都会检查目标路由是否需要验证（meta.requireAuth），
+* 如果需要，再检查用户是否已经登录（在localStorage中查找用户信息），
+* 如果用户未登录，跳转到登录页面并存下原本要访问的地址，用于在登录后的重定向。
+* */
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requireAuth)) {
+    // 如果路由需要权限验证
+    if (localStorage.getItem('user') === null) {
+      // 如果本地没有存储用户信息，说明用户未登录，引导用户去登录
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath } // 存下用户原本要访问的地址，登录后做重定向
+      })
+    } else {
+      // 用户已登录，便可继续访问
+      next()
+    }
+  } else {
+    // 如果路由不需要权限验证，直接跳转
+    next()
+  }
+})
+
 /*注册相关*/
 Vue.use(VueLazyload, {
   // preload: 1.3, // 表示lazyload元素距离底部距离百分比

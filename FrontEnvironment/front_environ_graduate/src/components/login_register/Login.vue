@@ -1,121 +1,131 @@
 <template>
-  <div>
-
-    <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="密码" prop="pass">
-        <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+  <div class="login-wrapper">
+    <el-form
+      ref="loginForm"
+      :rules="rules"
+      label-position="top"
+      class="login-form"
+      :model="loginData"
+      @submit.native.prevent="onLogin"
+    >
+      <h3 class="login-title">用户登录</h3>
+      <el-form-item label="邮箱" prop="email">
+        <el-input v-model="loginData.email" placeholder="请输入邮箱"></el-input>
       </el-form-item>
-      <el-form-item label="确认密码" prop="checkPass">
-        <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="loginData.password" placeholder="请输入密码"></el-input>
       </el-form-item>
-      <el-form-item label="年龄" prop="age">
-        <el-input v-model.number="ruleForm.age"></el-input>
+      <el-form-item class="form-actions">
+        <el-button type="primary" block @click="onLogin">登录</el-button>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
-      </el-form-item>
-    </el-form>
-
-
-    <el-form label-position="left"  ref="ruleForm" label-width="0px" class="demo-ruleForm login-container">
-      <h3 class="title">用户登录</h3>
-      <el-form-item>
-        <!--    切换到注册组件-->
-        <!-- 添加注册链接 -->
+      <el-form-item class="form-register-link">
         <router-link to="/register">@没有账号？来注册账号吧~</router-link>
-        <!--        <el-button type="text" @click="this.$router.push({ path: '/register' })">没有账号？来注册吧</el-button>-->
       </el-form-item>
     </el-form>
-
   </div>
 </template>
 
 <script>
-// 这里可以导入其他文件（比如：组件，工具 js，第三方插件 js，json 文件，图片文件等等）
-// 例如：import 《组件名称》 from '《组件路径》 ';
-
 export default {
   name: 'Login',
-  // import 引入的组件需要注入到对象中才能使用
-  components: {},
-  props: {},
   data() {
-    var checkAge = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('年龄不能为空'));
-      }
-      setTimeout(() => {
-        if (!Number.isInteger(value)) {
-          callback(new Error('请输入数字值'));
-        } else {
-          if (value < 18) {
-            callback(new Error('必须年满18岁'));
-          } else {
-            callback();
-          }
-        }
-      }, 1000);
-    };
-    var validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'));
-      } else {
-        if (this.ruleForm.checkPass !== '') {
-          this.$refs.ruleForm.validateField('checkPass');
-        }
-        callback();
-      }
-    };
-    var validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'));
-      } else if (value !== this.ruleForm.pass) {
-        callback(new Error('两次输入密码不一致!'));
-      } else {
-        callback();
-      }
-    };
-    // 这里存放数据
     return {
-      ruleForm: {
-        pass: '',
-        checkPass: '',
-        age: ''
+      loginData: {
+        email: '',
+        password: '',
       },
       rules: {
-        pass: [
-          { validator: validatePass, trigger: 'blur' }
+        email: [
+          { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
         ],
-        checkPass: [
-          { validator: validatePass2, trigger: 'blur' }
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, message: '密码长度不能小于6位', trigger: 'blur' },
+          {
+            pattern: /(?=.*[A-Za-z])(?=.*[\x21-\x2f\x3a-\x40]).+/,
+            message: '密码必须包含英文字符和特殊字符',
+            trigger: 'blur'
+          }
         ],
-        age: [
-          { validator: checkAge, trigger: 'blur' }
-        ]
       },
-    }
+    };
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+    onLogin() {
+      this.$refs.loginForm.validate(valid => {
         if (valid) {
-          alert('submit!');
+          // 表单验证通过，处理登录逻辑
+          console.log('login success:', this.loginData);
+          // 向后端发送axios的post请求，验证邮箱和密码是否正确
+          this.$axios.post('http://127.0.0.1:5000/api/is_exist_front_user_login', {
+            email: this.loginData.email,
+            password: this.loginData.password
+          }).then(res => {
+            console.log(res);
+            // 登录成功后，将用户信息保存到本地存储
+            // localStorage.setItem('user', JSON.stringify(res.data));
+            // 登录成功后，将用户信息保存到本地存储
+            localStorage.setItem('user', JSON.stringify({
+              username: res.data.username,
+              ...res.data // 其它用户信息
+            }));
+
+            // 提示用户登录成功
+            this.$message.success('登录成功');
+            // 清空表单数据
+            this.loginData.email = '';
+            this.loginData.password = '';
+            // 跳转到首页
+            this.$router.push('/index');
+          }).catch(error => {
+            // 处理登录失败的情况
+            console.error('Login error:', error);
+            // 提示用户登录失败，可以根据实际情况自定义消息内容
+            this.$message.error('登录失败: 用户名或密码错误');
+          });
+
         } else {
-          console.log('error submit!!');
+          // 表单验证失败
+          console.log('login failed');
+          this.$message.error('登录失败: 表单验证不通过');
           return false;
         }
       });
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    }
   },
-  // 生命周期 - 创建完成（可以访问当前this 实例）
-  created() {
-  },
-}
+};
 </script>
 
+
 <style scoped>
+.login-wrapper {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 25px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.login-form {
+  margin-top: 20px;
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #303133;
+  font-weight: bold;
+}
+
+.form-actions {
+  margin-top: 20px;
+}
+
+.form-register-link {
+  margin-top: 15px;
+  text-align: center;
+}
+
+/* 可以根据需要进一步美化 */
 </style>

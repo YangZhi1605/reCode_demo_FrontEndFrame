@@ -71,37 +71,42 @@ export default new Router({
       name: 'home',
       component: Home,
       redirect: '/index',
+      meta: { requireAuth: true },
       children: [
         {
           path: '/index',
           name: 'index',
-          component: Index
+          component: Index,
+          meta: { requireAuth: true },
         },
         {
           path: '/workbench',
           name: 'workbench',
           component: Workbench,
+          meta: { requireAuth: true },
           children:[
             {path: '/', redirect: '/workbench/workbench1'},
-            {path: 'workbench1', component: Workbench1},
-            {path: 'workbench2', component: Workbench2},
-            {path: 'workbench3', name:'EditPage', component: Workbench3},
-            {path: 'workbench4', component: Workbench4},
+            {path: 'workbench1', component: Workbench1,meta: { requireAuth: true },},
+            {path: 'workbench2', component: Workbench2,meta: { requireAuth: true },},
+            {path: 'workbench3', name:'EditPage', component: Workbench3,meta: { requireAuth: true },},
+            {path: 'workbench4', component: Workbench4, meta: { requireAuth: true },},
           ]
         },
         {
           path: '/msg',
           name: 'msg',
-          component: Message
+          component: Message,
+          meta: { requireAuth: true }
         },
         {
           path: '/store',
           name: 'store',
           component: HomeStore,
+          meta: { requireAuth: true },
           children:[
-            {path: '/', redirect: '/store/index_store'},
-            {path: 'test/:id', name: 'ToTest', component: ToTest},
-            {path: 'index_store', name: 'IndexStore', component: IndexStore},
+            {path: '/', redirect: '/store/index_store',meta: { requireAuth: true }},
+            {path: 'test/:id', name: 'ToTest', component: ToTest,meta: { requireAuth: true }},
+            {path: 'index_store', name: 'IndexStore', component: IndexStore,meta: { requireAuth: true }},
           ]
         },
       ]
@@ -111,26 +116,31 @@ export default new Router({
       path: '/order',
       name: 'order',
       component: Order,
+      meta: { requireAuth: true },
       children: [
         {
           path: 'list',
           name: 'order-list',
-          component: OrderList
+          component: OrderList,
+          meta: { requireAuth: true },
         },
         {
           path: 'confirm',
           name: 'order-confirm',
-          component: OrderConfirm
+          component: OrderConfirm,
+          meta: { requireAuth: true },
         },
         {
           path: 'pay',
           name: 'order-pay',
-          component: OrderPay
+          component: OrderPay,
+          meta: { requireAuth: true },
         },
         {
           path: 'alipay',
           name: 'alipay',
-          component: Alipay
+          component: Alipay,
+          meta: { requireAuth: true },
         }
       ]
     },

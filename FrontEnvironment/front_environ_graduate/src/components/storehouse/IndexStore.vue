@@ -55,15 +55,13 @@
 
 <!--      下面是其他的东西了-->
 <!--      零件信息列表-->
-      <div class="ads-box">
-        <router-link v-for="(item, id) in adsList" :key="id" :to="{ name: 'ToTest', params: { id: item.id }}" @click.native="logRoute(item.id)">
+      <div class="details-box">
+        <router-link v-for="(item, id) in detailList" :key="id" :to="{ name: 'ToTest', params: { id: item.id }}" @click.native="logRoute(item.id)">
           <img v-lazy="item.img" alt />
         </router-link>
       </div>
 
-
-
-<!--      分隔图banner，未处理-->
+<!--      分隔图banner-->
       <div class="banner">
         <a href="/#/product/30">
 <!--          <img v-lazy="'../../assets/imgs/banner-1.png'" alt />-->
@@ -136,12 +134,12 @@ import swiper_slide_new5 from '../../assets/imgs/slider/6-try_out.jpg'
 
 
 
-// 导入下面广告页面的图片
+// 导入下面零件页面的图片
 import ads1 from '../../assets/imgs/ads/Carpart1_out.jpg'
 import ads2 from '../../assets/imgs/ads/Carpart2_out.jpg'
 import ads3 from '../../assets/imgs/ads/Carpart3_out.jpg'
 import ads4 from '../../assets/imgs/ads/Carpart4_out.jpg'
-import banner from '../../assets/imgs/banner-1.png'
+import banner from '../../assets/imgs/分隔图1_out.jpg'
 import ToTest from "./ToTest.vue";
 
 export default {
@@ -227,8 +225,8 @@ export default {
         [0, 0, 0, 0],
         [0, 0, 0, 0]
       ],
-      // 广告
-      adsList: [
+      // 这里得变成我的零件信息列表
+      detailList: [
         {
           id: 33,
           img: ads1
@@ -382,7 +380,7 @@ export default {
       }
     }
   }
-  .ads-box {
+  .details-box {
     @include flex();
     margin-top: 14px;
     margin-bottom: 31px;
