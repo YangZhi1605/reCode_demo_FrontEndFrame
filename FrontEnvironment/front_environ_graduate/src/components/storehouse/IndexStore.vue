@@ -53,11 +53,10 @@
         </swiper>
       </div>
 
-<!--      下面是其他的东西了-->
 <!--      零件信息列表-->
       <div class="details-box">
-        <router-link v-for="(item, id) in detailList" :key="id" :to="{ name: 'ToTest', params: { id: item.id }}" @click.native="logRoute(item.id)">
-          <img v-lazy="item.img" alt />
+        <router-link v-for="(item, id) in detailList" :key="id" :to="{ name: 'Product', params: { id: item.id }}" @click.native="logRoute(item.id)">
+          <img :src="item.img" alt />
         </router-link>
       </div>
 
@@ -67,34 +66,6 @@
 <!--          <img v-lazy="'../../assets/imgs/banner-1.png'" alt />-->
           <el-image :src="banner"></el-image>
         </a>
-      </div>
-<!--未处理-->
-      <div class="product-box">
-        <div class="container">
-          <h2>待定</h2>
-          <div class="wrapper">
-            <div class="banner-left">
-              <a href="/#/product/35">
-                <img v-lazy="'/imgs/mix-alpha.jpg'" alt />
-              </a>
-            </div>
-            <div class="list-box">
-              <div class="list" v-for="(arr, i) in phoneList" :key="i">
-                <div class="item" v-for="(item, j) in arr" :key="j">
-                  <span v-bind:class="{'new-pro ' : j%2==0}">新品</span>
-                  <div class="item-img">
-                    <img v-lazy="item.mainImage" alt />
-                  </div>
-                  <div class="item-info">
-                    <h3>{{item.name}}</h3>
-                    <p>{{item.subtitle}}</p>
-                    <p class="price"  @click="addCart(item.id)">{{item.price}}元</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
     <service-bar></service-bar>
@@ -121,24 +92,11 @@
 import ServiceBar from "../component_repository/ServiceBar.vue";
 import Modal from "../component_repository/Modal.vue";
 //导入swiper需要的图片
-import swiper_slide1 from '../../assets/imgs/slider/slide-1.jpg'
-import swiper_slide2 from '../../assets/imgs/slider/slide-2.jpg'
-import swiper_slide3 from '../../assets/imgs/slider/slide-3.jpg'
-import swiper_slide4 from '../../assets/imgs/slider/slide-4.jpg'
-import swiper_slide5 from '../../assets/imgs/slider/slide-5.jpg'
 import swiper_slide_new1 from '../../assets/imgs/slider/1-try_out.jpg'
 import swiper_slide_new2 from '../../assets/imgs/slider/3-try_out.jpg'
 import swiper_slide_new3 from '../../assets/imgs/slider/4-try_out.jpg'
 import swiper_slide_new4 from '../../assets/imgs/slider/5-try_out.jpg'
 import swiper_slide_new5 from '../../assets/imgs/slider/6-try_out.jpg'
-
-
-
-// 导入下面零件页面的图片
-import ads1 from '../../assets/imgs/ads/Carpart1_out.jpg'
-import ads2 from '../../assets/imgs/ads/Carpart2_out.jpg'
-import ads3 from '../../assets/imgs/ads/Carpart3_out.jpg'
-import ads4 from '../../assets/imgs/ads/Carpart4_out.jpg'
 import banner from '../../assets/imgs/分隔图1_out.jpg'
 import ToTest from "./ToTest.vue";
 
@@ -225,25 +183,7 @@ export default {
         [0, 0, 0, 0],
         [0, 0, 0, 0]
       ],
-      // 这里得变成我的零件信息列表
-      detailList: [
-        {
-          id: 33,
-          img: ads1
-        },
-        {
-          id: 48,
-          img: ads2
-        },
-        {
-          id: 45,
-          img: ads3
-        },
-        {
-          id: 47,
-          img: ads4
-        },
-      ],
+      detailList:[],
       phoneList: [
         // [1, 1, 1, 1],
         // [1, 1, 1, 1]
@@ -253,9 +193,21 @@ export default {
     };
   },
   mounted() {
-    this.init();
+    this.get_images_url();
   },
   methods: {
+
+    //向后端发送请求，获取图片Url列表的事件函数
+    get_images_url(){
+      this.$axios.get('http://127.0.0.1:5000/api/get_all_node_store').then(res=>{
+        console.log('获取的数据是：',res.data);
+        //这里需要对res进行处理，然后赋值给detailList
+        this.detailList = res.data;
+      }).catch(err=>{
+        console.log(err)
+      })
+    },
+
     //发送了get请求
     init() {
       // this.$axios
@@ -381,13 +333,27 @@ export default {
     }
   }
   .details-box {
-    @include flex();
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* 使图片左对齐，也可以根据需求调整为center让图片居中显示 */
+    align-items: flex-start;
     margin-top: 14px;
     margin-bottom: 31px;
-    a {
-      width: 296px;
-      height: 167px;
-    }
+    gap: 10px; /* 根据需求调整图片间的间隙 */
+  }
+
+  .details-box a {
+    flex: 1 0 calc(25% - 10px); /* 每个链接占整行的25%，减去gap值，以适应容器大小 */
+    height: 167px; /* 可根据实际图片高度进行调整 */
+    display: flex; /* 使得a内部也使用flex布局，以便更好地控制图像 */
+    justify-content: center; /* 图片水平居中 */
+    align-items: center; /* 图片垂直居中 */
+  }
+
+  .details-box img {
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto; /* 图像在链接内居中 */
   }
   .banner {
     margin-bottom: 50px;

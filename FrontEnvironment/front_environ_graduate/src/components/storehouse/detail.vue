@@ -1,3 +1,4 @@
+<!--负责处理点击购买之后的页面-->
 <template>
   <div class="detail">
     <product-param :title="product.name"></product-param>
@@ -24,46 +25,62 @@
         <div class="content">
           <h2 class="item-title">{{product.name}}</h2>
           <p class="item-info">
-            相机全新升级 / 960帧超慢动作 / 手持超级夜景 / 全球首款双频GPS / 骁龙845处理器 / 红
-            <br />外人脸解锁 / AI变焦双摄 / 三星 AMOLED 屏
+            {{product.desc}}
           </p>
-          <div class="delivery">小米自营</div>
+          <div class="delivery">自营</div>
           <div class="item-price">
             {{product.price}}
-            <span class="del">2999元</span>
+<!--            <span class="del">2999元</span>-->
           </div>
           <div class="line"></div>
           <div class="item-addr">
             <i class="icon-loc"></i>
-            <div class="addr">北京 北京市 朝阳区 安定门街道</div>
+            <div class="addr">{{ product.productCompany }}</div>
             <div class="stock">有现货</div>
           </div>
-          <div class="item-version clearfix">
-            <h2>选择版本</h2>
-            <div
-              class="phone fl"
-              :class="{'checked':version==1}"
-              @click="version=1"
-            >6GB+64GB 全网通</div>
-            <div class="phone fr " :class="{'checked':version==2}" @click="version=2">4GB+64GB 移动4G</div>
-          </div>
-          <div class="item-color">
-            <h2>选择颜色</h2>
-            <div class="phone checked">
-              <span class="color"></span>
-              深空灰
+<!--          <div class="item-version clearfix">-->
+<!--            <h2>选择版本</h2>-->
+<!--            <div-->
+<!--              class="phone fl"-->
+<!--              :class="{'checked':version==1}"-->
+<!--              @click="version=1"-->
+<!--            >6GB+64GB 全网通</div>-->
+<!--            <div class="phone fr " :class="{'checked':version==2}" @click="version=2">4GB+64GB 移动4G</div>-->
+<!--          </div>-->
+<!--          <div class="item-color">-->
+<!--            <h2>选择颜色</h2>-->
+<!--            <div class="phone checked">-->
+<!--              <span class="color"></span>-->
+<!--              深空灰-->
+<!--            </div>-->
+<!--          </div>-->
+
+          <div class="item-number clearfix">
+            <h2>选择数量</h2>
+            <div class="number-selector">
+              <button @click="decreaseQuantity" :disabled="quantity <= 1">-</button>
+              <input type="text" v-model.number="quantity" />
+              <button @click="increaseQuantity">+</button>
             </div>
           </div>
+
           <div class="item-total">
-            <div class="phone-info clearfix">
-              <div class="fl">{{product.name}} {{version==1?'6GB+64GB 全网通' :'4GB+64GB 移动4G'}} 深空灰</div>
-              <div class="fr">{{product.price}}元</div>
-            </div>
-            <div class="phone-total">总计：{{product.price}}元</div>
+            <div class="phone-total">总计：{{ totalPrice }}元</div>
           </div>
-          <div class="btn-group">
-            <a href="javascript:;" class="btn btn-huge fl" @click="addCart">加入购物车</a>
-          </div>
+
+          <a href="javascript:;" class="btn btn-huge fl" @click="addCart">加入购物车</a>
+
+<!--          <div class="item-total">-->
+<!--            <div class="phone-info clearfix">-->
+<!--              <div class="fl">{{product.name}} {{version==1?'6GB+64GB 全网通' :'4GB+64GB 移动4G'}} 深空灰</div>-->
+<!--              <div class="fr">{{product.price}}元</div>-->
+<!--            </div>-->
+<!--            <div class="phone-total">总计：{{product.price}}元</div>-->
+<!--          </div>-->
+<!--          <div class="btn-group">-->
+<!--            <a href="javascript:;" class="btn btn-huge fl" @click="addCart">加入购物车</a>-->
+<!--          </div>-->
+
         </div>
       </div>
     </div>
@@ -79,14 +96,15 @@
   </div>
 </template>
 <script>
-import ProductParam from "./../components/ProductParam";
-import ServiceBar from "./../components/ServiceBar";
+import ServiceBar from "../component_repository/ServiceBar.vue";
+import ProductParam from "../component_repository/ProductParam.vue";
 export default {
   name: "detail",
   data() {
     return {
       id: this.$route.params.id, //获取商品ID
       version: 1, //商品版本
+      quantity: 1, // 添加商品数量，默认为1
       product: {}, //商品信息
       swiperOption: {
         autoplay: true,
@@ -104,28 +122,82 @@ export default {
   mounted() {
     this.getProductInfo();
   },
+  computed: {
+    totalPrice() {
+      // 计算选购商品的总价，结果保留两位小数
+      return (this.product.price * this.quantity).toFixed(2);
+    }
+  },
   methods: {
-    addCart() {
-        this.axios.post('/carts', {
-            productId: this.id,
-            selected: true
-        }).then((res={cartProductVoList:0}) => {
-            this.$store.dispatch('saveCartCount', res.cartTotalQutity);
-            this.$router.push('/cart')
-        }) 
+    increaseQuantity() {
+      // 增加商品数量
+      this.quantity++;
     },
-    getProductInfo() {
-      let id = this.$route.params.id;
-      this.axios.get(`/products/${this.id}`).then(res => {
-        this.product = res;
+    decreaseQuantity() {
+      // 减少商品数量
+      if (this.quantity > 1) {
+        this.quantity--;
+      }
+    },
+
+    addCart() {
+      // 添加到购物车
+      this.$axios.post('http://127.0.0.1:5000/api/add_cart_info', {
+        productId: this.id,
+        price: this.product.price, // 添加价格字段
+        name: this.product.name, // 添加商品名称字段
+        quantity: this.quantity, // 添加数量 —— 这个不是商品信息数据表中的字段。是购物车表中的字段，此处写在vue代码中的
+        total: this.product.price *  this.quantity, // 添加总价字段
+        selected: 0 // 选中状态，默认为0
+      }).then(response => {
+        // 假设后端返回的response.data含有购物车数量cartTotalQuantity字段
+        if (response.data.success) {
+          // 添加购物车成功的消息提示
+          this.$message({
+            message: '添加到购物车成功',
+            type: 'success'
+          });
+          this.$store.dispatch('saveCartCount', response.data.cartTotalQuantity);
+          this.$router.push('/cart');
+        } else {
+          // 添加购物车失败的消息提示
+          this.$message({
+            message: '添加到购物车失败',
+            type: 'error'
+          });
+        }
+      }).catch(error => {
+        console.error('加入购物车错误:', error);
+        // 添加购物车出现错误的消息提示
+        this.$message({
+          message: '添加到购物车失败',
+          type: 'error'
+        });
       });
+    },
+    //这里是获取商品信息的方法
+    getProductInfo() {
+      // 获取路由参数中的商品ID
+      // const productId = this.$route.params.id;
+      let id = this.$route.params.id;
+      //传入获得的id,向后端发送get请求
+      this.$axios.get('http://127.0.0.1:5000/api/get_info_by_id', {
+        params: {
+          id: id
+        }
+      }).then(res => {
+        console.log('获取的零件信息数据是',res.data.data);
+        this.product = res.data.data;
+      }).catch(error => {
+        console.log(error);
+      })
     }
   }
 };
 </script>
 <style lang="scss">
-@import "./../assets/scss/config.scss";
-@import "./../assets/scss/mixin.scss";
+@import "../../assets/scss/config.scss";
+@import "../../assets/scss/mixin.scss";
 .detail {
   .wrapper {
     .swiper {
@@ -190,7 +262,7 @@ export default {
           position: absolute;
           top: 27px;
           left: 34px;
-          @include bgImg(20px, 20px, "/imgs/detail/icon-loc.png");
+          @include bgImg(20px, 20px, "../../assets/imgs/detail/icon-loc.png");
         }
         .addr {
           color: #666666;

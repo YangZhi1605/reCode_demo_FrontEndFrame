@@ -225,7 +225,7 @@ export default {
     //点击训练模型按钮后的操作,
     train_model(){
       console.log('开始训练模型');
-      this.$axios.get('http://127.0.0.1:5000/api/train_model_SVM').then(res => {
+      this.$axios.get('http://127.0.0.1:5000/api/train_model_RF').then(res => {
         console.log(res.data);
         //重新获取数据
         this.fetchAllMachineInfo();

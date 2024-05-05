@@ -82,6 +82,9 @@ export default {
     //   return this.$store.state.cartCount;
     // }
     // ...mapState(["username", "cartCount"])
+    cartCount() {
+      return this.$store.state.cartCount;
+    }
   },
   filters: {
     currency(val) {

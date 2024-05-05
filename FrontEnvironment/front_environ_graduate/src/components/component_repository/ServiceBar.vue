@@ -9,7 +9,7 @@
           <span class="icon-15day"></span>15天免费换货
         </li>
         <li>
-          <span class="icon-post"></span>满150元包邮
+          <span class="icon-post"></span>满350元包邮
         </li>
       </ul>
     </div>

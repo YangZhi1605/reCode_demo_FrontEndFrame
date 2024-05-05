@@ -1,22 +1,20 @@
+<!--具体的商品页面-->
 <template>
   <div class="product">
-    <product-param :title="product.name">
+    <product-param>
       <template v-slot:buy>
-        <button class="btn" @click="buy">立即购买</button>
+        <el-button type="warning" @click="buy">立即购买</el-button>
+<!--        <button class="btn" @click="buy">立即购买</button>-->
       </template>
     </product-param>
     <div class="content">
-      <div class="item-bg">
+      <div class="item-bg"  :style="{backgroundImage: 'url(' + backgroundImage + ')'}">
         <h2>{{product.name}}</h2>
-        <h3>{{product.subtitle}}</h3>
         <p>
-          <a href id>全球首款双频 GP</a>
           <span>|</span>
-          <a href id>骁龙845</a>
+            {{product.desc}}
           <span>|</span>
-          <a href id>AI 变焦双摄</a>
-          <span>|</span>
-          <a href id>红外人脸识别</a>
+
         </p>
         <div class="price">
           <span>
@@ -25,8 +23,7 @@
           </span>
         </div>
       </div>
-      <div class="item-bg-2"></div>
-      <div class="item-bg-3"></div>
+
 <!--swiper的轮播图-->
       <div class="item-swiper">
         <swiper :options="swiperOption">
@@ -48,8 +45,8 @@
           <!-- Optional controls -->
           <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
-        <p class="desc">小米8 AI变焦双摄拍摄</p>
       </div>
+
 <!--      页面中展示视频的页面-->
       <div class="item-video">
         <h2>
@@ -84,6 +81,7 @@ export default {
     return {
       showSlide: "", //控制动画效果
       product: {}, //商品信息
+      backgroundImage:'',//后端返回的商品图片
       swiperOption: {
         autoplay: true,
         slidesPerView: 3,
@@ -97,7 +95,8 @@ export default {
     };
   },
   mounted() {
-      // this.getProductInfo();
+    //在页面加载时调用获取商品信息的方法
+      this.getProductInfo();
   },
   methods: {
     closeVideo() {
@@ -106,18 +105,38 @@ export default {
         this.showSlide = "";
       }, 600);
     },
-    // getProductInfo() {
-    //     let id = this.$route.params.id;
-    //     console.log('接受到的参数：',id);
-    //     this.$axios.get(`/store/${id}`).then((res) => {
-    //         this.product = res;
-    //     })
-    // },
+    //向后端发送get请求，按照指定的id获取商品信息
+    getProductInfo() {
+      // 获取路由参数中的商品ID
+      let id = this.$route.params.id;
+
+      //传入获得的id,向后端发送get请求
+      this.$axios.get('http://127.0.0.1:5000/api/get_info_by_id', {
+        params: {
+          id: id
+        }
+      }).then(res => {
+        console.log('根据id获取的数据是',res.data);
+        if(res.data.success) { // 先判断请求是否成功
+          this.product = res.data.data; // 正确取值字段为 `data`
+          this.backgroundImage = this.product.img; // 获取商品图片
+        } else {
+          console.log(res.data.message); //请求失败，打印失败信息
+        }
+
+        console.log('当前的product是',this.product);
+      }).catch(error => {
+        console.log(error);
+      })
+    },
+
     buy() {
-        let id = this.$route.params.id;
-        this.$router.push(`/detail/${id}`);
-    }
-  }
+      let id = this.$route.params.id;
+      console.log('当前的id是',id);
+      this.$router.push(`/detail/${id}`);
+    },
+
+  },
 };
 </script>
 
@@ -126,12 +145,16 @@ export default {
 .product {
   .content {
     .item-bg {
-      background: url("../../../src/assets/imgs/product/product-bg-1.png") no-repeat center;
+      //background: url("../../../src/assets/imgs/product/product-bg-1.png") no-repeat center;
       height: 718px;
       text-align: center;
+      background-size: cover;
+      background-position: center;
       h2 {
-        font-size: 80px;
+        font-size: 34px;
         padding-top: 55px;
+        line-height: 48px;
+        color: #555;
       }
       h3 {
         font-size: 24px;
@@ -158,12 +181,12 @@ export default {
       }
     }
     .item-bg-2 {
-      background: url(/imgs/product/product-bg-2.png) no-repeat center;
+      background: url(../../assets/imgs/product/product-bg-2.png) no-repeat center;
       height: 480px;
       background-size: 1226px 397px;
     }
     .item-bg-3 {
-      background: url(/imgs/product/product-bg-3.png) no-repeat center;
+      background: url(../../assets/imgs/product/product-bg-3.png) no-repeat center;
       height: 638px;
       background-size: cover;
     }
@@ -194,7 +217,7 @@ export default {
         margin-bottom: 58px;
       }
       .video-bg {
-        background: url("/imgs/product/gallery-1.png") no-repeat center;
+        background: url("../../assets/imgs/product/gallery-1.png") no-repeat center;
         background-size: cover;
         width: 1226px;
         height: 540px;

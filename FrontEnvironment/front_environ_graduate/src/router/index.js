@@ -20,6 +20,8 @@ import OrderList from "../components/order/orderList.vue";
 import OrderConfirm from "../components/order/orderConfirm.vue";
 import OrderPay from "../components/order/orderPay.vue";
 import Alipay from "../components/order/alipay.vue";
+import product from "../components/storehouse/product.vue";
+import detail from "../components/storehouse/detail.vue";
 Vue.use(Router)
 
 export default new Router({
@@ -107,6 +109,8 @@ export default new Router({
             {path: '/', redirect: '/store/index_store',meta: { requireAuth: true }},
             {path: 'test/:id', name: 'ToTest', component: ToTest,meta: { requireAuth: true }},
             {path: 'index_store', name: 'IndexStore', component: IndexStore,meta: { requireAuth: true }},
+            {path: 'product/:id', name: 'Product', component: product,meta: { requireAuth: true }},
+            {path: '/detail/:id', name: 'Detail', component: detail,meta: { requireAuth: true }},
           ]
         },
       ]

@@ -6,8 +6,7 @@
           </div>
           <div class="pro-param">
               <a href="">概述</a><span>|</span>
-            <a href="">参数</a><span>|</span>
-            <a href="">用户评价</a><span>|</span>
+              <a href="">用户评价</a><span>|</span>
             <slot name="buy"></slot>
           </div>
       </div>

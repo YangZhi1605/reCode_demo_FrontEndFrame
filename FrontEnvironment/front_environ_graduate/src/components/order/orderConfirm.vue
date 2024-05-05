@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    这是一个订单确认页面
+  </div>
 </template>
 
 <script>

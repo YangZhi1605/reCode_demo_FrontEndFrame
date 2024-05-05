@@ -5,7 +5,7 @@ export default {
     saveUserName(state, username) {
         state.username = username;
     },
-    saveCartCount(context, count) {
+    saveCartCount(state, count) {
         state.CartCount = count;
     }
 }
