@@ -24,13 +24,19 @@ export default {
     title: String
   },
   computed:{
-      ...mapState(['username'])
+      // ...mapState(['username'])
+    username() {
+      // 从localStorage中读取用户信息
+      const user = JSON.parse(localStorage.getItem('user'));
+      // 如果用户已登录，返回用户名，否则返回null
+      return user ? user.username : null;
+    },
   }
 };
 </script>
 <style lang="scss">
 .order-header {
-  padding: 30px 0;
+  padding: 35px 0;
   border-bottom: 2px solid #ff6600;
   .header-logo {
     float: left;
@@ -45,6 +51,7 @@ export default {
     float: left;
     margin-left: 54px;
     h2 {
+      padding: 10px;
       font-size: 28px;
       color: #333333;
     }

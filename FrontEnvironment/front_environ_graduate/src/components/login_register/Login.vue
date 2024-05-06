@@ -62,11 +62,12 @@ export default {
             email: this.loginData.email,
             password: this.loginData.password
           }).then(res => {
-            console.log(res);
+            console.log('登录之后的响应为：',res.data);
             // 登录成功后，将用户信息保存到本地存储
             // localStorage.setItem('user', JSON.stringify(res.data));
             // 登录成功后，将用户信息保存到本地存储
             localStorage.setItem('user', JSON.stringify({
+              userId: res.data.id, // 用户id —— 用于后续表的关联
               username: res.data.username,
               ...res.data // 其它用户信息
             }));

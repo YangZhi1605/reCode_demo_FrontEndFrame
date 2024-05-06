@@ -97,30 +97,30 @@ export default {
               url: 'system/user',
               menus: null
             },
-            {
-              menuid: 174,
-              icon: 'icon-cms-manage',
-              menuname: '菜单管理',
-              hasThird: 'N',
-              url: 'system/Module',
-              menus: null
-            },
-            {
-              menuid: 73,
-              icon: 'icon-news-manage',
-              menuname: '角色管理',
-              hasThird: 'N',
-              url: 'system/Role',
-              menus: null
-            },
-            {
-              menuid: 74,
-              icon: 'icon-cs-manage',
-              menuname: '公司管理',
-              hasThird: 'N',
-              url: 'system/Dept',
-              menus: null
-            },
+            // {
+            //   menuid: 174,
+            //   icon: 'icon-cms-manage',
+            //   menuname: '菜单管理',
+            //   hasThird: 'N',
+            //   url: 'system/Module',
+            //   menus: null
+            // },
+            // {
+            //   menuid: 73,
+            //   icon: 'icon-news-manage',
+            //   menuname: '角色管理',
+            //   hasThird: 'N',
+            //   url: 'system/Role',
+            //   menus: null
+            // },
+            // {
+            //   menuid: 74,
+            //   icon: 'icon-cs-manage',
+            //   menuname: '公司管理',
+            //   hasThird: 'N',
+            //   url: 'system/Dept',
+            //   menus: null
+            // },
             {
               menuid: 75,
               icon: 'icon-promotion-manage',
@@ -129,14 +129,14 @@ export default {
               url: 'system/Variable',
               menus: null
             },
-            {
-              menuid: 76,
-              icon: 'icon-cms-manage',
-              menuname: '权限管理',
-              hasThird: 'N',
-              url: 'system/Permission',
-              menus: null
-            }
+            // {
+            //   menuid: 76,
+            //   icon: 'icon-cms-manage',
+            //   menuname: '权限管理',
+            //   hasThird: 'N',
+            //   url: 'system/Permission',
+            //   menus: null
+            // }
           ]
         },
         {

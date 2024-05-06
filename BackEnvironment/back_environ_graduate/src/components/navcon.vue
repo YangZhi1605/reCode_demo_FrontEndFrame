@@ -9,6 +9,7 @@
     <el-submenu index="2" class="submenu">
       <!-- <template slot="title">{{user.userRealName}}</template> -->
       <template slot="title">超级管理员</template>
+<!--      <template slot="title">{{ username }}</template>-->
       <el-menu-item index="2-1">设置</el-menu-item>
       <el-menu-item @click="content()" index="2-2">个人中心</el-menu-item>
       <el-menu-item @click="exit()" index="2-3">退出</el-menu-item>
@@ -25,12 +26,22 @@ export default {
       collapsed: true,
       imgshow: require('../assets/img/show.png'),
       imgsq: require('../assets/img/sq.png'),
-      user: {}
+      user: {},
+      // username:'',
     }
   },
   // 创建完毕状态(里面是操作)
   created() {
     this.user = JSON.parse(localStorage.getItem('userdata'))
+  },
+  computed:{
+    // ...mapState(['username'])
+    username() {
+      // 从localStorage中读取用户信息
+      // const user = JSON.parse(localStorage.getItem('token'));
+      // 如果用户已登录，返回用户名，否则返回null
+      // return user ? user.username : null;
+    },
   },
   methods: {
     // 退出登录

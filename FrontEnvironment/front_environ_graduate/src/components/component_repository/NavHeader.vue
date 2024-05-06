@@ -12,10 +12,11 @@
           <a href="javascript:;" v-if="username">{{username}}</a>
           <a href="javascript:;" v-if="!username" @click="login">登录</a>
           <a href="javascript:;" v-if="username" @click="logout">退出</a>
-          <a href="javascript:;">我的订单</a>
+<!--          <a href="javascript:;">我的订单</a>-->
           <a href="javascript:;" class="my-cart" @click="goToCart">
             <span class="icon-cart"></span>
-            购物车({{cartCount}})
+<!--            购物车({{cartCount}})-->
+            购物车
           </a>
         </div>
       </div>
@@ -42,7 +43,7 @@
               </el-submenu>
               <el-menu-item index="/msg">日志维护</el-menu-item>
               <el-menu-item index="/store">零件仓库</el-menu-item>
-              <el-menu-item index="/order">订单管理</el-menu-item>
+              <el-menu-item index="/order/list">我的订单</el-menu-item>
             </el-menu>
           </div>
         </div>
@@ -82,9 +83,9 @@ export default {
     //   return this.$store.state.cartCount;
     // }
     // ...mapState(["username", "cartCount"])
-    cartCount() {
-      return this.$store.state.cartCount;
-    }
+    // cartCount() {
+    //   return this.$store.state.cartCount;
+    // }
   },
   filters: {
     currency(val) {

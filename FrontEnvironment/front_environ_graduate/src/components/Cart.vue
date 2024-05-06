@@ -214,7 +214,10 @@ export default {
     },
     // 公共赋值
     renderData(data){
-      this.tableData = data.data; // 根据实际返回的数据结构获取商品列表
+      // 过滤出 active 为 true 的购物车项
+      const activeItems = data.data.filter(item => item.active === true);
+
+      this.tableData = activeItems;
       // 全选状态赋值，由于返回数据中未提供全选的信息，这里假设如果所有商品都被选中，则全选为true
       this.allChecked = this.tableData.every(item => item.selected === 1);
       // 计算总金额，假设total字段为单个商品的总金额
