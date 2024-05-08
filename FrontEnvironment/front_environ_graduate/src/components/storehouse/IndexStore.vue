@@ -6,16 +6,16 @@
           <ul class="menu-wrap">
             <li class="menu-item">
               <a href="#">发动机 气缸体</a>
-              <div class="children">
-                <ul v-for="(item, id) in menuList" :key="id">
-                  <li v-for="(sub, i) in item" v-bind:key="i">
-                    <a v-bind:href="sub ? '/#/product/' + sub.id : ''">
-                      <img v-bind:src="sub? sub.img : '/imgs/item-box-1.png'" alt />
-                      {{sub ? sub.name : '小米九'}}
-                    </a>
-                  </li>
-                </ul>
-              </div>
+<!--              <div class="children">-->
+<!--                <ul v-for="(item, id) in menuList" :key="id">-->
+<!--                  <li v-for="(sub, i) in item" v-bind:key="i">-->
+<!--                    <a v-bind:href="sub ? '/#/product/' + sub.id : ''">-->
+<!--                      <img v-bind:src="sub? sub.img : '/imgs/item-box-1.png'" alt />-->
+<!--                      {{sub ? sub.name : '小米九'}}-->
+<!--                    </a>-->
+<!--                  </li>-->
+<!--                </ul>-->
+<!--              </div>-->
             </li>
 
             <li class="menu-item">

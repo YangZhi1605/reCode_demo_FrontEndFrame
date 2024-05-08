@@ -139,31 +139,31 @@ export default {
             // }
           ]
         },
-        {
-          menuid: 128,
-          icon: 'li-icon-shangchengxitongtubiaozitihuayuanwenjian91',
-          menuname: '支付管理',
-          hasThird: null,
-          url: null,
-          menus: [
-            {
-              menuid: 129,
-              icon: 'icon-provider-manage',
-              menuname: '支付配置信息',
-              hasThird: 'N',
-              url: 'machine/MachineConfig',
-              menus: null
-            },
-            {
-              menuid: 175,
-              icon: 'icon-provider-manage',
-              menuname: '支付配置',
-              hasThird: 'N',
-              url: 'pay/Config',
-              menus: null
-            }
-          ]
-        }
+        // {
+        //   menuid: 128,
+        //   icon: 'li-icon-shangchengxitongtubiaozitihuayuanwenjian91',
+        //   menuname: '支付管理',
+        //   hasThird: null,
+        //   url: null,
+        //   menus: [
+        //     {
+        //       menuid: 129,
+        //       icon: 'icon-provider-manage',
+        //       menuname: '支付配置信息',
+        //       hasThird: 'N',
+        //       url: 'machine/MachineConfig',
+        //       menus: null
+        //     },
+        //     {
+        //       menuid: 175,
+        //       icon: 'icon-provider-manage',
+        //       menuname: '支付配置',
+        //       hasThird: 'N',
+        //       url: 'pay/Config',
+        //       menus: null
+        //     }
+        //   ]
+        // }
       ],
       msg: 'success'
     }

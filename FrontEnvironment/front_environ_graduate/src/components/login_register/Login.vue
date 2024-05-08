@@ -1,31 +1,37 @@
 <template>
-  <div class="login-wrapper">
-    <el-form
-      ref="loginForm"
-      :rules="rules"
-      label-position="top"
-      class="login-form"
-      :model="loginData"
-      @submit.native.prevent="onLogin"
-    >
-      <h3 class="login-title">用户登录</h3>
-      <el-form-item label="邮箱" prop="email">
-        <el-input v-model="loginData.email" placeholder="请输入邮箱"></el-input>
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input type="password" v-model="loginData.password" placeholder="请输入密码"></el-input>
-      </el-form-item>
-      <el-form-item class="form-actions">
-        <el-button type="primary" block @click="onLogin">登录</el-button>
-      </el-form-item>
-      <el-form-item class="form-register-link">
-        <router-link to="/register">@没有账号？来注册账号吧~</router-link>
-      </el-form-item>
-    </el-form>
+  <div class="all_page">
+    <div class="login-wrapper">
+      <el-form
+        ref="loginForm"
+        :rules="rules"
+        label-position="top"
+        class="login-form"
+        :model="loginData"
+        @submit.native.prevent="onLogin"
+      >
+        <h3 class="login-title">用户登录</h3>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="loginData.email" placeholder="请输入邮箱"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input type="password" v-model="loginData.password" placeholder="请输入密码"></el-input>
+        </el-form-item>
+        <el-form-item class="form-actions">
+          <el-button type="primary" block @click="onLogin">登录</el-button>
+        </el-form-item>
+        <el-form-item class="form-register-link">
+          <router-link to="/register">@没有账号？来注册账号吧~</router-link>
+        </el-form-item>
+      </el-form>
+    </div>
+
   </div>
+
 </template>
 
 <script>
+//导入整个页面的背景图片
+import background from '../../assets/login-bg.jpg'
 export default {
   name: 'Login',
   data() {
@@ -51,7 +57,24 @@ export default {
       },
     };
   },
+  mounted() {
+    // 组件加载时，设置背景
+    this.setBackground();
+  },
+  beforeDestroy() {
+    // 组件即将被销毁，移除背景
+    this.removeBackground();
+  },
   methods: {
+    setBackground() {
+      document.body.style.backgroundImage = `url(${background})`;
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+      document.body.style.backgroundAttachment = 'fixed';
+    },
+    removeBackground() {
+      document.body.style.background = '';
+    },
     onLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
@@ -100,6 +123,7 @@ export default {
 
 
 <style scoped>
+
 .login-wrapper {
   max-width: 400px;
   margin: 50px auto;

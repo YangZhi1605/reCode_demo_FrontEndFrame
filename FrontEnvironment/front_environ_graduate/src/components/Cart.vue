@@ -128,9 +128,10 @@ export default {
     //处理删除
     handleDelete(index, row) {
       console.log(index, row);
-      //向后端发送post请求。传入id，进行删除
-      this.$axios.post('http://127.0.0.1:5000/api/delete_cart_info', {
-        id: row.id
+      //向后端发送post请求。传入整个对象，进行删除
+      this.$axios.post('http://127.0.0.1:5000/api/delete_cart_items', {
+        // id: row.id
+        cartList: [row]
       }).then(res => {
         if (res.data.success) {
           //弹出提示删除成功

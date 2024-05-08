@@ -5,18 +5,18 @@
     <el-row style="margin-top: 35px">
       <el-col :span="12">
         <div id="graph_line" style="width:100%; height:500px;"></div>
-        <div><span>机器学习建议：{{ graphLineAdvice }}</span></div>
+        <div><span>健康档位分析结果：{{ graphLineAdvice }}</span></div>
       </el-col>
       <el-col :span="12">
         <div id="graph_pie" style="width:100%; height:500px;"></div>
-        <div><span>机器学习建议：{{ graphBarAdvice }}</span></div>
+        <div><span>接线柱磨损情况分析：{{ graphPieAdvice }}</span></div>
       </el-col>
     </el-row>
 <!--    下栅格系统-->
     <el-row style="margin-top: 70px">
       <el-col :span="24">
         <div id="graph_stack" style="width:100%; height:500px;"></div>
-        <div><span>机器学习建议：{{ graphStackAdvice }}</span></div>
+        <div><span>数理统计结果分析：{{ graphStackAdvice }}</span></div>
       </el-col>
 
     </el-row>
@@ -24,12 +24,14 @@
     <el-row style="margin-top: 55px">
       <el-col :span="16">
         <div id="graph_bar" style="width:100%; height:500px;"></div>
-        <div><span>机器学习建议：{{ graphBarAdvice }}</span></div>
+        <div><span>分析结果：{{ graphBarAdvice }}</span></div>
       </el-col>
 
       <el-col :span="8">
         <div id="graph_gauge" style="width:100%; height:500px;"></div>
-        <div><span>机器学习建议：{{ graphGaugeAdvice }}</span></div>
+        <div>
+          <span>关于我们：{{ graphGaugeAdvice }}</span>
+        </div>
       </el-col>
 
     </el-row>
@@ -55,7 +57,7 @@ export default {
       graphBarAdvice: '5号电路支路出现的警报频率较高，建议检修',
       graphPieAdvice: '接线柱1和接线柱2磨损严重，建议检修',
       graphStackAdvice: '均值和方差整体较为稳定',
-      graphGaugeAdvice: '整体数据处于基本健康状态评分',
+      graphGaugeAdvice: '',
       pieData:[
         {
           "name": "Terminal-6",
@@ -506,9 +508,112 @@ export default {
           console.log(error);
         });
     },
+
+    //获取五档健康折线图数据分析结果
+    fetchDataAndCreateChartGraphLineAdvice: function () {
+      var _this = this; // 保证在回调中this指向Vue实例
+      // axios请求后台API
+      _this.$axios.get('http://127.0.0.1:5000/api/get_machine_advice')
+        .then(function (response) {
+          // response.data 是您从后台得到的数据
+          var data = response.data;
+          // console.log('前台反馈的数据', data);
+          //在JavaScript中，访问对象属性可以通过点（.）操作符或者方括号（[]）操作符来完成。
+          // 使用点操作符获取对象属性
+          _this.graphLineAdvice = data.data;
+        })
+        .catch(function (error) {
+          // 处理请求错误
+          console.log(error);
+        });
+    },
+
+    //获取饼状图对应的磨损情况的分析结果
+    fetchDataAndCreateChartGraphPieAdvice: function () {
+      var _this = this; // 保证在回调中this指向Vue实例
+      // axios请求后台API
+      _this.$axios.get('http://127.0.0.1:5000/api/get_top_three_terminal_names')
+        .then(function (response) {
+          // response.data 是您从后台得到的数据
+          var data = response.data;
+          // console.log('前台反馈的数据', data);
+          //在JavaScript中，访问对象属性可以通过点（.）操作符或者方括号（[]）操作符来完成。
+          // 使用点操作符获取对象属性
+          _this.graphPieAdvice = data.data;
+        })
+        .catch(function (error) {
+          // 处理请求错误
+          console.log(error);
+        });
+    },
+
+    //获取堆叠折线图数据分析结果
+    fetchDataAndCreateChartGraphStackAdvice: function () {
+      var _this = this; // 保证在回调中this指向Vue实例
+      // axios请求后台API
+      _this.$axios.get('http://127.0.0.1:5000/api/get_statistics')
+        .then(function (response) {
+          // response.data 是您从后台得到的数据
+          var data = response.data;
+          // console.log('前台反馈的数据', data);
+          //在JavaScript中，访问对象属性可以通过点（.）操作符或者方括号（[]）操作符来完成。
+          // 使用点操作符获取对象属性
+          _this.graphStackAdvice = data.data;
+        })
+        .catch(function (error) {
+          // 处理请求错误
+          console.log(error);
+        });
+    },
+
+    //获取动态柱状图数据分析结果
+    fetchDataAndCreateChartGraphBarAdvice: function () {
+      var _this = this; // 保证在回调中this指向Vue实例
+      // axios请求后台API
+      _this.$axios.get('http://127.0.0.1:5000/api/get_dynamic_bar')
+        .then(function (response) {
+          // response.data 是您从后台得到的数据
+          var data = response.data;
+          // console.log('前台反馈的数据', data);
+          //在JavaScript中，访问对象属性可以通过点（.）操作符或者方括号（[]）操作符来完成。
+          // 使用点操作符获取对象属性
+          _this.graphBarAdvice = data.data;
+        })
+        .catch(function (error) {
+          // 处理请求错误
+          console.log(error);
+        });
+    },
+
+    //获取阶段速度仪表盘数据分析结果
+    fetchDataAndCreateChartGraphGaugeAdvice: function () {
+      var _this = this; // 保证在回调中this指向Vue实例
+      // axios请求后台API
+      _this.$axios.get('http://127.0.0.1:5000/api/get_grade')
+        .then(function (response) {
+          // response.data 是您从后台得到的数据
+          var data = response.data;
+          // console.log('前台反馈的数据', data);
+          //在JavaScript中，访问对象属性可以通过点（.）操作符或者方括号（[]）操作符来完成。
+          // 使用点操作符获取对象属性
+          _this.graphGaugeAdvice = data.data;
+        })
+        .catch(function (error) {
+          // 处理请求错误
+          console.log(error);
+        });
+    },
+
   },
   // 生命周期 - 创建完成（可以访问当前this 实例）
   created() {
+    // 获取数据
+    this.fetchDataAndCreateChartGraphLineAdvice();
+    this.fetchDataAndCreateChartGraphPieAdvice();
+    this.fetchDataAndCreateChartGraphStackAdvice();
+    this.fetchDataAndCreateChartGraphBarAdvice();
+    this.fetchDataAndCreateChartGraphGaugeAdvice();
+
   },
   //在mounted()函数中，初始化Echarts实例
   //mounted函数是在页面加载完毕后执行的函数
@@ -605,7 +710,7 @@ export default {
     var chartGauge = echarts.init(document.getElementById('graph_gauge'));
     var option_gauge = {
       title: {
-        text: '危险等级测评'
+        text: '机器学习模型评分概况'
       },
       series: [
         {
@@ -659,13 +764,27 @@ export default {
         }
       ]
     };
+    // setInterval(function () {
+    //   chartGauge.setOption({
+    //     series: [
+    //       {
+    //         data: [
+    //           {
+    //             value: +(Math.random() * 100).toFixed(2)
+    //           }
+    //         ]
+    //       }
+    //     ]
+    //   });
+    // }, 2000);
     setInterval(function () {
       chartGauge.setOption({
         series: [
           {
             data: [
               {
-                value: +(Math.random() * 100).toFixed(2)
+                // 在 0 和 23 之间生成随机数，然后加上 70
+                value: +(70 + Math.random() * 23).toFixed(2)
               }
             ]
           }

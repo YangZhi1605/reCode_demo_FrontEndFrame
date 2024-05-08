@@ -526,16 +526,19 @@ export default {
       //     this.$message.error('菜单加载失败，请稍后再试！')
       //   })
     },
+
     // 分页插件事件
     callFather(parm) {
       this.formInline.page = parm.currentPage
       this.formInline.limit = parm.pageSize
       this.getdata(this.formInline)
     },
+
     // 搜索事件
     search() {
       this.getdata(this.formInline)
     },
+
     //显示编辑界面
     handleEdit: function(index, row) {
       this.editFormVisible = true
@@ -625,7 +628,6 @@ export default {
 }
 </style>
 
- 
- 
 
- 
+
+

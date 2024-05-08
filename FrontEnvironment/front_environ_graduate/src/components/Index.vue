@@ -92,7 +92,7 @@ export default {
     },
     //跳转到工作台，路由是/wrben/wrben1
     gotoWorkbench(){
-      this.$router.push('/wrben/wrben1');
+      this.$router.push('/workbench/workbench1');
     },
     scrollToShowComponent() {
       this.$nextTick(() => {

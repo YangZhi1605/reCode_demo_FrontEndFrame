@@ -39,7 +39,7 @@
                 <el-menu-item index="/workbench/workbench1">信息loading</el-menu-item>
                 <el-menu-item index="/workbench/workbench2">数据showing</el-menu-item>
                 <el-menu-item index="/workbench/workbench3">修改editing</el-menu-item>
-                <el-menu-item index="/workbench/workbench4">选项4</el-menu-item>
+<!--                <el-menu-item index="/workbench/workbench4">选项4</el-menu-item>-->
               </el-submenu>
               <el-menu-item index="/msg">日志维护</el-menu-item>
               <el-menu-item index="/store">零件仓库</el-menu-item>
@@ -110,24 +110,24 @@ export default {
       this.$router.push("/login");
     },
     getProductList() {
-      this.$axios
-        .get("/products", {
-          params: {
-            categoryId: "100012",
-            pageSize: 6
-          }
-        })
-        .then(res => {
-          // Math.max(res.list,6);
-          if (res.list.length >= 6) {
-            this.phoneList = res.list.slice(0, 6);
-          }
-        });
+      // this.$axios
+      //   .get("/products", {
+      //     params: {
+      //       categoryId: "100012",
+      //       pageSize: 6
+      //     }
+      //   })
+      //   .then(res => {
+      //     // Math.max(res.list,6);
+      //     if (res.list.length >= 6) {
+      //       this.phoneList = res.list.slice(0, 6);
+      //     }
+      //   });
     },
     getCartCount() {
-      this.$axios.get("/carts/products/sum").then((res = 0) => {
-        this.$store.dispatch("saveCartCount", res);
-      });
+      // this.$axios.get("/carts/products/sum").then((res = 0) => {
+      //   this.$store.dispatch("saveCartCount", res);
+      // });
     },
     logout() {
       // 清除localStorage中的用户信息

@@ -1,7 +1,12 @@
 <template>
-  <div>
+  <div class="register-wrapper">
     <!-- 注册表单 -->
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="register-form">
+    <el-form
+      :model="ruleForm"
+      :rules="rules"
+      ref="ruleForm"
+      label-width="100px"
+      class="register-form">
       <h3 class="register-title">用户注册</h3>
       <el-form-item label="用户名" prop="username" class="el-form-item">
         <el-input v-model="ruleForm.username" autocomplete="off" class="el-input"></el-input>
@@ -30,12 +35,17 @@
       <el-form-item class="button-group">
         <el-button type="primary" size="medium" @click="submitForm('ruleForm')" class="el-button">注册</el-button>
         <el-button type="warning" size="medium" @click="resetForm('ruleForm')" class="el-button">重置</el-button>
+<!--        <el-button type="success" size="medium" @click="resetForm('ruleForm')" class="el-button">去登录</el-button>-->
+      </el-form-item>
+      <el-form-item class="form-register-link">
+        <router-link to="/login">@已有账号？去登录吧~</router-link>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+import background from '../../assets/register_bg.jpg'
 export default {
   name: 'Register',
   data() {
@@ -80,7 +90,24 @@ export default {
       },
     };
   },
+  mounted() {
+    // 组件加载时，设置背景
+    this.setBackground();
+  },
+  beforeDestroy() {
+    // 组件即将被销毁，移除背景
+    this.removeBackground();
+  },
   methods: {
+    setBackground() {
+      document.body.style.backgroundImage = `url(${background})`;
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+      document.body.style.backgroundAttachment = 'fixed';
+    },
+    removeBackground() {
+      document.body.style.background = '';
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -118,21 +145,36 @@ export default {
 </script>
 
 <style scoped>
+.register-wrapper {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 25px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+
 .register-title {
   text-align: center;
   margin-bottom: 30px;
   color: #303133;
   font-weight: bold;
+
 }
 
-/* 添加样式美化表单 */
+///* 添加样式美化表单 */
 .register-form {
-  max-width: 500px;
-  margin: 50px auto;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  background: #fff;
+  //max-width: 400px;
+  //margin: 50px auto;
+  //padding: 25px;
+  //border-radius: 10px;
+  //box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  //background: #fff;
+  ///* 添加背景图片 */
+  //background-image: url("../../assets/register_bg.jpg");
+  //background-size: cover;
+  //background-position: center;
+  margin-top: 20px;
 }
 
 .el-form-item {
@@ -166,6 +208,10 @@ export default {
 /* 调整左边按钮的右边距，使按钮之间有间隙 */
 .el-button:first-child {
   margin-right: 40px; /* 您可以根据需要调整这个值 */
+}
+.form-register-link {
+  margin-top: 15px;
+  text-align: center;
 }
 
 </style>

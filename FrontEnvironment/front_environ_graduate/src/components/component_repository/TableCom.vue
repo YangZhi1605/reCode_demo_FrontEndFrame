@@ -1,7 +1,7 @@
 <template>
   <div>
 <!--    标题-->
-    <h2 class="my-head-style-edit">信息loading~</h2>
+    <h2 class="my-head-style-edit">请上传您的数据</h2>
 <!--    这里写一个表格组件，先展示假数据，当用户下载自己数据模板，将数据填进去，上传之后，再进行更新展示部分-->
     <el-row style="margin-top: 35px">
       <el-col :span="24">
@@ -173,6 +173,7 @@
       <el-col :span="12">
         <el-button type="primary" icon="el-icon-download" size="medium" @click="downloadTemplate">下载模板</el-button>
       </el-col>
+
 <!--      上传到后台-->
 <!--      这个代码示例使用Element UI提供的el-upload组件实现文件的上传功能。
 file-list属性用来维护一个包含所有待上传和已上传文件信息的数组。
@@ -277,8 +278,15 @@ export default {
       const end = start + this.pageSize;
       return this.tableData.slice(start, end);
     },
+    username() {
+      // 从localStorage中读取用户信息
+      const user = JSON.parse(localStorage.getItem('user'));
+      // 如果用户已登录，返回用户名，否则返回null
+      return user ? user.username : null;
+    },
 
   },
+
 
   methods: {
 
@@ -371,8 +379,9 @@ export default {
     //跳转到工作台2之前，想把日志信息拿到的函数，同样发送axios请求，拿到日志信息，存储到log_info_create对象中
     // get_log_info函数应该返回一个Promise
     get_log_info(){
+      console.log('当前的用户信息为：',this.username);
       return new Promise((resolve, reject) => {
-        this.$axios.get('http://127.0.0.1:5000/api/create_logInfo')
+        this.$axios.get('http://127.0.0.1:5000/api/create_logInfo', { params: { username: this.username } })
           .then(response => {
             this.log_info_create = response.data;
             console.log('日志信息：', this.log_info_create);
@@ -396,16 +405,12 @@ export default {
         this.$axios.post('http://127.0.0.1:5000/api/add_info', this.log_info_create)
           .then(response => {
             this.$message.success('日志信息已发送！');
-            console.log('存储给后端的日志信息：', this.log_info_create);
-          })
-          .catch(error => {
-            console.log(error);
           });
       } else {
         console.log('日志信息为空，无法发送！');
       }
 
-      this.$router.push('/wrben/wrben2');
+      this.$router.push('/workbench/workbench2');
     },
 
     //传入ID，删除对应行

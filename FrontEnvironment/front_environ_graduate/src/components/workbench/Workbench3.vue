@@ -183,17 +183,16 @@ export default {
         });
         console.log(err);
       });
-
     },
     //回到上传数据的页面
     toleftDataUpload(){
       //前往上一级页面'/wrben/wrben1'，且携带参数isSubmit
-      this.$router.push({path:'/wrben/wrben1',query:{isSubmit:this.isSubmit}});
+      this.$router.push({path:'/workbench/workbench1',query:{isSubmit:this.isSubmit}});
     },
     //去到数据展示的页面
     rorightDataShow(){
       //前往下一级页面——这里放置一个前进按钮
-      this.$router.push('/wrben/wrben2');
+      this.$router.push('/workbench/workbench2');
     },
   },
   // 生命周期 - 创建完成（可以访问当前this 实例）
