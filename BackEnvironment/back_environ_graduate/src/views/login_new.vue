@@ -48,7 +48,7 @@
             机器<span>学习系统</span>
           </div>
         </div>
-        <div class="desc">这里是好多好多描述，好多好多好多描述。这里是好多好多描述，好多好多好多描述</div>
+        <div class="desc">开启系统管理之路~</div>
         <div class="btn">
           {{ active===1?'新用户？':'已有账户？' }}
           <button @click="active=(active===1)?2:1"> {{ active===1?'去注册':'去登录' }}</button>

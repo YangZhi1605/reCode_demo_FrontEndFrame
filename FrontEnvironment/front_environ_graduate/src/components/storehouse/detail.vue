@@ -4,24 +4,24 @@
     <product-param :title="product.name"></product-param>
     <div class="wrapper">
       <div class="container clearfix">
-        <div class="swiper">
-          <swiper :options="swiperOption">
-            <swiper-slide>
-              <img src="/imgs/detail/phone-1.jpg" alt />
-            </swiper-slide>
-            <swiper-slide>
-              <img src="/imgs/detail/phone-2.jpg" alt />
-            </swiper-slide>
-            <swiper-slide>
-              <img src="/imgs/detail/phone-3.jpg" alt />
-            </swiper-slide>
-            <swiper-slide>
-              <img src="/imgs/detail/phone-4.jpg" alt />
-            </swiper-slide>
-            <!-- Optional controls -->
-            <div class="swiper-pagination" slot="pagination"></div>
-          </swiper>
-        </div>
+<!--        <div class="swiper">-->
+<!--          <swiper :options="swiperOption">-->
+<!--            <swiper-slide>-->
+<!--              <img src="/imgs/detail/phone-1.jpg" alt />-->
+<!--            </swiper-slide>-->
+<!--            <swiper-slide>-->
+<!--              <img src="/imgs/detail/phone-2.jpg" alt />-->
+<!--            </swiper-slide>-->
+<!--            <swiper-slide>-->
+<!--              <img src="/imgs/detail/phone-3.jpg" alt />-->
+<!--            </swiper-slide>-->
+<!--            <swiper-slide>-->
+<!--              <img src="/imgs/detail/phone-4.jpg" alt />-->
+<!--            </swiper-slide>-->
+<!--            &lt;!&ndash; Optional controls &ndash;&gt;-->
+<!--            <div class="swiper-pagination" slot="pagination"></div>-->
+<!--          </swiper>-->
+<!--        </div>-->
         <div class="content">
           <h2 class="item-title">{{product.name}}</h2>
           <p class="item-info">
@@ -211,7 +211,7 @@ export default {
       }
     }
     .content {
-      float: right;
+      float: left;
       width: 584px;
       height: 870px;
       .item-title {

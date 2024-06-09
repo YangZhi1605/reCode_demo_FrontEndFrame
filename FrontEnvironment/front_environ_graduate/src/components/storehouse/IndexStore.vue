@@ -53,12 +53,20 @@
         </swiper>
       </div>
 
-<!--      零件信息列表-->
-      <div class="details-box">
-        <router-link v-for="(item, id) in detailList" :key="id" :to="{ name: 'Product', params: { id: item.id }}" @click.native="logRoute(item.id)">
-          <img :src="item.img" alt />
-        </router-link>
-      </div>
+<!--&lt;!&ndash;      零件信息列表&ndash;&gt;-->
+<!--      <div class="details-box">-->
+<!--        <router-link v-for="(item, id) in detailList" :key="id" :to="{ name: 'Product', params: { id: item.id }}" @click.native="logRoute(item.id)">-->
+<!--          <img :src="item.img" alt />-->
+<!--        </router-link>-->
+<!--      </div>-->
+      <!-- 零件信息列表 -->
+      <el-row >
+        <el-col v-for="(item, id) in detailList" :key="id" :span="6">
+          <router-link :to="{ name: 'Product', params: { id: item.id }}" @click.native="logRoute(item.id)">
+            <img :src="item.img" alt />
+          </router-link>
+        </el-col>
+      </el-row>
 
 <!--      分隔图banner-->
       <div class="banner">

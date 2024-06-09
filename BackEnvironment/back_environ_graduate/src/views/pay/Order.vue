@@ -37,17 +37,17 @@
     <el-table size="small" :data="listData" highlight-current-row v-loading="loading" border element-loading-text="拼命加载中" style="width: 100%;">
       <el-table-column align="center" type="index" width="60">
       </el-table-column>
-      <el-table-column sortable prop="machineNo" label="终端编号" width="120" show-overflow-tooltip>
-      </el-table-column>
+<!--      <el-table-column sortable prop="machineNo" label="终端编号" width="120" show-overflow-tooltip>-->
+<!--      </el-table-column>-->
       <el-table-column sortable prop="orderNo" label="订单号" width="120" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column sortable prop="transId" label="交易单号" width="120" show-overflow-tooltip>
-      </el-table-column>
-      <el-table-column sortable prop="payType" label="支付方式" width="140" show-overflow-tooltip>
-      </el-table-column>
+<!--      <el-table-column sortable prop="transId" label="交易单号" width="120" show-overflow-tooltip>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column sortable prop="payType" label="支付方式" width="140" show-overflow-tooltip>-->
+<!--      </el-table-column>-->
       <el-table-column sortable prop="transType" label="交易类型" width="120" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column sortable prop="goodsPrice" label="商品价格" width="120" show-overflow-tooltip>
+      <el-table-column sortable prop="goodsPrice" label="零件价格" width="120" show-overflow-tooltip>
       </el-table-column>
       <el-table-column sortable prop="payAmount" label="支付金额" width="180" show-overflow-tooltip>
       </el-table-column>
@@ -63,12 +63,13 @@
       <el-table-column align="center" label="操作" min-width="150">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">预览</el-button>
-          <el-button size="mini" type="danger" @click="deleteUser(scope.$index, scope.row)">退款</el-button>
+<!--          <el-button size="mini" type="danger" @click="deleteUser(scope.$index, scope.row)">退款</el-button>-->
         </template>
       </el-table-column>
     </el-table>
     <!-- 分页组件 -->
     <Pagination v-bind:child-msg="pageparm" @callFather="callFather"></Pagination>
+
     <!-- 编辑界面 -->
     <el-dialog :title="title" :visible.sync="editFormVisible" width="50%" @click="closeDialog('editForm')">
       <el-form label-width="120px" :model="editForm" ref="editForm">
@@ -137,6 +138,8 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+
+
   </div>
 </template>
 
@@ -226,13 +229,23 @@ export default {
    * 创建完毕
    */
   created() {
-    this.getdata(this.formInline)
+    this.getdata(this.formInline);
+    // 获取今天的日期
+    let today = new Date();
+
+// 设置日期为昨天
+    let yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    // 将昨天的时间转换为时间戳
+    let editTime = yesterday.getTime();
+    console.log(editTime);
   },
 
   /**
    * 里面的方法只有被调用才会执行
    */
   methods: {
+
     // 获取公司列表
     getdata(parameter) {
       this.loading = true
@@ -245,23 +258,23 @@ export default {
           {
             addUser: null,
             editUser: null,
-            addTime: 1526380193000,
-            editTime: 1526380193000,
+            addTime: 1715050851983,
+            editTime: 1715050851983,
             orderId: 109,
             deptId: 1,
             deptName: 'xxxx',
-            orderNo: 'xxxx',
+            orderNo: '11524894094000524894094000',
             transId: 'xxxx',
             payType: 6,
             subPayType: 'WXPay',
-            transType: '退款',
+            transType: '消费',
             machineNo: '111111',
             goodsNo: '123456',
-            goodsPrice: 0.01,
-            payAmount: -0.01,
-            goodsName: '可乐',
+            goodsPrice: 674.67,
+            payAmount: 674.67,
+            goodsName: '刹车绞 ',
             aisleNo: null,
-            orderStatus: 14,
+            orderStatus: '出货成功',
             openId: null,
             mchId: '111111111111111',
             subMchId: null,
@@ -270,23 +283,23 @@ export default {
           {
             addUser: null,
             editUser: null,
-            addTime: 1526380176000,
-            editTime: 1526380176000,
+            addTime: 1715050851983,
+            editTime: 1715050851983,
             orderId: 108,
             deptId: 1,
             deptName: 'xxxxxx',
-            orderNo: 'xxxx',
+            orderNo: '898310154990338',
             transId: 'xxxxx',
             payType: 6,
             subPayType: 'WXPay',
-            transType: '退款',
+            transType: '消费',
             machineNo: 'J1AX904002',
             goodsNo: '123456',
-            goodsPrice: 0.01,
-            payAmount: -0.01,
-            goodsName: '可乐',
+            goodsPrice: 134.34 ,
+            payAmount: 134.34 ,
+            goodsName: '火花塞 ',
             aisleNo: null,
-            orderStatus: 14,
+            orderStatus: '出货成功',
             openId: null,
             mchId: '898310154990338',
             subMchId: null,
@@ -295,23 +308,23 @@ export default {
           {
             addUser: null,
             editUser: null,
-            addTime: 1524921444000,
-            editTime: 1524894094000,
+            addTime: 1715050851983,
+            editTime: 1715050851983,
             orderId: 107,
             deptId: 1,
             deptName: 'xxxxxx',
-            orderNo: 'J1AX90400220180428101723945',
+            orderNo: '1524894094000',
             transId: '4200000137201804287543647891',
             payType: 6,
             subPayType: 'WXPay',
             transType: '消费',
             machineNo: 'J1AX904002',
             goodsNo: '123456',
-            goodsPrice: 0.01,
-            payAmount: 0.01,
-            goodsName: '可乐',
+            goodsPrice: 2366.53 ,
+            payAmount: 2366.53 ,
+            goodsName: '驱动电机 ',
             aisleNo: null,
-            orderStatus: 7,
+            orderStatus: '已支付',
             openId: null,
             mchId: '898310154990338',
             subMchId: null,
@@ -320,8 +333,8 @@ export default {
           {
             addUser: null,
             editUser: null,
-            addTime: 1521307596000,
-            editTime: 1524641207000,
+            addTime: 1715050942018,
+            editTime: 1715050851983,
             orderId: 20,
             deptId: 1,
             deptName: 'xxxx',
@@ -332,11 +345,11 @@ export default {
             transType: '消费',
             machineNo: '111111111111111',
             goodsNo: '123456',
-            goodsPrice: 0.01,
-            payAmount: 0.01,
-            goodsName: '可乐',
+            goodsPrice: 2979.66 ,
+            payAmount: 2979.66 ,
+            goodsName: '火花塞 ',
             aisleNo: null,
-            orderStatus: 7,
+            orderStatus: '出货成功',
             openId: null,
             mchId: null,
             subMchId: null,
@@ -345,8 +358,8 @@ export default {
           {
             addUser: null,
             editUser: null,
-            addTime: 1520195909000,
-            editTime: 1520195909000,
+            addTime: 1715050942018,
+            editTime: 1715050851983,
             orderId: 19,
             deptId: 1,
             deptName: 'xxxx',
@@ -354,14 +367,14 @@ export default {
             transId: null,
             payType: 0,
             subPayType: '0',
-            transType: '消费',
+            transType: '消费 ',
             machineNo: '93000791',
             goodsNo: '123456',
-            goodsPrice: 0.01,
-            payAmount: 0.01,
-            goodsName: '可乐',
+            goodsPrice: 1726.15 ,
+            payAmount: 1726.15 ,
+            goodsName: '轮胎',
             aisleNo: null,
-            orderStatus: 1,
+            orderStatus: '出货成功',
             openId: null,
             mchId: null,
             subMchId: null,
@@ -370,8 +383,8 @@ export default {
           {
             addUser: null,
             editUser: null,
-            addTime: 1520035180000,
-            editTime: 1520035180000,
+            addTime: 1715050942018,
+            editTime: 1715050851983,
             orderId: 18,
             deptId: 1,
             deptName: 'xxxx',
@@ -379,14 +392,14 @@ export default {
             transId: '9300079120180303170851281',
             payType: 6,
             subPayType: 'WXPay',
-            transType: '退款',
+            transType: '消费',
             machineNo: '222222222222222222',
             goodsNo: '123456',
-            goodsPrice: 0.01,
-            payAmount: 0.01,
-            goodsName: '可乐',
+            goodsPrice: 674.67 ,
+            payAmount: 674.67 ,
+            goodsName: '驱动电机 ',
             aisleNo: null,
-            orderStatus: 8,
+            orderStatus: '出货成功',
             openId: null,
             mchId: '898310154990338',
             subMchId: null,
@@ -395,8 +408,8 @@ export default {
           {
             addUser: null,
             editUser: null,
-            addTime: 1520020261000,
-            editTime: 1520185478000,
+            addTime: 1715050942018,
+            editTime: 1715050851983,
             orderId: 17,
             deptId: 1,
             deptName: 'xxxx',
@@ -407,11 +420,11 @@ export default {
             transType: '消费',
             machineNo: '93000791',
             goodsNo: '123456',
-            goodsPrice: 0.01,
-            payAmount: 0.01,
-            goodsName: '可乐',
+            goodsPrice: 2979.66 ,
+            payAmount: 2979.66 ,
+            goodsName: '火花塞 ',
             aisleNo: null,
-            orderStatus: 7,
+            orderStatus: '出货成功',
             openId: null,
             mchId: '898310154990338',
             subMchId: null,
@@ -420,8 +433,8 @@ export default {
           {
             addUser: null,
             editUser: null,
-            addTime: 1520019911000,
-            editTime: 1520020075000,
+            addTime: 1715050992398,
+            editTime: 1715050851983,
             orderId: 16,
             deptId: 1,
             deptName: 'xxxx',
@@ -432,11 +445,11 @@ export default {
             transType: '消费',
             machineNo: '93000791',
             goodsNo: '123456',
-            goodsPrice: 0.01,
-            payAmount: 0.01,
-            goodsName: '可乐',
+            goodsPrice: 690.46 ,
+            payAmount: 690.46 ,
+            goodsName: '驱动电机 ',
             aisleNo: null,
-            orderStatus: 1,
+            orderStatus: '出货成功',
             openId: null,
             mchId: '898310154990338',
             subMchId: null,
@@ -445,8 +458,8 @@ export default {
           {
             addUser: null,
             editUser: null,
-            addTime: 1520019776000,
-            editTime: 1520019776000,
+            addTime: 1715050992398,
+            editTime: 1715050851983,
             orderId: 15,
             deptId: 1,
             deptName: 'xxxx',
@@ -457,41 +470,41 @@ export default {
             transType: '消费',
             machineNo: '93000791',
             goodsNo: '123456',
-            goodsPrice: 0.01,
-            payAmount: 0.01,
-            goodsName: '可乐',
+            goodsPrice: 674.67 ,
+            payAmount: 674.67 ,
+            goodsName: '火花塞 ',
             aisleNo: null,
-            orderStatus: 1,
+            orderStatus: '出货成功',
             openId: null,
             mchId: null,
             subMchId: null,
             remark: null
           },
-          {
-            addUser: null,
-            editUser: null,
-            addTime: 1520019729000,
-            editTime: 1520019729000,
-            orderId: 14,
-            deptId: 1,
-            deptName: '上海XX',
-            orderNo: '9300079120180303174208429',
-            transId: null,
-            payType: 0,
-            subPayType: '0',
-            transType: '消费',
-            machineNo: '93000791',
-            goodsNo: '123456',
-            goodsPrice: 0.01,
-            payAmount: 0.01,
-            goodsName: '可乐',
-            aisleNo: null,
-            orderStatus: 1,
-            openId: null,
-            mchId: null,
-            subMchId: null,
-            remark: null
-          }
+          // {
+          //   addUser: null,
+          //   editUser: null,
+          //   addTime: 1520019729000,
+          //   editTime: 1520019729000,
+          //   orderId: 14,
+          //   deptId: 1,
+          //   deptName: '上海XX',
+          //   orderNo: '9300079120180303174208429',
+          //   transId: null,
+          //   payType: 0,
+          //   subPayType: '0',
+          //   transType: '消费',
+          //   machineNo: '93000791',
+          //   goodsNo: '123456',
+          //   goodsPrice: 0.01,
+          //   payAmount: 0.01,
+          //   goodsName: '可乐',
+          //   aisleNo: null,
+          //   orderStatus: 1,
+          //   openId: null,
+          //   mchId: null,
+          //   subMchId: null,
+          //   remark: null
+          // }
         ]
       }
       this.loading = false
@@ -544,6 +557,7 @@ export default {
       this.editFormVisible = true
       this.editForm = row
     },
+
     // 编辑、增加页面保存方法
     submitForm(editData) {
       this.$refs[editData].validate(valid => {
@@ -575,6 +589,7 @@ export default {
         }
       })
     },
+
     // 删除公司
     deleteUser(index, row) {
       this.$confirm('确定要删除吗?', '信息', {
@@ -610,6 +625,7 @@ export default {
           })
         })
     },
+
     // 关闭编辑、增加弹出框
     closeDialog(formName) {
       this.editFormVisible = false

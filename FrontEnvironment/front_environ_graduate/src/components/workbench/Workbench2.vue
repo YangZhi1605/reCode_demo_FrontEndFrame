@@ -115,9 +115,14 @@ export default {
             xAxis: {
               data: data.map(function (item) {
                 return item[0];
-              })
+              }),
+              name: '电压批次' //添加这一行
             },
-            yAxis: {},
+            yAxis: {
+              axisLabel: {
+                show: false // 添加这一行
+              },
+            },
             toolbox: {
               right: 10,
               feature: {
@@ -144,36 +149,36 @@ export default {
                 {
                   gt: 0,
                   lte: 50,
-                  color: '#93CE07'
+                  color: '#93CE07',
+                  label: '完全健康' // 添加这一行
                 },
-                // {
-                //   gt: 50,
-                //   lte: 100,
-                //   color: '#FBDB0F'
-                // },
                 {
                   gt: 50,
                   lte: 150,
-                  color: '#FC7D02'
+                  color: '#FC7D02',
+                  label: '健康' // 添加这一行
                 },
                 {
                   gt: 150,
                   lte: 200,
-                  color: '#FD0100'
+                  color: '#FD0100',
+                  label: '正常' // 添加这一行
                 },
                 {
                   gt: 200,
                   lte: 300,
-                  color: '#AA069F'
+                  color: '#AA069F',
+                  label: '轻微严重' // 添加这一行
                 },
                 {
                   gt: 300,
-                  color: '#AC3B2A'
+                  color: '#AC3B2A',
+                  label: '十分严重' // 添加这一行
                 }
               ],
               outOfRange: {
                 color: '#999'
-              }
+              },
             },
             //涉及到后端返回的data了
             series: {
@@ -183,24 +188,70 @@ export default {
                 return item[1];
               }),
 
+              // markLine: {
+              //   silent: true,
+              //   data: [
+              //     {
+              //       yAxis: 50,
+              //     },
+              //     {
+              //       yAxis: 100
+              //     },
+              //     {
+              //       yAxis: 150
+              //     },
+              //     {
+              //       yAxis: 200
+              //     },
+              //     {
+              //       yAxis: 300
+              //     }
+              //   ]
+              // }
               markLine: {
                 silent: true,
                 data: [
                   {
-                    yAxis: 50
+                    yAxis: 50,
+                    label: {
+                      formatter: '完全健康'
+                    }
                   },
                   {
-                    yAxis: 100
+                    yAxis: 150,
+                    label: {
+                      formatter: '健康'
+                    }
                   },
                   {
-                    yAxis: 150
+                    yAxis: 200,
+                    label: {
+                      formatter: '正常'
+                    }
                   },
                   {
-                    yAxis: 200
-                  },
-                  {
-                    yAxis: 300
+                    yAxis: 300,
+                    label: {
+                      formatter: '轻微严重'
+                    }
                   }
+                ]
+              },
+              markArea: {
+                silent: true,
+                data: [
+                  [
+                    {
+                      yAxis: 300
+                    },
+                    {
+                      yAxis: 'max',
+                      label: {
+                        position: 'insideTopRight',
+                        formatter: '十分严重'
+                      }
+                    }
+                  ]
                 ]
               }
             },
@@ -347,7 +398,7 @@ export default {
               {
                 type: 'category',
                 boundaryGap: false,
-                data: ['Ter-1', 'Ter-2', 'Ter-3', 'Ter-4', 'Ter-5', 'Ter-6', 'Ter-7','Ter-8']
+                data: ['电路支路-1', '电路支路-2', '电路支路-3', '电路支路-4', '电路支路-5', '电路支路-6', '电路支路-7','电路支路-8']
               }
             ],
             // y轴
@@ -604,6 +655,29 @@ export default {
         });
     },
 
+    //向后端http://127.0.0.1:5000/api/get_all_score_list发送get请求，获得当前的模型评分
+    getScoreList() {
+      this.$axios.get('http://127.0.0.1:5000/api/get_all_score_list')
+        .then(res => {
+          //将更新后的数据库数据赋值给新的变量
+          this.model_score_list = res.data;
+          console.log('更新后的模型评分数据：',this.model_score_list);//数据是拿到了，控制台也输出了
+          //成功后，弹出成功的消息提示——暂时放着
+          // this.$message({
+          //   message: '更新成功',//显示了
+          //   type: 'success'
+          // });
+        })
+        .catch(err => {
+          //失败后，弹出失败的消息提示
+          this.$message({
+            message: '更新失败',
+            type: 'error'
+          });
+          console.log(err);
+        });
+    },
+
   },
   // 生命周期 - 创建完成（可以访问当前this 实例）
   created() {
@@ -613,6 +687,7 @@ export default {
     this.fetchDataAndCreateChartGraphStackAdvice();
     this.fetchDataAndCreateChartGraphBarAdvice();
     this.fetchDataAndCreateChartGraphGaugeAdvice();
+    this.getScoreList();
 
   },
   //在mounted()函数中，初始化Echarts实例

@@ -25,27 +25,27 @@
       </div>
 
 <!--swiper的轮播图-->
-      <div class="item-swiper">
-        <swiper :options="swiperOption">
-          <swiper-slide>
-            <img src="/imgs/product/gallery-2.png" alt />
-          </swiper-slide>
-          <swiper-slide>
-            <img src="/imgs/product/gallery-3.png" alt />
-          </swiper-slide>
-          <swiper-slide>
-            <img src="/imgs/product/gallery-4.png" alt />
-          </swiper-slide>
-          <swiper-slide>
-            <img src="/imgs/product/gallery-5.jpg" alt />
-          </swiper-slide>
-          <swiper-slide>
-            <img src="/imgs/product/gallery-6.jpg" alt />
-          </swiper-slide>
-          <!-- Optional controls -->
-          <div class="swiper-pagination" slot="pagination"></div>
-        </swiper>
-      </div>
+<!--      <div class="item-swiper">-->
+<!--        <swiper :options="swiperOption">-->
+<!--          <swiper-slide>-->
+<!--            <img src="/imgs/product/gallery-2.png" alt />-->
+<!--          </swiper-slide>-->
+<!--          <swiper-slide>-->
+<!--            <img src="/imgs/product/gallery-3.png" alt />-->
+<!--          </swiper-slide>-->
+<!--          <swiper-slide>-->
+<!--            <img src="/imgs/product/gallery-4.png" alt />-->
+<!--          </swiper-slide>-->
+<!--          <swiper-slide>-->
+<!--            <img src="/imgs/product/gallery-5.jpg" alt />-->
+<!--          </swiper-slide>-->
+<!--          <swiper-slide>-->
+<!--            <img src="/imgs/product/gallery-6.jpg" alt />-->
+<!--          </swiper-slide>-->
+<!--          &lt;!&ndash; Optional controls &ndash;&gt;-->
+<!--          <div class="swiper-pagination" slot="pagination"></div>-->
+<!--        </swiper>-->
+<!--      </div>-->
 
 <!--      页面中展示视频的页面-->
 <!--      <div class="item-video">-->

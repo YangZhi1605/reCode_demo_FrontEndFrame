@@ -235,6 +235,7 @@ export default {
       currentPage: 1, // 当前页码
       pageSize: 10, // 每页显示条数
       log_info_create:{},//存储日志信息
+      model_score_list:[],//存储模型的评分列表
     }
   },
   /*
@@ -289,6 +290,28 @@ export default {
 
 
   methods: {
+    //向后端http://127.0.0.1:5000/api/get_all_score_list发送get请求，获得当前的模型评分
+    getScoreList() {
+      this.$axios.get('http://127.0.0.1:5000/api/get_all_score_list')
+        .then(res => {
+          //将更新后的数据库数据赋值给新的变量
+          this.model_score_list = res.data;
+          console.log('更新后的模型评分数据：',this.model_score_list);//数据是拿到了，控制台也输出了
+          //成功后，弹出成功的消息提示——暂时放着
+          // this.$message({
+          //   message: '更新成功',//显示了
+          //   type: 'success'
+          // });
+        })
+        .catch(err => {
+          //失败后，弹出失败的消息提示
+          this.$message({
+            message: '更新失败',
+            type: 'error'
+          });
+          console.log(err);
+        });
+    },
 
     handleClick(row) {
       console.log(row);
@@ -362,7 +385,7 @@ export default {
         })
         .then(response => {
           // 第二个请求也成功了
-          this.$message.success('第二个请求成功！');
+          // this.$message.success('第二个请求成功！');
         //   控制台输出第二个请求响应体中的数据
           console.log('整理文件按钮中请求后端数据',response.data);
           //绑定为vue
@@ -533,7 +556,8 @@ export default {
 
   // 生命周期 - 创建完成（可以访问当前this 实例）
   created() {
-
+    //调用获得模型评分的函数
+    // this.getScoreList();
   },
 }
 </script>
